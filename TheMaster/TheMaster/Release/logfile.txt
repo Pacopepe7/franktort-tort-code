@@ -1,0 +1,70 @@
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	go infinite
+	a7a5stop
+	a7a5stop
+	a7a5quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	go infinite
+	a7a5stop
+	a7a5stop
+	a7a5quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	go infinite
+	a7a5stop
+	a7a5stop
+	a7a5quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	go infinite
+	a7a5stop
+	a7a5stop
+	a7a5quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	e2e4
+	 X Xquit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	go infinite
+	a7a5stop
+	a7a5stop
+	a7a5quit
+	ok

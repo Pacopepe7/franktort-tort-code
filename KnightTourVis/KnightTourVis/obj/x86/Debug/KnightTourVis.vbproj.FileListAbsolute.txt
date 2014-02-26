@@ -1,0 +1,26 @@
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\bin\Debug\KnightTourVis.exe
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\bin\Debug\KnightTourVis.pdb
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\bin\Debug\KnightTourVis.xml
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\KnightTourVis.Form1.resources
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\KnightTourVis.Resources.resources
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\KnightTourVis.exe
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\KnightTourVis.xml
+C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Debug\KnightTourVis.pdb
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Debug\KnightTourVis.exe.manifest
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Debug\KnightTourVis.application
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Debug\KnightTourVis.exe
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Debug\KnightTourVis.pdb
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Debug\KnightTourVis.xml
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.Form1.resources
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.Resources.resources
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.exe.manifest
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.application
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.exe
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.xml
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Debug\KnightTourVis.pdb

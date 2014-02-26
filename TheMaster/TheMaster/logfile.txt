@@ -1,0 +1,76 @@
+hello workd
+uci
+	id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+	position startpos
+	quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+readyok
+	quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+readyok
+	isready
+	quit
+	ok
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+quit
+	ok
+ci
+	uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	e2e4
+	 X X
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	go infinite
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+isready
+	readyok
+position startpos
+	e2e4
+new
+	init
+	db
+	quit
+	ok
+CI
+	UCI
+	uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+new
+	 X X
