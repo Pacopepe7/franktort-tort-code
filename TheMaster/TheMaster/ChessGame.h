@@ -18,7 +18,7 @@ public:
 	int depth ;
 	int evaldepth;
 	enum mode { UCI, ICC, CONSOLE } MODE;
-	ChessBoard cb, temp[30];
+	ChessBoard cb; 
 
 	//Functions
 	ChessGame ( ); 
@@ -33,8 +33,8 @@ public:
 
 	int getIndex( string s);
 	string getResponce( void );
-	int AlphaBeta( ChessBoard, int depth, int alpha, int beta );
-	int NegaMax( ChessBoard currentnode, int currentdepth );
+	int AlphaBeta( ChessBoard &, int depth, int alpha, int beta );
+	int NegaMax( ChessBoard & currentnode, int currentdepth );
 	int NegaMax2( ChessBoard currentnode, int currentdepth );
 	int Quiet( ChessBoard currentnode, int currentdepth , int alpha, int beta);
 	int QuietAlphaBeta( ChessBoard currentnode, int currentdepth,   int alpha, int beta );

@@ -58,6 +58,7 @@ public:
 	int whitekingposition;
 	int blackkingposition;
 	int ply;
+
 	//Functions
 	ChessBoard(void);
 	ChessBoard(string fen);
@@ -71,4 +72,5 @@ public:
 	int getPieceAt( int x );
 	int getColorAt( int x );
 	int getIndex(string x);
+	string PrintBoard(void);
 };

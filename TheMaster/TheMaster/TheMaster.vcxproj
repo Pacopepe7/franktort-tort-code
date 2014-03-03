@@ -75,11 +75,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="algorithms.cpp" />
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="ChessMove.cpp" />
+    <ClCompile Include="Evaluate.cpp" />
     <ClCompile Include="TheMaster.cpp" />
     <ClCompile Include="utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ChessBoard.h" />
+    <ClInclude Include="ChessEngine.h" />
+    <ClInclude Include="ChessGame.h" />
+    <ClInclude Include="ChessMove.h" />
+    <ClInclude Include="ChessPiece.h" />
+    <ClInclude Include="Definitions.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

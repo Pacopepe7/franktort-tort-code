@@ -21,20 +21,17 @@ void main ( void )
 	fstream ofile;
 	ofile.open("logfile.txt",ios::app);
 
-
-	
 	string input, output;
-	char chinput[50];
 
 	do
 	{
-		cin.getline(chinput,50, '\n');
+		getline(cin, input);
 		
-		input = chinput;
+		input = input;
 		ofile << input << endl;
 
 		output =  TheMasterDriver.ProcessCommand(input);
-		ofile << "\t" << output;
+		ofile << output;
 
 		cout <<  output;
 

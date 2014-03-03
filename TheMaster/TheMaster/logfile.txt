@@ -74,3 +74,289 @@ CI
 uciok
 new
 	 X X
+uci
+	id name TheMaster
+	id author Francisco Tort
+uciok
+ucinewgame
+	ok
+position startpos e2e4
+	pb
+	 X Xquit
+	ok
+uci
+	id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+	ok
+position startpos e2e4
+	pb
+	 X X
+quit
+	ok
+uci
+	id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+	ok
+position startpos e2e4 d7d5
+	pb
+	
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP BP BP BP BP BP 
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP WP WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+quit
+	ok
+uci
+	id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+	ok
+position startpos e2e4 d7d5 e4d5
+	pb
+	
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d5d7 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP BP BP BP BP BP 
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+:::   :::   WP    :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 c7c5 g1f3 d7d6 d2d4 c5d4 f3d4 g8f6 b1c3
+pb
+
+
+
+BR BN BB BQ BK BB :::BR 
+BP BP    :::BP BP BP BP 
+:::   :::BP :::BN :::   
+   :::   :::   :::   :::
+:::   :::WN WP    :::   
+   :::WN :::   :::   :::
+WP WP WP    :::WP WP WP 
+WR :::WB WQ WK WB    WR 
+
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+go
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+b8a6
+quit
+ok
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+go
+b8a6
+quit
+ok
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+d8d5
+quit
+ok

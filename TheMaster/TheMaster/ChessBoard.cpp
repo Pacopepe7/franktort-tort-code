@@ -100,7 +100,7 @@ ChessPiece ChessBoard::startingposition[144] =
 	string ChessBoard::getDescription( int x ) 
 	{
 		if ( x >= 0 && x < MAXSQUARES) 
-			return (startingposition[x].name);
+			return (currentposition[x].name);
 		else
 			return "NULL";
 	}
@@ -110,7 +110,7 @@ ChessPiece ChessBoard::startingposition[144] =
 	int ChessBoard::getPieceAt( int x ) 
 	{
 		if ( x >= 0 && x < MAXSQUARES) 
-			return (startingposition[x].piecetype);
+			return (currentposition[x].piecetype);
 		else
 			return 0;
 	}
@@ -120,7 +120,7 @@ ChessPiece ChessBoard::startingposition[144] =
 	int ChessBoard::getColorAt( int x ) 
 	{
 		if ( x >= 0 && x < MAXSQUARES) 
-			return ( startingposition[x].color );
+			return ( currentposition[x].color );
 		else
 			return 0;
 	}
@@ -214,7 +214,6 @@ ChessPiece ChessBoard::startingposition[144] =
 	{
 		if ( cm.to == whitekingposition || cm.to == blackkingposition )
 		{
-			//System.out.println("Fatal error, destination contains a King!");
 			return false;
 		}
 		// update king position and castling priviledges
@@ -349,7 +348,7 @@ ChessPiece ChessBoard::startingposition[144] =
 		//Flush the stack
 		while ( ! chessmoves.empty() )
 			chessmoves.pop();
-			//cm = (ChessMove)chessmoves.pop();
+		//cm = (ChessMove)chessmoves.pop();
 
 		// search the board and if the piece at position X is ours, generate the moves
 		for(int x = 0; x < MAXSQUARES; x++)
@@ -650,138 +649,49 @@ ChessPiece ChessBoard::startingposition[144] =
 	* Searches the array and prints a text representation of the piece on that position
 	* If the square is "EMPTY", it prints ":::" if he square is dark to better approximate
 	* a chess board.
-	* 
-
-	public void PrintBoard ( ) 
-	{
-	String b = "";
-	int x,y;
-	for ( x = 0; x < 12; x ++) 
-	{
-	b = b + "\n";
-	for ( y = 0; y < 12; y ++)
-	{
-	if(getPieceAt(x * 12 + y) != OUT )
-	{				
-	if(getPieceAt(x * 12 + y) == EMPTY)
-	{
-	if( ( (y + x) % 2) == 1 ) 
-	b = b +  "   ";
-	else
-	b = b +  ":::";
-	}
-	else 
-	{
-	int type;
-	type = getColorAt(x * 12 + y);
-	if((type == WHITE) ) 
-	b = b +  "W";
-	else
-	b = b +  "B";
-	type = getPieceAt(x * 12 + y);
-	if((type == PAWN))		b = b +  "P ";
-	if((type == ROOK))		b = b +  "R ";
-	if((type == KNIGHT) )	b = b +  "N ";
-	if((type == BISHOP))	b = b +  "B ";
-	if((type == QUEEN))	b = b +  "Q ";
-	if((type == KING))		b = b +  "K ";
-	}//end second if				
-	}//end first if
-	}//end for
-	}//end 1st for
-	System.out.println(b);
-	}end function*/
-
-	/*********************************************************************************************
-	* evaluate()
-	* This is the function that lets the chess engine know how good the position is.
 	*/
 
-	int ChessBoard::Evaluate( /*TheMaster tm*/ )
+	string ChessBoard::PrintBoard ( void ) 
 	{
-		int materialtomove = 0;
-		int materialtarget = 0;
-		int attackvaluetomove = 0;
-		int attackvaluetarget = 0;
-		int legalmoves = 0;
-		int target = (sidetomove == WHITE) ? BLACK : WHITE;
-		int targetkingposition;
-		if (sidetomove == WHITE ) 
-			targetkingposition = blackkingposition;
-		else
-			targetkingposition = whitekingposition;
-		ChessMove cm;
-		ChessBoard evalnode = *this;
-
-		// make a draw check
-		//if ( tm.drawcheck( evalnode ) ) 
-		//	return 0;
-
-		// check if there are valid moves on this position,
-		//if not and in check, it's mate!
-		// if not and not in check, its stalemate
-		GenerateMoves();
-		while ( ! chessmoves.empty() )
+		string b = "";
+		int x,y;
+		for ( x = 0; x < 12; x ++) 
 		{
-			cm = (ChessMove)chessmoves.top();
-			//eval = new ChessBoard( this );
-			//arg.copy(this);
-			// for each move that is valid...
-			if ( /*ValidateMove( cm.out() ) &&*/ evalnode.MakeMove( cm ) )
+			b = b + "\n";
+			for ( y = 0; y < 12; y ++)
 			{
-				// found at least one valid move
-				legalmoves++;
-				break;
-			} // end validate move
-		} // end while chessmoves.empty()
-
-		//return appropiate value if no moves found, this does not need to return a value because there is
-		// no where to return it to.
-		if ( legalmoves == 0 ) 
-		{
-			// tomove to move and kingposition is attacked?!
-			if ( IsAttacked( targetkingposition, sidetomove ) > 0) 
-			{
-				return ( -32000 + ply  );
-			}
-			else
-			{
-				return ( 0 + ply );
-			}
-		} // end if legal moves
-
-		for (int x = 0; x < 144; x++)
-		{
-			if ( getColorAt(x) == sidetomove )
-				materialtomove += currentposition[x].value;
-			if ( getColorAt(x) == target )
-				materialtarget += currentposition[x].value;
-		}
-		//
-		for (int x = 0; x < 144; x++)
-		{
-			if ( !(currentposition[x] == OUT))
-			{
-				attackvaluetomove += IsAttacked( x, sidetomove );
-				attackvaluetarget += IsAttacked( x, target );
-			}
-		}
-		return ( ( materialtomove + attackvaluetomove ) - (materialtarget + attackvaluetarget) );
+				if(getPieceAt(x * 12 + y) != _OUT )
+				{				
+					if(getPieceAt(x * 12 + y) == _EMPTY)
+					{
+						if( ( (y + x) % 2) == 1 ) 
+							b = b +  "   ";
+						else
+							b = b +  ":::";
+					}
+					else 
+					{
+						int type;
+						type = getColorAt(x * 12 + y);
+						if((type == WHITE) ) 
+							b = b +  "W";
+						else
+							b = b +  "B";
+						type = getPieceAt(x * 12 + y);
+						if((type == PAWN))		b = b +  "P ";
+						if((type == ROOK))		b = b +  "R ";
+						if((type == KNIGHT) )	b = b +  "N ";
+						if((type == BISHOP))	b = b +  "B ";
+						if((type == QUEEN))		b = b +  "Q ";
+						if((type == KING))		b = b +  "K ";
+					}//end second if				
+				}//end first if
+			}//end for
+		}//end 1st for
+		return b;
 	}
-	/*	boolean drawcheck( ChessBoard histnode )
-	{
-	if ( histnode.tomove != this.tomove )
-	return false;
-	for( int x = 0; x < 140; x++)
-	{
-	if ( histnode.getColorAt(x) != this.getColorAt(x) )
-	return false;
-	if ( histnode.getPieceAt(x) != this.getPieceAt(x) )
-	return false;
-	}
-	return true;
-	}
-	*/
+
+
 	/**************************************************************
 	* Input: 2 char string
 	* output: index of the string in "notation" array
