@@ -16,3 +16,13 @@ C:\Users\Paquito\AppData\Local\Temporary Projects\KnightTourVis\obj\x86\Release\
 C:\Users\Paquito\documents\visual studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.exe
 C:\Users\Paquito\documents\visual studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.xml
 C:\Users\Paquito\documents\visual studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.pdb
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Release\KnightTourVis.exe.manifest
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Release\KnightTourVis.application
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Release\KnightTourVis.exe
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Release\KnightTourVis.pdb
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\bin\Release\KnightTourVis.xml
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.Form1.resources
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.Resources.resources
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.vbproj.GenerateResource.Cache
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.exe.manifest
+C:\Users\Paquito\Documents\Visual Studio 2010\Projects\KnightTourVis\KnightTourVis\obj\x86\Release\KnightTourVis.application

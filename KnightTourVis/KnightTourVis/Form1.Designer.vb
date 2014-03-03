@@ -79,7 +79,6 @@ Partial Class Form1
         '
         'Timer1
         '
-        Me.Timer1.Interval = 300
         '
         'Form1
         '
