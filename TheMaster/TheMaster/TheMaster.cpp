@@ -18,8 +18,8 @@ void main ( void )
 	ChessGame TheMasterDriver;
 	
 	//Start a log file for commands
-	fstream ofile;
-	ofile.open("logfile.txt",ios::app);
+	//fstream ofile;
+	//ofile.open("logfile.txt",ios::app);
 
 	string input, output;
 
@@ -28,15 +28,15 @@ void main ( void )
 		getline(cin, input);
 		
 		input = input;
-		ofile << input << endl;
+		//ofile << input << endl;
 
 		output =  TheMasterDriver.ProcessCommand(input);
-		ofile << output;
+		//ofile << output;
 
 		cout <<  output;
 
 	}while ( input != "quit" );
 
-	ofile.close();
+	//ofile.close();
 	return;
 }

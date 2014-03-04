@@ -360,3 +360,28 @@ go
 d8d5
 quit
 ok
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+ucinewgame
+ok
+position startpos e2e4 d7d5 e4d5
+pb
+
+
+
+BR BN BB BQ BK BB BN BR 
+BP BP BP :::BP BP BP BP 
+:::   :::   :::   :::   
+   :::   WP    :::   :::
+:::   :::   :::   :::   
+   :::   :::   :::   :::
+WP WP WP WP :::WP WP WP 
+WR WN WB WQ WK WB WN WR 
+
+go
+info depth 3 score cp 105
+bestmove d8d5
+quit
+ok

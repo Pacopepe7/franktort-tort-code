@@ -68,3 +68,9 @@ position startpos
 	a7a5stop
 	a7a5quit
 	ok
+uci
+id name TheMaster
+id author Francisco Tort
+uciok
+quit
+ok

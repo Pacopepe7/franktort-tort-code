@@ -6,7 +6,9 @@
 *
 */
 #include "ChessGame.h"
+#include <boost/thread/thread.hpp>
 
+using namespace boost;
 /**
 * Chess Gane Constructor
 */
@@ -36,7 +38,8 @@ void ChessGame::Init ( void )
 */ 
 string ChessGame::ProcessUCICommand( string command )
 {
-	int value;
+	long long value;
+	string sValue = "";
 	 vector<string> tokens;
 	// QUIT
 	if ( command == "quit" )
@@ -48,6 +51,12 @@ string ChessGame::ProcessUCICommand( string command )
 	{
 		return "readyok\n";
 	}	
+	//Stop
+	if ( command == "stop" )
+	{
+		return "readyok\n";
+	}	
+
 	//PrintBoard
 	if ( command == "pb" )
 	{
@@ -61,8 +70,9 @@ string ChessGame::ProcessUCICommand( string command )
 	}
 	if (command == "go")// && tokens.size() > 1)
 	{
-		value = NegaMax(cb, 2);
-		return cb.BestSoFar.ToString() + "\n";
+		value = NegaMax(cb, 4);
+		sValue = std::to_string(value);
+		return "info depth 4 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
 	}
 
 	// check for positions
@@ -74,7 +84,7 @@ string ChessGame::ProcessUCICommand( string command )
 		{
 			cb.Init();
 			if ( tokens.size() == 2 )
-				return "";
+				return "\n";
 			// start making moves on the internal board until no more moves
 			for ( int c = 2; c < tokens.size(); c++)
 			{
@@ -86,9 +96,16 @@ string ChessGame::ProcessUCICommand( string command )
 		}
 		// this position is encoded in FEN
 		//not implemented
-		return "Fen not implemented";
+		return "Fen not implemented\n";
 	}
-	return "Not implemented";
+	if (tokens[0] == "go")// && tokens.size() > 1)
+	{
+		value = NegaMax(cb, 3);
+		sValue = std::to_string(value);
+		return "info depth 3 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
+	}
+
+	return "Not implemented\n";
 
 } // end process command
 
