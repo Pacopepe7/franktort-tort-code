@@ -1,14 +1,12 @@
-/**********************************************
-* ChessGame.cpp
-* Class implementing a chess playing engine.
-* Francisco Tort
-* Dec 30, 2009
-*
+/*
+  TheMaster, a UCI chess playing engine 
+  Copyright (C)2014 Francisco Tort
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "ChessGame.h"
-#include <boost/thread/thread.hpp>
 
-using namespace boost;
 /**
 * Chess Gane Constructor
 */
