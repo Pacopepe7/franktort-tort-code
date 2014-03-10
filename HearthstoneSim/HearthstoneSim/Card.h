@@ -21,10 +21,10 @@ class Card
 private:
 	Card * next;
 	string sName;
-	HeroClasses hcclass;
-	Rarity rarRarity;
-	Type tType;
-	Race racRace;
+	string hcclass;
+	string rarRarity;
+	string tType;
+	string racRace;
 	int iManaCost;
 	int iAttack;
 	int iHealth;
@@ -52,10 +52,10 @@ public:
 			sDesc = desc;
 	};
 	Card::Card ( string name,
-			HeroClasses hc,
-			Rarity rar,
-			Type t,
-			Race rac,
+			string hc,
+			string rar,
+			string t,
+			string rac,
 			int cost, 
 			int attack,
 			int health,

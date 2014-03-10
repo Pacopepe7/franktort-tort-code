@@ -11,8 +11,8 @@ private:
 	//Changes very seldom
 	//TODO: Game rules
 	//TODO: Card Rules
-	//Card allcards[400];
-	//int maxcards;
+	Card allcards[400];
+	int maxcards;
 
 	//Data changes every game
 	Player player[MAXPLAYERS];
@@ -33,6 +33,7 @@ private:
 public:
 
 	CardGame(void);
+	void LoadPosition(string );
 	void run ( void );
 	bool GameOver(void);
 	~CardGame(void);

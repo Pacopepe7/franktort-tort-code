@@ -11,10 +11,11 @@ void main ( void )
 {
 	CardGame cardgame;
 
-	while ( ! cardgame.GameOver() )
+	cardgame.LoadPosition("C:\\temp\\testboard1.hsb");
+	/*while ( ! cardgame.GameOver() )
 		{
 			cardgame.run();
-	}
+	}*/
 
 	int i;
 	cin >> i;

@@ -6,7 +6,8 @@
 
 
 #include "Card.h"
-#include <boost/tokenizer.hpp>
+#include "utilities.h"
+
 
 Card::Card(void)
 {
@@ -17,10 +18,10 @@ Card::Card(void)
 	sDesc = "Random!!!";
 }
 Card::Card ( string name,
-			HeroClasses hc,
-			Rarity rar,
-			Type t,
-			Race rac,
+			string hc,
+			string rar,
+			string t,
+			string rac,
 			int cost, 
 			int attack,
 			int health,
@@ -36,14 +37,32 @@ Card::Card ( string name,
 	iHealth = health;
 	sDesc = desc;
 };
+/**************************************
+* Name,Class,Rarity,Type,Race,Cost,Attack,Health,Description
+* Abomination,All,Rare,Minion,,5,4,4,Taunt. Deathrattle: Deal 2 damage to ALL characters.
+*/
 Card::Card(string line)
 {
+	//FTDEBUG("Reading card: " + line, DEBUGALL);
+	vector<string> tokens;
 	int length = line.length();
 	int iterator = 0;
-	//if (line.
-
-
-
+	Tokenize(line, tokens,  ",");
+	if (tokens.size() == 8 )
+		FTDEBUG("ERROR", DEBUGALL);;
+	sName = tokens[0];
+	hcclass = tokens[1];
+	rarRarity = tokens[2];
+	tType = tokens[3];
+	//racRace = tokens[4];
+	iManaCost = FTATOI(tokens[5].c_str());
+	iAttack = FTATOI(tokens[6].c_str());
+	iHealth = FTATOI(tokens[7].c_str());
+	if ( tokens.size() == 9)
+		sDesc = tokens[8];
+	else
+		sDesc = "";
+	FTDEBUG(sDesc, DEBUGALL);
 }
 int Card::delimitedRand(int floor, int ceiling)
 {

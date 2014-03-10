@@ -8,6 +8,14 @@
 
 void FTDEBUG(string line, debuglevel level )
 {
-	if ( level > DEBUGALL )
+	if ( level > NODEBUGALL )
 	cout << line << endl;
+}
+
+int FTATOI(string input)
+{
+	if ( input.length() == 0 )
+		return 0;
+	return atoi(input.c_str());
+
 }

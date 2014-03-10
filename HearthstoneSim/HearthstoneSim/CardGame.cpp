@@ -38,19 +38,43 @@ bool CardGame::GameOver ( void )
 }
 void CardGame::run(void)
 {
-	player[turn].play(board, deck[turn].draw());
-	turn = (turn==PLAYER1?PLAYER2:PLAYER1); 
+	//player[turn].play(board, deck[turn].draw());
+	//turn = (turn==PLAYER1?PLAYER2:PLAYER1); 
 }
 void CardGame::ReadAllCards(void)
 {
+	FTDEBUG("Reading cards", DEBUGALL);
 	  maxcards = 0;
 	  string line;
-      ifstream myfile ("Hearthstone Sortable List.csv");
+      ifstream myfile ("C:\\temp\\Hearthstone Sortable List.csv");
       if (myfile.is_open())
       {
-      while ( getline (myfile,line) )
-		  allcards[maxcards++] = Card(line);
+			getline (myfile,line);				//Throw away first column, should be column name	
+			while ( getline (myfile,line) )
+			{
+				FTDEBUG(line, DEBUGALL);
+				allcards[maxcards++] = Card(line);
+			}
 	  }
+	  FTDEBUG("Done reading Cards", DEBUGALL);
+    myfile.close();
+}
+void CardGame::LoadPosition(string path)
+{
+	FTDEBUG("Reading position", DEBUGALL);
+	string line;
+
+      ifstream myfile (path);
+      if (myfile.is_open())
+      {
+			getline (myfile,line);				//Throw away first column, should be column name	
+			while ( getline (myfile,line) )
+			{
+				FTDEBUG(line, DEBUGALL);
+				allcards[maxcards++] = Card(line);
+			}
+	  }
+	  FTDEBUG("Done Reading position", DEBUGALL);
     myfile.close();
 }
 CardGame::~CardGame(void)
