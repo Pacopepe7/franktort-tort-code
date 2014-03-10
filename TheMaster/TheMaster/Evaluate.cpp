@@ -55,5 +55,6 @@ int ChessBoard::Evaluate(  )
 			attackvaluetarget += IsAttacked( x, target );
 		}
 	}
-	return ( ( materialtomove + attackvaluetomove ) - (materialtarget + attackvaluetarget) );
+	//return ( ( materialtomove + attackvaluetomove ) - (materialtarget + attackvaluetarget) );
+	return ( ( materialtomove ) - (materialtarget) );
 }

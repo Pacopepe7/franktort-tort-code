@@ -155,7 +155,10 @@ int ChessGame::NegaMax( ChessBoard & currentBoard, int currentsearchdepth )
 		if ( temp.MakeMove( movebeingevaluated ) )
 		{
 			legalmoves++;
-			movebeingevaluated.value = -NegaMax( temp, currentsearchdepth - 1);
+			if ( movebeingevaluated.capture  )
+				movebeingevaluated.value = -NegaMax( temp, currentsearchdepth);
+			else
+				movebeingevaluated.value = -NegaMax( temp, currentsearchdepth - 1);
 			if ( movebeingevaluated.value >= currentBoard.BestSoFar.value )
 			{
 				currentBoard.BestSoFar = movebeingevaluated;

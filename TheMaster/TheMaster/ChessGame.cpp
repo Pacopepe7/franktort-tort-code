@@ -74,7 +74,7 @@ string ChessGame::ProcessUCICommand( string command )
 	}
 	if (command == "go")// && tokens.size() > 1)
 	{
-		value = NegaMax(cb, 4);
+		value = NegaMax(cb, 2);
 		sValue = std::to_string(value);
 		return "info depth 4 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
 	}
@@ -101,12 +101,6 @@ string ChessGame::ProcessUCICommand( string command )
 		// this position is encoded in FEN
 		//not implemented
 		return "Fen not implemented\n";
-	}
-	if (tokens[0] == "go")// && tokens.size() > 1)
-	{
-		value = NegaMax(cb, 3);
-		sValue = std::to_string(value);
-		return "info depth 3 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
 	}
 
 	return "Not implemented\n";
