@@ -3,8 +3,9 @@
 // February 18, 2014
 //
 
-#include "Player.h"
 #include "Board.h"
+#include "Player.h"
+
 
 
 Player::Player(void)
@@ -16,19 +17,12 @@ Player::Player(Turn _turn, HeroClasses _heroclass)
 	turn = _turn;
 	heroclass = _heroclass;
 	iHealth = 30;
+	iArmor = 0;
 
 }
 string Player::GetClass( void ) 
 {
-	switch ( heroclass )
-	{
-	case MAGE:
-		return "MAGE";
-	case WARRIOR:
-		return "WARRIOR";
-	default:
-		return "UNDEFINED";
-	}
+return heroclass;
 
 }
 int Player::play(Board board, Card card)
@@ -39,7 +33,11 @@ int Player::play(Board board, Card card)
 	cout << "<" << card.GetManaCost() << " ," << card.GetDamage() << ", " << card.GetHealth() << ">\n";
 	return 0;
 }
-
+void Player::ReceiveAttack(int a)
+{
+	//todo, armor, secrets....etc...
+	iHealth -=a;
+}
 
 Player::~Player(void)
 {

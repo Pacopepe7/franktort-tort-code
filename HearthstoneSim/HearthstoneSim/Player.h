@@ -15,8 +15,10 @@ class Player
 {
 private:
 	int iHealth;
+	int iArmor;
+	int iMinions;
 	Turn turn;
-	HeroClasses heroclass;
+	string heroclass;
 	Card hand[10];
 
 
@@ -24,10 +26,15 @@ public:
 	Player();
 	Player(Turn turn, HeroClasses heroclass);
 	string GetClass(); 
-	int GetHealth();
-
+	int GetHealth() { return iHealth; };
+	void SetHealth(int h) { iHealth = h;};
+	void SetMinions(int m) { iMinions = m; } ;
+	void SetClass(string c) { heroclass = c; };
+	int GetMinions(void) { return iMinions;};
+	int GetArmor(void) { return iArmor; };
 
 	bool bIsAlive(void) { return (iHealth > 0); };
+	void ReceiveAttack(int a);
 	int play( Board , Card );
 	~Player(void);
 };

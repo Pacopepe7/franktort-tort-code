@@ -19,3 +19,13 @@ int FTATOI(string input)
 	return atoi(input.c_str());
 
 }
+bool FTATOB(string input)
+{
+	if ( input.length() == 0 )
+		return 0;
+	if ( atoi(input.c_str()))
+		return true;
+	else
+		return false;
+}
+

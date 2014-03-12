@@ -14,13 +14,12 @@ private:
 	int iCount;
 	bool bPopulated;
 	Card card[30];
-	void Randomize( void );
+	
 
 public:
 	Deck(void);
-	Deck(HeroClasses);
-	
-	void ReadDeck(string);
+	void Add(Card c);
+	void Randomize( void );
 	Card draw(void);
 	void Deck::PrintDeck(void);
 

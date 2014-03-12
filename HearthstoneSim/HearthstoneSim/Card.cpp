@@ -62,7 +62,7 @@ Card::Card(string line)
 		sDesc = tokens[8];
 	else
 		sDesc = "";
-	FTDEBUG(sDesc, DEBUGALL);
+	//FTDEBUG(sDesc, DEBUGALL);
 }
 int Card::delimitedRand(int floor, int ceiling)
 {
@@ -70,11 +70,15 @@ int Card::delimitedRand(int floor, int ceiling)
 	int c = rand()% range;
 	return c + floor;
 }
-string Card::print(void)
+void Card::Print(void)
 {
-	return "-";
+		int l = sName.length();
+		int r = 28 - l;
+		cout << "<" << iAttack << "> <" << iManaCost << ">   " << sName;
+		for ( l = 0; l < r; l++)
+			cout << " ";
+		cout <<  " <" << iHealth << ">" << endl;
 }
-
 Card::~Card(void)
 {
 }

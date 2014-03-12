@@ -18,8 +18,8 @@ class Card
 {
 	//Name,Class,Rarity,Type,Race,
 	//Cost,Attack,Health,Description
-private:
-	Card * next;
+public:
+	//Card * next;
 	string sName;
 	string hcclass;
 	string rarRarity;
@@ -38,7 +38,7 @@ public:
 	int GetManaCost()	{ return iManaCost; };
 	string GetName()	{ return sName; };
 	string GetDesc()	{ return sDesc; };
-	string print(void);
+	void Print(void);
 	
 
 	Card(void);

@@ -82,6 +82,7 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardGame.h" />
     <ClInclude Include="Deck.h" />
+    <ClInclude Include="minion.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="utilities.h" />
   </ItemGroup>
@@ -91,7 +92,10 @@
     <ClCompile Include="CardGame.cpp" />
     <ClCompile Include="Commons.cpp" />
     <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="gamerules.cpp" />
+    <ClCompile Include="Interact.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="minion.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="utilities.cpp" />
   </ItemGroup>

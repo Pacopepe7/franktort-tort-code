@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
 using namespace std;
 
 Deck::Deck(void)
@@ -15,17 +16,24 @@ Deck::Deck(void)
 	iCount = 0;
 	bPopulated = false;
 }
-Deck::Deck(HeroClasses heroclass)
+//Deck::Deck(HeroClasses heroclass)
+//{
+//	for ( int c = 0; c < MAXCARDSONDECK; c++)
+//		card[iCount++] = Card();
+//
+//}
+void Deck::Add(Card c)
 {
-	for ( int c = 0; c < MAXCARDSONDECK; c++)
-		card[iCount++] = Card();
-
+	if ( iCount == 30)
+		return;
+	card[iCount++] = c;
+	if ( iCount == 30)
+		bPopulated = true;
 }
 Card Deck::draw( void )
 {
-	//if ( iCount > 0 )
-	//return card[iCount--];
-	return Card();
+	if ( iCount > -1 )
+	return card[--iCount];
 }
 void Deck::Randomize(void)
 {
@@ -36,8 +44,8 @@ void Deck::Randomize(void)
 
 	for (int c = 0; c < 200; c++)
 	{
-		from = rand() * iCount;
-		to = rand() * iCount;
+		from = rand() % (iCount -1);
+		to = rand() % (iCount-1);
 		//swap
 		temp = card[to];
 		card[to] = card[from];
@@ -45,21 +53,8 @@ void Deck::Randomize(void)
 	}
 	return;
 }
-void Deck::ReadDeck(string path)
-{
-      ifstream myfile (path);
-	  string line;
-      if (myfile.is_open())
-      {
-      while ( getline (myfile,line) )
-      {
-      cout << line << '\n';
-    }
-    myfile.close();
-  }
 
-bPopulated = true;
-}
+
 void Deck::PrintDeck(void)
 {
 	//if ( 

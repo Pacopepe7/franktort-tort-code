@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ typedef enum { NORACE, BEAST, DEMON, DRAGON, MURLOC, PIRATE } Race;
 typedef enum { NODEBUGALL, DEBUGBASIC, DEBUGLEVEL2, DEBUGLEVEL3, DEBUGALL } debuglevel;
 void FTDEBUG(string , debuglevel level );
 int FTATOI(string);
+bool FTATOB(string);
 #define MAXCARDSONHAND	10 
 #define MAXMINIONSONBOARD	8
 #define MAXCARDSONDECK		30
