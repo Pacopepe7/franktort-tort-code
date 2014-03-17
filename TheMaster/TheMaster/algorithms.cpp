@@ -27,15 +27,16 @@ int ChessGame::AlphaBeta( ChessBoard & currentnode, int currentdepth, int alpha,
 	int movestomate = 0;
 	bool foundmate = false;
 
-	ChessMove cm = ChessMove("a2a4");
-	ChessMove extramove = ChessMove ("a2a4");
+	ChessMove cm = ChessMove(1,2);
+	ChessMove extramove = ChessMove( 1,2);
 	cm.value = -30000;
 	currentnode.GenerateMoves();
 
 	while ( ! currentnode.chessmoves.empty() )
 	{
-		cm = currentnode.chessmoves.top();
-		currentnode.chessmoves.pop();
+		/*cm = currentnode.chessmoves.top();
+		currentnode.chessmoves.pop();*/
+		
 
 		//ChessBoard temp = new ChessBoard ( arg );
 		//temp[depth].copy(currentnode);
@@ -134,7 +135,7 @@ int ChessGame::AlphaBeta( ChessBoard & currentnode, int currentdepth, int alpha,
 */
 int ChessGame::NegaMax( ChessBoard & currentBoard, int currentsearchdepth ) 
 {
-	if ( currentsearchdepth == 0 ) 
+	if ( currentsearchdepth < 0 ) 
 		return currentBoard.Evaluate(  );
 
 	int legalmoves = 0;
@@ -155,9 +156,9 @@ int ChessGame::NegaMax( ChessBoard & currentBoard, int currentsearchdepth )
 		if ( temp.MakeMove( movebeingevaluated ) )
 		{
 			legalmoves++;
-			if ( movebeingevaluated.capture  )
-				movebeingevaluated.value = -NegaMax( temp, currentsearchdepth);
-			else
+			//if ( movebeingevaluated.capture  )
+			//	movebeingevaluated.value = -NegaMax( temp, currentsearchdepth);
+			//else
 				movebeingevaluated.value = -NegaMax( temp, currentsearchdepth - 1);
 			if ( movebeingevaluated.value >= currentBoard.BestSoFar.value )
 			{
@@ -292,14 +293,14 @@ int ChessGame::Quiet( ChessBoard currentnode, int currentdepth , int alpha, int 
 	int movestomate = 0;
 	bool foundmate = false;
 
-	ChessMove cm = ChessMove( "a2a4");
+	ChessMove cm = ChessMove(1,2);
 	currentnode.BestSoFar.value = -40000;
 
 	currentnode.GenerateMoves();
 	while ( ! currentnode.chessmoves.empty() && currentnode.BestSoFar.value < beta )
 	{
-		cm = currentnode.chessmoves.top();
-		currentnode.chessmoves.pop();
+		/*cm = currentnode.chessmoves.top();
+		currentnode.chessmoves.pop();*/
 		//ChessBoard temp = new ChessBoard ( arg );
 		//temp[depth].copy(currentnode);
 		quiet = ChessBoard(currentnode);
@@ -389,8 +390,8 @@ int ChessGame::Quiet( ChessBoard currentnode, int currentdepth , int alpha, int 
 int ChessGame::QuietAlphaBeta( ChessBoard currentnode, int currentdepth,   int alpha, int beta ) 
 {
 
-	ChessMove cm = ChessMove("a2a4");
-	ChessMove extramove = ChessMove ("a2a4");
+	ChessMove cm = ChessMove(1,2);
+	ChessMove extramove = ChessMove (1,2);
 	ChessBoard quiet;
 	//  if ( drawcheck( currentnode ) ) 
 	//  return ( 0 );

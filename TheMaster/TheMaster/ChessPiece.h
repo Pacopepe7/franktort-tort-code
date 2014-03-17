@@ -15,7 +15,7 @@ public:
 	int color;            // WHITE - BLACK (1 - 2)
 	int value;            // 100 for pawn, 300 for knight, 350 for Bishop,
 	// 450 for Rook, 900 for Queen, 0 for king (special case)
-	string name;          // for getDescription()
+	//string name;          // for getDescription()
 	int possiblemoves;    // 2 for the pawn (NORTHEAST and NORTHWEST) etc...
 	int movementvectors[8];//movement vector
 	/***********************************************
@@ -30,7 +30,7 @@ public:
 		piecetype = pt;
 		color = c;
 		value = v;
-		name = n;
+		//name = n;
 		possiblemoves = pm;
 		for (int c = 0; c < pm; c++)
 			movementvectors[c] = mv[c];
@@ -38,8 +38,7 @@ public:
 	bool operator==(ChessPiece rhs)
 	{
 		if ( piecetype == rhs.piecetype &&
-			color == rhs.color &&
-			value == rhs.value )
+			color == rhs.color  )
 			return true;
 		return false;
 	}

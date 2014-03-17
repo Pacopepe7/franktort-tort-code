@@ -12,10 +12,10 @@ ChessMove::ChessMove ( )
 {
 	from = 0;
 	to = 0;
-	capture = false; // normal move until it is given a ChessBoard context
-	promotion = false;
-	enpassant = false;
-	castle = false;
+	capture = 0; // normal move until it is given a ChessBoard context
+	promotion = 0;
+	enpassant = 0;
+	castle = 0;
 	piecetype = QUEEN;
 	value = 0;
 
@@ -24,10 +24,10 @@ ChessMove::ChessMove ( int x, int y )
 {
 	from = x;
 	to = y;
-	capture = false; // normal move until it is given a ChessBoard context
-	promotion = false;
-	enpassant = false;
-	castle = false;
+	capture = 0; // normal move until it is given a ChessBoard context
+	promotion = 0;
+	enpassant = 0;
+	castle = 0;
 	piecetype = QUEEN;
 	value = 0;
 }
@@ -35,14 +35,14 @@ ChessMove::ChessMove ( int x, int y )
 * ChessMove contructor
 * This contructor does not take into account that the move is in the context of a chess game
 */
-ChessMove::ChessMove ( int x, int y , bool c)
+ChessMove::ChessMove ( int x, int y , int c)
 {
 	from = x;
 	to = y;
 	capture = c; // normal move until it is given a ChessBoard context
-	promotion = false;
-	enpassant = false;
-	castle = false;
+	promotion = 0;
+	enpassant = 0;
+	castle = 0;
 	piecetype = 0;
 	value = 0;
 }
@@ -51,7 +51,7 @@ ChessMove::ChessMove ( int x, int y , bool c)
 * A chessmove refined contructor, 
 * it does take into account the chess move as part of a chess game
 */
-ChessMove::ChessMove ( int x, int y , bool cap , bool p , bool e , bool cas , int pt, bool ep)
+ChessMove::ChessMove ( int x, int y , int cap , int p , int e , int cas , int pt, int ep)
 {
 	from = x;
 	to = y;
@@ -65,15 +65,15 @@ ChessMove::ChessMove ( int x, int y , bool cap , bool p , bool e , bool cas , in
 /**************************************************************
 *Breaks down a chess move string into a ChessMove
 */
-ChessMove::ChessMove ( string move )
-{
-
-	if ( move.length() == 4 )
-	{
-
-
-	}
-} // ChessMove ( String move )
+//ChessMove::ChessMove ( string move )
+//{
+//
+//	if ( move.length() == 4 )
+//	{
+//
+//
+//	}
+//} // ChessMove ( String move )
 
 /**************************************************************
 * Input: 2 char string

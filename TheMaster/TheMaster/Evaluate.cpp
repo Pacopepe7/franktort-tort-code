@@ -16,6 +16,7 @@
 
 int ChessBoard::Evaluate(  )
 {
+
 	int materialtomove = 0;
 	int materialtarget = 0;
 	int attackvaluetomove = 0;
@@ -56,5 +57,7 @@ int ChessBoard::Evaluate(  )
 		}
 	}
 	//return ( ( materialtomove + attackvaluetomove ) - (materialtarget + attackvaluetarget) );
+	
+
 	return ( ( materialtomove ) - (materialtarget) );
 }

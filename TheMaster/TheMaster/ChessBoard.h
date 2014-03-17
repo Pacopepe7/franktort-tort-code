@@ -23,7 +23,10 @@ public:
 	ChessMove BestSoFar;
 	ChessMove LastMove;
 	stack <ChessMove> chessmoves;
-
+	ChessMove chessmoves_arr[256];
+	int chessmoveindex;
+	//vector <ChessMove> chessmoves;
+	//ChessBoard * chessboards[20];
 	static int out[8] ;
 	static int empty[8]; 
 	static int whitepawn [8];
@@ -73,4 +76,7 @@ public:
 	int getColorAt( int x );
 	int getIndex(string x);
 	string PrintBoard(void);
+	ChessMove POP(void);
+	void PUSH(ChessMove);
+	bool CMEMPTY (void);
 };

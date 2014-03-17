@@ -9,6 +9,7 @@
 #include "Definitions.h"
 #include "ChessBoard.h"
 #include "utils.h"
+
 class ChessGame 
 {
 

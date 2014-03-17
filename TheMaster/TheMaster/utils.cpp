@@ -30,3 +30,19 @@ void Tokenize(const string& str,
 		pos = str.find_first_of(delimiters, lastPos);
 	}
 }
+
+void Profiler(int section)
+{
+
+
+}
+void ProfilerEnd(int)
+{
+
+
+}
+void ProfilerPrint(void)
+{
+
+
+}

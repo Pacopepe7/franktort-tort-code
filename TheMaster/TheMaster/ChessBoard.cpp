@@ -1,9 +1,9 @@
 /*
-  TheMaster, a UCI chess playing engine 
-  Copyright (C)2014 Francisco Tort
+TheMaster, a UCI chess playing engine 
+Copyright (C)2014 Francisco Tort
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -98,17 +98,17 @@ ChessPiece ChessBoard::startingposition[144] =
 	*/
 	string ChessBoard::getDescription( int x ) 
 	{
-		if ( x >= 0 && x < MAXSQUARES) 
-			return (currentposition[x].name);
-		else
-			return "NULL";
+		/*if ( x >= 0 && x < 144) 
+		return (currentposition[x].name);
+		else*/
+		return "NULL";
 	}
 	/***************************************************************
 	* getPieceAt(x) returns the piece at location x
 	*/
 	int ChessBoard::getPieceAt( int x ) 
 	{
-		if ( x >= 0 && x < MAXSQUARES) 
+		if ( x >= 0 && x < 144) 
 			return (currentposition[x].piecetype);
 		else
 			return 0;
@@ -118,7 +118,7 @@ ChessPiece ChessBoard::startingposition[144] =
 	*/
 	int ChessBoard::getColorAt( int x ) 
 	{
-		if ( x >= 0 && x < MAXSQUARES) 
+		if ( x >= 0 && x < 144) 
 			return ( currentposition[x].color );
 		else
 			return 0;
@@ -128,11 +128,11 @@ ChessPiece ChessBoard::startingposition[144] =
 	*/
 	void ChessBoard::Init() 
 	{
-		for(int x = 0; x < MAXSQUARES; x++)
+		for(int x = 0; x < 144; x++)
 			currentposition[x] = startingposition[x];
-
+		chessmoveindex = 0;
 		while ( ! chessmoves.empty())
-		{   chessmoves.pop();  };
+		{   chessmoves.pop(); /*chessmoves.clear();*/ };
 		LastMove = nullmove;
 		BestSoFar = nullmove;
 		sidetomove = WHITE;
@@ -140,7 +140,7 @@ ChessPiece ChessBoard::startingposition[144] =
 		//parent = null;	
 		whitekingposition = 114;
 		blackkingposition = 30;
-		//start anew on castling privileges
+		//start new on castling privileges
 		whitecancastlekingside = true;
 		whitecancastlequeenside = true;
 		blackcancastlekingside = true;
@@ -155,13 +155,13 @@ ChessPiece ChessBoard::startingposition[144] =
 	ChessBoard ChessBoard::operator= ( ChessBoard copy )
 	{
 		//allocate the squares and copy the initial position over to the array
-		for(int x = 0; x < MAXSQUARES; x++)
+		for(int x = 0; x < 144; x++)
 			currentposition[x] = copy.currentposition[x];
 		// Flush the stack
 		//chessmoves = new Stack<ChessMove>();
 		while ( ! chessmoves.empty())
 		{
-			chessmoves.pop();
+			chessmoves.pop(); /*chessmoves.clear()*/;
 		};
 		//white starts the game
 		sidetomove = copy.sidetomove;
@@ -178,6 +178,7 @@ ChessPiece ChessBoard::startingposition[144] =
 		blackcancastlequeenside = copy.blackcancastlequeenside;
 		LastMove = copy.LastMove;
 		BestSoFar = copy.BestSoFar;
+		chessmoveindex = 0;
 		return *this;
 
 	}
@@ -228,13 +229,13 @@ ChessPiece ChessBoard::startingposition[144] =
 			blackcancastlequeenside = false;
 			blackkingposition = cm.to;
 		}
-		if ( cm.from == getIndex("a1") )
+		if ( cm.from == A1 )
 			whitecancastlequeenside = false;
-		if ( cm.from == getIndex("h1") )
+		if ( cm.from == H1 )
 			whitecancastlekingside = false;
-		if ( cm.from == getIndex("a8") )
+		if ( cm.from == A8 )
 			blackcancastlequeenside = false;
-		if ( cm.from == getIndex("h8") )
+		if ( cm.from == H8 )
 			blackcancastlekingside = false;
 
 		//remove the piece in the "from" square and put in on the "to" square
@@ -248,30 +249,30 @@ ChessPiece ChessBoard::startingposition[144] =
 			{
 				whitecancastlekingside = false;
 				whitecancastlequeenside = false;
-				if ( cm.to == getIndex("g1"))          // short castle
+				if ( cm.to == G1)          // short castle
 				{
-					currentposition[getIndex("f1")] = currentposition[getIndex("h1")];
-					currentposition[getIndex("h1")] = EMPTY;
+					currentposition[F1] = currentposition[H1];
+					currentposition[H1] = EMPTY;
 				}
 				else                                   // long castle
 				{
-					currentposition[getIndex("d1")] = currentposition[getIndex("a1")];
-					currentposition[getIndex("a1")] = EMPTY;
+					currentposition[D1] = currentposition[A1];
+					currentposition[A1] = EMPTY;
 				}
 			}
 			else
 			{
 				blackcancastlekingside = false;
 				blackcancastlequeenside = false;
-				if ( cm.to == getIndex("g8"))          // short castle
+				if ( cm.to == G8)          // short castle
 				{
-					currentposition[getIndex("f8")] = currentposition[getIndex("h8")];
-					currentposition[getIndex("h8")] = EMPTY;
+					currentposition[F8] = currentposition[H8];
+					currentposition[H8] = EMPTY;
 				}
 				else                                   // long castle
 				{
-					currentposition[getIndex("d8")] = currentposition[getIndex("a8")];
-					currentposition[getIndex("a8")] = EMPTY;
+					currentposition[D8] = currentposition[A8];
+					currentposition[A8] = EMPTY;
 				}
 			} // end if tomove == WHITE
 		} // end if castling
@@ -326,7 +327,7 @@ ChessPiece ChessBoard::startingposition[144] =
 		sidetomove = (sidetomove == WHITE) ? BLACK : WHITE;
 		//increment ply
 		ply ++;
-		// keep track of last move, for enpassant etc.
+		// keep track of last move, for enpassant etc...
 		LastMove = cm;
 
 		return true;
@@ -346,7 +347,10 @@ ChessPiece ChessBoard::startingposition[144] =
 		ChessMove cm;
 		//Flush the stack
 		while ( ! chessmoves.empty() )
+		{
+			//chessmoves.clear();
 			chessmoves.pop();
+		}
 		//cm = (ChessMove)chessmoves.pop();
 
 		// search the board and if the piece at position X is ours, generate the moves
@@ -472,25 +476,25 @@ ChessPiece ChessBoard::startingposition[144] =
 						if ( whitecancastlekingside ) 
 						{
 							//System.out.println("checking white short castle move");
-							if ( getPieceAt( getIndex("f1")) == _EMPTY && getPieceAt( getIndex("g1")) == _EMPTY)       
+							if ( getPieceAt( F1 ) == _EMPTY && getPieceAt(G1) == _EMPTY)       
 							{
-								if ( (IsAttacked( getIndex("e1") , BLACK) +
-									IsAttacked(  getIndex("f1"), BLACK) + 
-									IsAttacked(  getIndex("g1"), BLACK)) == 0  )
+								if ( (IsAttacked(E1 , BLACK) +
+									IsAttacked( F1, BLACK) + 
+									IsAttacked( G1, BLACK)) == 0  )
 								{
 									//System.out.println("Adding white short castle move");
-									chessmoves.push(  ChessMove( getIndex("e1"), getIndex("g1"), false, false, false, true, 0, false) );
+									chessmoves.push(  ChessMove( E1,G1, false, false, false, true, 0, false) );
 								}
 							}
 						}
 						if ( whitecancastlequeenside ) 
 						{
-							if ( getPieceAt( getIndex("d1")) == _EMPTY && getPieceAt( getIndex("c1")) == _EMPTY &&  getPieceAt( getIndex("b1")) == _EMPTY) 
+							if ( getPieceAt( D1) == _EMPTY && getPieceAt( C1) == _EMPTY &&  getPieceAt( B1) == _EMPTY) 
 							{
-								if ( (IsAttacked( getIndex("e1"), BLACK) +
-									IsAttacked(  getIndex("d1"), BLACK) + 
-									IsAttacked(  getIndex("c1"), BLACK)) == 0  )
-									chessmoves.push(  ChessMove( getIndex("e1"), getIndex("c1"), false, false, false, true, 0, false) );
+								if ( (IsAttacked( E1, BLACK) +
+									IsAttacked(  D1, BLACK) + 
+									IsAttacked(  C1, BLACK)) == 0  )
+									chessmoves.push(  ChessMove( E1, C1, false, false, false, true, 0, false) );
 							}
 						}
 					}
@@ -498,24 +502,24 @@ ChessPiece ChessBoard::startingposition[144] =
 					{
 						if ( blackcancastlekingside ) 
 						{
-							if ( getPieceAt( getIndex("f8")) == _EMPTY && getPieceAt( getIndex("g8") ) == _EMPTY)
+							if ( getPieceAt( F8) == _EMPTY && getPieceAt(G8 ) == _EMPTY)
 							{
 
-								if ( (IsAttacked( getIndex("e8"), WHITE) +
-									IsAttacked(  getIndex("f8"), WHITE) + 
-									IsAttacked(  getIndex("g8"), WHITE)) == 0  )
-									chessmoves.push(  ChessMove( getIndex("e8"), getIndex("g8"), false, false, false, true, 0, false) );
+								if ( (IsAttacked(E8, WHITE) +
+									IsAttacked(  F8, WHITE) + 
+									IsAttacked(  G8, WHITE)) == 0  )
+									chessmoves.push(  ChessMove(E8, G8, false, false, false, true, 0, false) );
 							}
 						}
 						if ( blackcancastlequeenside ) 
 						{
-							if ( getPieceAt( getIndex("d8")) == _EMPTY && getPieceAt( getIndex("c8")) == _EMPTY &&  getPieceAt( getIndex("b8")) == _EMPTY)
+							if ( getPieceAt(D8) == _EMPTY && getPieceAt( C8) == _EMPTY &&  getPieceAt( B8) == _EMPTY)
 							{
 
-								if ( (IsAttacked( getIndex("e8"), WHITE) +
-									IsAttacked(  getIndex("d8"), WHITE) + 
-									IsAttacked(  getIndex("c8"), WHITE)) == 0  )
-									chessmoves.push(  ChessMove( getIndex("e8"), getIndex("c8"), false, false, false, true, 0, false) );
+								if ( (IsAttacked( E8, WHITE) +
+									IsAttacked(  D8, WHITE) + 
+									IsAttacked(  C8, WHITE)) == 0  )
+									chessmoves.push(  ChessMove( E8, C8, false, false, false, true, 0, false) );
 							}
 						}
 
@@ -702,6 +706,30 @@ ChessPiece ChessBoard::startingposition[144] =
 				return c;
 		return INVALID;
 	} // getIndex
+	/**************************************************************
+	*/
+	ChessMove ChessBoard::POP(void)
+	{
+		if ( ! CMEMPTY() )
+			return chessmoves_arr[chessmoveindex--];
+		return (ChessMove(1,1));
+
+	} 
+	/**************************************************************
+	*/
+	bool ChessBoard::CMEMPTY(void)	
+	{
+		if ( chessmoveindex == -1 )
+			return true;
+		return false;	
+	}
+
+	/**************************************************************
+	*/
+	void ChessBoard::PUSH(ChessMove cm)
+	{
+			chessmoves_arr[chessmoveindex++] = cm;
+	} 
 
 
 

@@ -51,7 +51,28 @@ const int  SOUTHWEST	=	( SOUTH + WEST );
 const int NOTATIONMAX	=	144;
 const int MAXSQUARES	=	144;
 const int NOTATIONMIN	=	0;
+const int COMPMIN		=   16  ;
+const int COMPMAX		=   144 - 16;
 const int INVALID		=	-1;
+
+const int A8 = 26;
+const int B8 = 27;
+const int C8 = 28;
+const int D8 = 29;
+const int E8 = 30;
+const int F8 = 31;
+const int G8 = 32;
+const int H8 = 33;
+
+const int A1 = 110;
+const int B1 = 111;
+const int C1 = 112;
+const int D1 = 113;
+const int E1 = 114;
+const int F1 = 115;
+const int G1 = 116;
+const int H1 = 117;
+
 /*
 /* codes for promotion values 
  static const int  KNIGHT=	8;
