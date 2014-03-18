@@ -40,5 +40,8 @@ public:
 	int NegaMax2( ChessBoard currentnode, int currentdepth );
 	int Quiet( ChessBoard currentnode, int currentdepth , int alpha, int beta);
 	int QuietAlphaBeta( ChessBoard currentnode, int currentdepth,   int alpha, int beta );
-
+	/****************************************
+	* Testing funcs
+	****************************************/
+	int perft(ChessBoard & cb, int depth);
 }; // end class "ChessGame"

@@ -7,7 +7,7 @@
 #include "definitions.h"
 #include <string>
 using namespace std;
-
+#pragma once
 class ChessPiece
 {
 public:

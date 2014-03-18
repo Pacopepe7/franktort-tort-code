@@ -81,6 +81,7 @@
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="ChessMove.cpp" />
     <ClCompile Include="Evaluate.cpp" />
+    <ClCompile Include="GenIntMoves.cpp" />
     <ClCompile Include="TheMaster.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>

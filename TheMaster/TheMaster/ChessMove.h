@@ -16,19 +16,31 @@
 * to    XXXXXX   is 0-63, 2^6, 6 bits to store to
 * Is capture  X  one bit
 * Is promotion X one bit
-* is enpassant  X possible? one bit
+* is enpassant  X move? one bit
 * Is castle      X one bit
-* Piece type      XXX for promotion
-* Is enpassant       X possible? one bit
-* Value of move       XXXXXXXXXXXXXXXX 16 bits (0-65536) or (-30000-30000)
+* Is enpassant    X possible? one bit
+* Piece type       XXXXX for promotion
+* Value of move         XXXXXXXXXXXXXXXX 16 bits (0-65536) or (-30000-30000)
 ************************************************************/
 
 #include "definitions.h"
 #include <string>
+#pragma once
+const unsigned int FROM_MASK = (1 | 2 | 4 | 8 | 16 | 32);
+const unsigned int TO_MASK	= (FROM_MASK << 6);
+const unsigned int CAP_MASK	= 1 << 12;
+const unsigned int PROMOTION_MASK = (CAP_MASK << 1);
+const unsigned int ENPASSANT_MASK = (PROMOTION_MASK << 1);
+const unsigned int CASTLE_MASK = (ENPASSANT_MASK << 1);
+const unsigned int ENPASSANTPOSSIBLE_MASK = (CASTLE_MASK << 1);
+const unsigned int PIECE_MASK = (ENPASSANTPOSSIBLE_MASK |
+								(ENPASSANTPOSSIBLE_MASK << 1) |
+								(ENPASSANTPOSSIBLE_MASK << 2) |
+								(ENPASSANTPOSSIBLE_MASK << 3) |
+								(ENPASSANTPOSSIBLE_MASK << 4));
+const unsigned int VALUE_MASK = (65535 << 16);
 
-const int FROM_MASK = 63;
-const int TO_MASK	= 4032;
-const int CAP_MASK	= 4096;
+
 
 
 using namespace std;
@@ -57,7 +69,7 @@ public:
 	ChessMove ( int from, int to );
 	ChessMove ( int from, int to , int capture);
 	ChessMove ( int from, int to , int capture , int promotion , int enpassant , int castle , int piecetype, int enpassantpossible);
-	//ChessMove ( string move 
+	ChessMove ( string move );
 	//int from(void) { return (move & FROM_MASK);};
 	//int to (void)  { return ((move & TO_MASK) << 6);};
 	

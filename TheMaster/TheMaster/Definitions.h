@@ -8,6 +8,8 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+const int TRUE		=   1;
+const int FALSE		=	0;
 const int  _EMPTY	=	0;  
 const int  BLACK	=	1;
 const int  WHITE	=	2;
@@ -63,6 +65,60 @@ const int E8 = 30;
 const int F8 = 31;
 const int G8 = 32;
 const int H8 = 33;
+
+const int A7 = 38;
+const int B7 = 39;
+const int C7 = 40;
+const int D7 = 41;
+const int E7 = 42;
+const int F7 = 43;
+const int G7 = 44;
+const int H7 = 45;
+
+const int A6 = 50;
+const int B6 = 51;
+const int C6 = 52;
+const int D6 = 53;
+const int E6 = 54;
+const int F6 = 55;
+const int G6 = 56;
+const int H6 = 57;
+
+const int A5 = 62;
+const int B5 = 63;
+const int C5 = 64;
+const int D5 = 65;
+const int E5 = 66;
+const int F5 = 67;
+const int G5 = 68;
+const int H5 = 69;
+
+const int A4 = 74;
+const int B4 = 75;
+const int C4 = 76;
+const int D4 = 77;
+const int E4 = 78;
+const int F4 = 79;
+const int G4 = 80;
+const int H4 = 81;
+
+const int A3 = 86;
+const int B3 = 87;
+const int C3 = 88;
+const int D3 = 89;
+const int E3 = 90;
+const int F3 = 91;
+const int G3 = 92;
+const int H3 = 93;
+
+const int A2 = 98;
+const int B2 = 99;
+const int C2 = 100;
+const int D2 = 101;
+const int E2 = 102;
+const int F2 = 103;
+const int G2 = 104;
+const int H2 = 105;
 
 const int A1 = 110;
 const int B1 = 111;

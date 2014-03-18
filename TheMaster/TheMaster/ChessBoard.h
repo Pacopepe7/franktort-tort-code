@@ -12,6 +12,12 @@
 #include "ChessMove.h"
 #include <vector>
 #include <stack>
+#pragma once
+
+struct castling { bool whiteshort;
+					bool whitelong;
+					bool blackshort;
+					bool blacklong;};
 
 class ChessBoard 
 {
@@ -19,14 +25,18 @@ public:
 	static ChessMove nullmove;
 	static char *notation[144];
 	static ChessPiece startingposition[144];
+	static unsigned int inttoboard[64];
+	static unsigned int boardtoint[144];
 	ChessPiece currentposition[144];
 	ChessMove BestSoFar;
-	ChessMove LastMove;
-	stack <ChessMove> chessmoves;
-	ChessMove chessmoves_arr[256];
+	unsigned int BestIntSoFar;
+	int bestValueSoFar;
+	
+	unsigned int LastMoveInt;
+
+	unsigned int chessmoves_arr[256];
 	int chessmoveindex;
-	//vector <ChessMove> chessmoves;
-	//ChessBoard * chessboards[20];
+
 	static int out[8] ;
 	static int empty[8]; 
 	static int whitepawn [8];
@@ -53,10 +63,7 @@ public:
 	static ChessPiece BQ;
 	static ChessPiece BK;
 
-	bool whitecancastlekingside;
-	bool whitecancastlequeenside;
-	bool blackcancastlekingside;
-	bool blackcancastlequeenside;
+	castling Castlingpriviledges;
 	int sidetomove;
 	int whitekingposition;
 	int blackkingposition;
@@ -68,7 +75,9 @@ public:
 	ChessBoard operator= ( ChessBoard copy );
 	void Init ( void );
 	bool MakeMove ( ChessMove cm );
+	bool MakeIntMove ( unsigned int cm );
 	void GenerateMoves ( void );
+	void GenerateIntMoves ( void );
 	int IsAttacked ( int sq, int side );
 	string getDescription( int x );
 	int Evaluate( );
@@ -76,7 +85,8 @@ public:
 	int getColorAt( int x );
 	int getIndex(string x);
 	string PrintBoard(void);
-	ChessMove POP(void);
-	void PUSH(ChessMove);
+	
+	unsigned int CMPOP(void);
+	void CMPUSH(unsigned int);
 	bool CMEMPTY (void);
 };

@@ -84,10 +84,10 @@ string ChessGame::ProcessUCICommand( string command )
 			if ( tokens.size() == 2 )
 				return "\n";
 			// start making moves on the internal board until no more moves
-			for ( int c = 2; c < tokens.size(); c++)
+			for ( int c = 3; c < tokens.size(); c++)
 			{
-				if (ValidateMove (  tokens[c] ) )
-					cb.MakeMove( ReturnValidatedMove( tokens[c] )) + "\n";
+				//if (ValidateMove (  tokens[c] ) )
+					//cb.MakeMove( ChessMove( tokens[c])) ;
 
 			}
 			return "";
@@ -96,13 +96,19 @@ string ChessGame::ProcessUCICommand( string command )
 		//not implemented
 		return "Fen not implemented\n";
 	}
-	if (tokens[0] == "go")// && tokens.size() > 1)
+	if (tokens[0] == "go")
 	{
 		value = NegaMax(cb, 4);
 		sValue = std::to_string(value);
 		return "info depth 4 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
 	}
-
+	if (tokens[0] == "perft")
+	{
+		long long depth = atoi(tokens[1].c_str());
+		value = perft(cb,int( depth));
+		sValue = std::to_string(value);
+		return "perft for depth " + std::to_string(depth) + " is  " + sValue + "\n";
+	}
 	return "Not implemented\n";
 
 } // end process command
@@ -125,31 +131,32 @@ int ChessGame::getIndex( string s)
 */
 bool ChessGame::ValidateMove ( string command )
 {
-	//make sure there is always a good copy of chessboard, make all operations on backup, do not
-	// alter cb until actually making the move
-	ChessBoard backup = ChessBoard ( cb );
-	backup.GenerateMoves();
-	ChessMove cm, goodchessmove;
-	//check if the move is in the move stack
-	while ( ! backup.chessmoves.empty())
-	{
-		cm = backup.chessmoves.top();
-		backup.chessmoves.pop();
+	return true;
+	////make sure there is always a good copy of chessboard, make all operations on backup, do not
+	//// alter cb until actually making the move
+	//ChessBoard backup = ChessBoard ( cb );
+	//backup.GenerateMoves();
+	//ChessMove cm, goodchessmove;
+	////check if the move is in the move stack
+	//while ( ! backup.chessmoves.empty())
+	//{
+	//	cm = backup.chessmoves.top();
+	//	backup.chessmoves.pop();
 
 
-		if ( cm.ToString() == ( command ) )
-		{
-			// the move is in the stack, but can it actually be made on the board?
-			if ( backup.MakeMove ( cm ) )
-			{
-				// success!
-				//System.out.println("Move " + command + " is valid! ( ValidateMove )");
-				return true;
-			}
-		} // end if
-	} // end while
-	//System.out.println("Move " + command + " is invalid ( ValidateMove )");
-	return (false);
+	//	if ( cm.ToString() == ( command ) )
+	//	{
+	//		// the move is in the stack, but can it actually be made on the board?
+	//		if ( backup.MakeMove ( cm ) )
+	//		{
+	//			// success!
+	//			//System.out.println("Move " + command + " is valid! ( ValidateMove )");
+	//			return true;
+	//		}
+	//	} // end if
+	//} // end while
+	////System.out.println("Move " + command + " is invalid ( ValidateMove )");
+	//return (false);
 } 
 /*******************************************
 * ReturnValidatedMove( command )
@@ -157,23 +164,23 @@ bool ChessGame::ValidateMove ( string command )
 */
 ChessMove ChessGame::ReturnValidatedMove( string command )
 {
-	cb.GenerateMoves();
-	ChessMove cm;
-	while ( ! cb.chessmoves.empty())
-	{
-		cm = (ChessMove) cb.chessmoves.top();
-		cb.chessmoves.pop();
+	//cb.GenerateMoves();
+	//ChessMove cm;
+	//while ( ! cb.chessmoves.empty())
+	//{
+	//	cm = (ChessMove) cb.chessmoves.top();
+	//	cb.chessmoves.pop();
 
-		if ( cm.ToString() == ( command ) )
-		{
-			//System.out.println("Success, move " + command + " was found to be legal on this position! (ReturnValidatedMove)");
+	//	if ( cm.ToString() == ( command ) )
+	//	{
+	//		//System.out.println("Success, move " + command + " was found to be legal on this position! (ReturnValidatedMove)");
 
-			return cm;
-		} // end if
-	} // end while
-	//System.out.println("Error, move " + command + " was found not to be legal on this position! (ReturnValidatedMove)");
+	//		return cm;
+	//	} // end if
+	//} // end while
+	////System.out.println("Error, move " + command + " was found not to be legal on this position! (ReturnValidatedMove)");
 
-	return ( cb.nullmove );
+	//return ( cb.nullmove );
 }
 /*********************************************
 * Process command 
@@ -184,10 +191,9 @@ ChessMove ChessGame::ReturnValidatedMove( string command )
 */ 
 string ChessGame::ProcessCommand( string command )
 {
-	//long long sq = getIndex(command);
-	//sq = sizeof(short);
-	//std::string s = to_string(sq);
-	//return "Int is " + s ;
+	/*long long sq = getIndex(command);
+	std::string s = to_string(sq);
+	return "Square is " + s ;*/
 
 	if ( MODE == UCI )
 		return ProcessUCICommand(command);
@@ -322,4 +328,37 @@ string ChessGame::getResponce( void )
 }
 
 */
+
+int ChessGame::perft(ChessBoard & currentBoard, int depth)
+{
+	unsigned int legalmoves = 0;
+	unsigned int movebeingevaluated;
+	if ( depth == -1)
+	{
+		legalmoves = 0;
+		return 0;
+	}
+	if ( depth == 0 ) 
+		return 1;
+	while ( ! currentBoard.CMEMPTY() )
+		currentBoard.CMPOP();
+	ChessBoard moveGenBoard = currentBoard;
+	ChessBoard temp = currentBoard;
+	ChessBoard recursive = currentBoard;
+
+	moveGenBoard.GenerateIntMoves();
+	
+	while ( ! moveGenBoard.CMEMPTY() )
+	{
+		movebeingevaluated = moveGenBoard.CMPOP();
+		temp = currentBoard;
+		recursive = currentBoard;
+		if (temp.MakeIntMove( movebeingevaluated ) )
+		{
+			recursive.MakeIntMove(movebeingevaluated);
+			legalmoves += perft( recursive, depth - 1);
+		}
+	}
+	return legalmoves;
+} 
 
