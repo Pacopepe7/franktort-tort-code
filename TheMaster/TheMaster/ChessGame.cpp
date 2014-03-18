@@ -100,7 +100,8 @@ string ChessGame::ProcessUCICommand( string command )
 	{
 		value = NegaMax(cb, 4);
 		sValue = std::to_string(value);
-		return "info depth 4 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
+		return "Testing...";
+		//return "info depth 4 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
 	}
 	if (tokens[0] == "perft")
 	{
@@ -114,14 +115,6 @@ string ChessGame::ProcessUCICommand( string command )
 } // end process command
 
 
-/**
-* GetIndex calls the GetIndex method on the board object
-*  This is to get indexes for castling etc...
-*/
-int ChessGame::getIndex( string s)
-{
-	return cb.getIndex( s );
-}
 
 /*******************************************
 * ValidateMove
@@ -181,6 +174,7 @@ ChessMove ChessGame::ReturnValidatedMove( string command )
 	////System.out.println("Error, move " + command + " was found not to be legal on this position! (ReturnValidatedMove)");
 
 	//return ( cb.nullmove );
+	return 0;
 }
 /*********************************************
 * Process command 
@@ -340,22 +334,22 @@ int ChessGame::perft(ChessBoard & currentBoard, int depth)
 	}
 	if ( depth == 0 ) 
 		return 1;
-	while ( ! currentBoard.CMEMPTY() )
-		currentBoard.CMPOP();
+	while ( ! currentBoard.m_movestack.empty() )
+		currentBoard.m_movestack.pop();
 	ChessBoard moveGenBoard = currentBoard;
 	ChessBoard temp = currentBoard;
 	ChessBoard recursive = currentBoard;
 
-	moveGenBoard.GenerateIntMoves();
+	moveGenBoard.GenerateMoves();
 	
-	while ( ! moveGenBoard.CMEMPTY() )
+	while ( ! moveGenBoard.m_movestack.empty()) 
 	{
-		movebeingevaluated = moveGenBoard.CMPOP();
+		movebeingevaluated = moveGenBoard.m_movestack.pop();
 		temp = currentBoard;
 		recursive = currentBoard;
-		if (temp.MakeIntMove( movebeingevaluated ) )
+		if (temp.MakeMove( movebeingevaluated ) )
 		{
-			recursive.MakeIntMove(movebeingevaluated);
+			recursive.MakeMove(movebeingevaluated);
 			legalmoves += perft( recursive, depth - 1);
 		}
 	}

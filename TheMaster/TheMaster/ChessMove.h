@@ -19,66 +19,50 @@
 * is enpassant  X move? one bit
 * Is castle      X one bit
 * Is enpassant    X possible? one bit
-* Piece type       XXXXX for promotion
+* Piece type       XXXX for promotion
 * Value of move         XXXXXXXXXXXXXXXX 16 bits (0-65536) or (-30000-30000)
 ************************************************************/
 
 #include "definitions.h"
-#include <string>
+
 #pragma once
-const unsigned int FROM_MASK = (1 | 2 | 4 | 8 | 16 | 32);
-const unsigned int TO_MASK	= (FROM_MASK << 6);
-const unsigned int CAP_MASK	= 1 << 12;
-const unsigned int PROMOTION_MASK = (CAP_MASK << 1);
-const unsigned int ENPASSANT_MASK = (PROMOTION_MASK << 1);
-const unsigned int CASTLE_MASK = (ENPASSANT_MASK << 1);
-const unsigned int ENPASSANTPOSSIBLE_MASK = (CASTLE_MASK << 1);
-const unsigned int PIECE_MASK = (ENPASSANTPOSSIBLE_MASK |
-								(ENPASSANTPOSSIBLE_MASK << 1) |
-								(ENPASSANTPOSSIBLE_MASK << 2) |
-								(ENPASSANTPOSSIBLE_MASK << 3) |
-								(ENPASSANTPOSSIBLE_MASK << 4));
-const unsigned int VALUE_MASK = (65535 << 16);
+typedef bits unsigned int;
 
+const bits FROM_MASK = (1 | 2 | 4 | 8 | 16 | 32);
+const bits TO_MASK	= (FROM_MASK << 6);
+const bits CAPTURE_MASK	= (1 << 12);
+const bits PROMOTION_MASK = (CAPTURE_MASK << 1);
+const bits ENPASSANT_MASK = (PROMOTION_MASK << 1);
+const bits CASTLE_MASK = (ENPASSANT_MASK << 1);
+const bits ENPASSANTPOSSIBLE_MASK = (CASTLE_MASK << 1);
+const bits KNIGHT_MASK	= ( ENPASSANTPOSSIBLE_MASK >> 1);
+const bits BISHOP_MASK	= ( KNIGHT_MASK >> 1);
+const bits ROOK_MASK	= ( BISHOP_MASK >> 1);
+const bits QUEEN_MASK	= ( ROOK_MASK >> 1);
 
-
-
-using namespace std;
+const bits VALUE_MASK = (65535 << 22);
 
 class ChessMove
 { 
 
+private:
+	bits m_uiChessMove;
+	inline bits from ( void )  { return (m_uiChessMove & FROM_MASK); } ;
+	inline bits to   ( void )  { return ((m_uiChessMove & TO_MASK) >> 6 ); } ;
+
 public:
-
-	
-
-	static char  *notation[144];
-	unsigned int move;
-	int from;				// from square
-	int to;				// to square
-	int capture;			// check, capture, enpassant etc...
-	int promotion;		//
-	int enpassant;
-	int castle;			//
-	int piecetype;			// for promotion
-	int enpassantpossible;//
-	int value;				// the move's value after evaluating the position.
-
-	public:
 	ChessMove ( );
 	ChessMove ( int from, int to );
-	ChessMove ( int from, int to , int capture);
-	ChessMove ( int from, int to , int capture , int promotion , int enpassant , int castle , int piecetype, int enpassantpossible);
-	ChessMove ( string move );
-	//int from(void) { return (move & FROM_MASK);};
-	//int to (void)  { return ((move & TO_MASK) << 6);};
+	ChessMove ( int from, int to , int flags);
+	bool isCapture(void) { return (m_uiChessMove & CAPTURE_MASK)? true:false;};
+	bool isPromotion(void) { return (m_uiChessMove & PROMOTION_MASK)? true:false;};
+	bool isEnPassant(void) { return (m_uiChessMove & ENPASSANT_MASK)? true:false;};
+	bool isCastle(void) { return (m_uiChessMove & CASTLE_MASK)? true:false;};
+	bool isEnPassantPossible(void) { return (m_uiChessMove & ENPASSANTPOSSIBLE_MASK)? true:false;};
+	bool isKnight(void) { return (m_uiChessMove & KNIGHT_MASK)? true:false;};
+	bool isBishop(void) { return (m_uiChessMove & BISHOP_MASK)? true:false;};
+	bool isRook(void) { return (m_uiChessMove & ROOK_MASK)? true:false;};
+	bool isQueen(void) { return (m_uiChessMove & QUEEN_MASK)? true:false;};
 	
-
-	string ToString(void);
-	int getIndex( string str);
-	string getString ( int index);
-
-
-
 };// class ChessMove 
 

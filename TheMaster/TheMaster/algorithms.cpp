@@ -185,29 +185,29 @@ int ChessGame::NegaMax( ChessBoard & currentBoard, int currentsearchdepth )
 	ChessBoard temp = currentBoard;
 	ChessBoard moveGenBoard = currentBoard;
 
-	moveGenBoard.GenerateIntMoves();
-	currentBoard.BestSoFar.value = -30000;
+	moveGenBoard.GenerateMoves();
+	
 
-	while ( ! moveGenBoard.CMEMPTY() )
+	while ( ! moveGenBoard.m_movestack.empty() )
 	{
-		movebeingevaluated = moveGenBoard.CMPOP();
+		movebeingevaluated =  moveGenBoard.m_movestack.empty();
 		
 		temp =  ChessBoard(currentBoard);
-		if ( temp.MakeIntMove( movebeingevaluated ) )
+		if ( temp.MakeMove( movebeingevaluated ) )
 		{
 			legalmoves++;
 			//if ( movebeingevaluated.capture  )
 			//	movebeingevaluated.value = -NegaMax( temp, currentsearchdepth);
 			//else
 				value = -NegaMax( temp, currentsearchdepth - 1);
-			if ( value >= currentBoard.BestSoFar.value )
+			if ( /*value >= currentBoard.BestSoFar.value*/TRUE )
 			{
-				currentBoard.BestIntSoFar = movebeingevaluated;
-				currentBoard.bestValueSoFar= value;
+				/*currentBoard.BestIntSoFar = movebeingevaluated;
+				currentBoard.bestValueSoFar= value;*/
 			}
 		}
 	}
-	return currentBoard.bestValueSoFar;
+	return 0 /*currentBoard.bestValueSoFar*/;
 } 
 
 

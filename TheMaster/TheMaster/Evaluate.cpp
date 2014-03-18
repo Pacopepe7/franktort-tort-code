@@ -22,13 +22,14 @@ int ChessBoard::Evaluate(  )
 	int attackvaluetomove = 0;
 	int attackvaluetarget = 0;
 	int legalmoves = 0;
-	int target = (sidetomove == WHITE) ? BLACK : WHITE;
+	int target = WHITE;// (tomove == WHITE) ? BLACK : WHITE;
 	int targetkingposition;
-	if (sidetomove == WHITE ) 
-		targetkingposition = blackkingposition;
+	int tomove = m_boardState.m_bWhitetomove;
+	if (m_boardState.m_bWhitetomove ) 
+		targetkingposition = m_boardState.m_sBlackkingposition;
 	else
-		targetkingposition = whitekingposition;
-	ChessMove cm;
+		targetkingposition = m_boardState.m_sWhitekingposition;
+	
 	ChessBoard evalnode = *this;
 
 	// make a draw check
@@ -42,17 +43,17 @@ int ChessBoard::Evaluate(  )
 
 	for (int x = 0; x < 144; x++)
 	{
-		if ( getColorAt(x) == sidetomove )
-			materialtomove += currentposition[x].value;
+		if ( getColorAt(x) == tomove )
+			materialtomove += currentposition[x];
 		if ( getColorAt(x) == target )
-			materialtarget += currentposition[x].value;
+			materialtarget += currentposition[x];
 	}
 	//
 	for (int x = 0; x < 144; x++)
 	{
 		if ( !(currentposition[x] == OUT))
 		{
-			attackvaluetomove += IsAttacked( x, sidetomove );
+			attackvaluetomove += IsAttacked( x, tomove );
 			attackvaluetarget += IsAttacked( x, target );
 		}
 	}

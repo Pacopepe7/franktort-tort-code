@@ -8,85 +8,129 @@
 */
 
 #include "Definitions.h"
-#include "ChessPiece.h"
-#include "ChessMove.h"
+
 #include <vector>
 #include <stack>
+#include <string>
+
 #pragma once
 
-struct castling { bool whiteshort;
-					bool whitelong;
-					bool blackshort;
-					bool blacklong;};
+/************************************************/
+struct castling_t { 
+	bool whiteshort;
+	bool whitelong;
+	bool blackshort;
+	bool blacklong;
+};
+/************************************************/
+struct boardstate_t {
+	castling_t castling;
+	ChessMove m_BestSoFar;
+	ChessMove m_LastMove;
+	bool m_bWhitetomove;
+	short m_sWhitekingposition;
+	short m_sBlackkingposition;
+	short ply;
+};
 
+/************************************************/
+class Cstack
+{
+private: 
+	ChessMove chessmoves_arr[256];
+	short chessmoveindex;
+public:
+	Cstack() 
+	{ 
+		chessmoveindex = 0;
+	};
+	ChessMove pop(void)			
+	{ 
+		if ( ! empty() )
+			return chessmoves_arr[chessmoveindex--]; 
+		return (0); 
+	} ;
+	void push(ChessMove cm)		
+	{
+		chessmoves_arr[++chessmoveindex] = cm; 
+	} ;
+	bool empty (void)				
+	{ 
+		if ( chessmoveindex < 0 )	
+			return true;
+		return false; 
+	}	;
+};
+using namespace std;
+/************************************************/
 class ChessBoard 
 {
 public:
-	static ChessMove nullmove;
+	boardstate_t m_boardState;
+	Cstack m_movestack;
+
 	static char *notation[144];
-	static ChessPiece startingposition[144];
+	static Piece startingposition[144];
 	static unsigned int inttoboard[64];
 	static unsigned int boardtoint[144];
-	ChessPiece currentposition[144];
-	ChessMove BestSoFar;
-	unsigned int BestIntSoFar;
-	int bestValueSoFar;
+	Piece currentposition[144];
+
+
+	static int kingvectors[8];
+	static int knightvectors[8];
+	static int bishopvectors[8];
+	static int rookvectors[8];
+	static int queenvectors[8];
+
+
+	inline Piece At(int x)	{ return currentposition[x ];};
 	
-	unsigned int LastMoveInt;
+	Piece getColor(Piece x)			{ return (At(x) & COLOR_MASK); } ;
+	bool isPawn(Piece x)				{ return (At(x) & PAWN)> 1; } ;
+	bool isKnight(Piece x)			{ return (At(x) & KNIGHT) > 1; } ;
+	bool isBishop(Piece x)			{ return (At(x) & BISHOP) > 1; } ;
+	bool isRook(Piece x)				{ return (At(x) & ROOK) > 1; } ;
+	bool isQueen(Piece x)				{ return (At(x) & QUEEN)> 1; } ;
+	bool isKing(Piece x)				{ return (At(x) & KING)> 1; } ;
+	bool isWhite(Piece x)				{ return (At(x) & WHITE)==WHITE; } ;
+	bool isBlack(Piece x)				{ return (At(x) & BLACK)==BLACK;};
+	int Rank ( int x)				{ return (x / 12); } ;
+	int Col(int x)					{ return (x % 12); } ;
 
-	unsigned int chessmoves_arr[256];
-	int chessmoveindex;
-
-	static int out[8] ;
-	static int empty[8]; 
-	static int whitepawn [8];
-	static int knight [8];
-	static int bishop [8];
-	static int rook [8];
-	static int queen [8];
-	static int king [8];
-	static int blackpawn [8];
+	bool isEmpty(Piece x)				{ return (At(x) & EMPTY) > 1; } ;
+	bool isOut(int x)				{ return (At(x) & OUT) > 1; } ;
 
 
-	static ChessPiece OUT;
-	static ChessPiece EMPTY;
-	static ChessPiece WP;
-	static ChessPiece WN;
-	static ChessPiece WB;
-	static ChessPiece WR;
-	static ChessPiece WQ;
-	static ChessPiece WK;
-	static ChessPiece BP;
-	static ChessPiece BN;
-	static ChessPiece BB;
-	static ChessPiece BR;
-	static ChessPiece BQ;
-	static ChessPiece BK;
+	bool isEPPossible(ChessMove cm)	{ return (cm & MT_ENPASSANTPOSSIBLE) > 1;};
+	bool isEP(ChessMove cm)			{ return (cm & MT_ENPASSANT) > 1; } ;
+	bool isCaslte(ChessMove cm)		{ return (cm & MT_CASTLE) >1; } ;
+	bool isPromotion(ChessMove cm)	{ return (cm & MT_PROMOTION)>1; } ;
+	unsigned int TO(ChessMove cm)			{ return inttoboard[( (cm & TO_MASK) >> 6 ) ];};
+	unsigned int FROM(ChessMove cm)			{ return inttoboard[( cm & FROM_MASK)];};
 
-	castling Castlingpriviledges;
-	int sidetomove;
-	int whitekingposition;
-	int blackkingposition;
-	int ply;
 
+	ChessMove CHESSMOVE(int from, int to, int flags)	{ return ((boardtoint[from])|(boardtoint[to] << 6) | flags); } ;
+	Piece getPieceAt( int x )					{ return currentposition[x] & PIECE_MASK; } ;
+	Piece getColorAt( int x )					{ return currentposition[x] & COLOR_MASK; } ;
+	
+	int possibleMoves(Piece);
+	bool isColor( int me,  int color)  { return  ((At(me) & COLOR_MASK) == color); } ;
+
+public:
 	//Functions
 	ChessBoard(void);
 	ChessBoard(string fen);
-	ChessBoard operator= ( ChessBoard copy );
+	//ChessBoard(string moves);
+
 	void Init ( void );
-	bool MakeMove ( ChessMove cm );
-	bool MakeIntMove ( unsigned int cm );
+	bool MakeMove ( unsigned int cm );
 	void GenerateMoves ( void );
-	void GenerateIntMoves ( void );
+
 	int IsAttacked ( int sq, int side );
-	string getDescription( int x );
+	
 	int Evaluate( );
-	int getPieceAt( int x );
-	int getColorAt( int x );
-	int getIndex(string x);
+	int getIndex(char row, char column);
+
 	string PrintBoard(void);
 	
-	unsigned int CMPOP(void);
-	void CMPUSH(unsigned int);
-	bool CMEMPTY (void);
 };

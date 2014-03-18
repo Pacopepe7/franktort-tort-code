@@ -5,38 +5,55 @@
 * The numbers are just bits turned on on an int to make it easy for the program 
 * to tell if the piece is a KNIGHT ( and it with KNIGHT value) and color (and it with WHITE etc...)
 */
-#ifndef DEFINITIONS_H
-#define DEFINITIONS_H
+#pragma once
 
-const int TRUE		=   1;
-const int FALSE		=	0;
-const int  _EMPTY	=	0;  
-const int  BLACK	=	1;
-const int  WHITE	=	2;
-const int  PAWN		=	4;
-const int  KNIGHT	=	8;
-const int  BISHOP	=	16;
-const int  ROOK		=	32;
-const int  QUEEN	=	64;
-                    
-const int  KING		=	128;
-const int  _OUT		=	(KING | QUEEN); 
+/************************************************/
 
-/* For move type of board & move type on move */
-const int  NORMAL		= 0;                    // this move is just a normal move
-const int  WHITESHORT	=	1;                  // if this bit is set, white can castle short
-const int  WHITELONG	=	2;                  // if this bit is set, white can castle long
-const int  BLACKSHORT	=	4;                  // if this bit is set, black can castle short
-const int  BLACKLONG	=	8;                  // if this bit is set, black can castle long
-const int  CHECK		=	16;                 // This move is a check
-const int  CAPTURE		=	32;                 // this move is a capture
-const int  ENPASSANT	=	64;                 // this move is a en passant capture
-const int  PAWNIN7TH	=	128;                // this move pushes a pawn to the seventh
-const int  MT_QUEEN		=	256;                // move type QUEEN
-const int  MT_ROOK		=	512;                // move type ROOK
-const int  MT_BISHOP	=	1024;               // move type BISHOP
-const int  MT_KNIGHT	=	2048;               // move type KNIGHT
-const int  MT_PROMOTION	=	4096;               // move type PROMOTION
+typedef unsigned int Piece;
+typedef  unsigned int ChessMove;
+
+const unsigned int TRUE	= 1;
+const unsigned int FALSE= 0;
+const Piece BLACK		= 1;
+const Piece WHITE		= 2;
+const Piece COLOR_MASK	= (WHITE | BLACK);
+
+
+
+
+const Piece PAWN				= 1 << 5;
+const Piece KNIGHT				= PAWN << 1;
+const Piece BISHOP				= KNIGHT << 1;
+const Piece ROOK				= BISHOP << 1;
+const Piece QUEEN				= ROOK << 1;
+const Piece KING				= QUEEN << 1;
+const Piece OUT					= KING << 1;
+const Piece EMPTY				= OUT << 1;
+const Piece MT_ENPASSANTPOSSIBLE = EMPTY << 1;
+const Piece MT_PROMOTION		= MT_ENPASSANTPOSSIBLE << 1;
+const Piece MT_CAPTURE			= MT_PROMOTION << 1;
+const Piece MT_NORMAL			= MT_CAPTURE << 1;						// this move is just a normal move
+const Piece MT_ENPASSANT		= MT_NORMAL << 1;					// this move is a en passant capture
+const Piece MT_CASTLE			= MT_ENPASSANT << 1;
+
+
+
+const Piece FROM_MASK		= (1 | 2 | 4 | 8 | 16 | 32);
+const Piece TO_MASK	= (FROM_MASK << 6);
+const Piece PIECE_MASK	= (PAWN | KNIGHT | BISHOP | ROOK | QUEEN | KING | OUT | EMPTY);
+const Piece BP			=  ( BLACK | PAWN);
+const Piece BR			=  ( BLACK | ROOK);
+const Piece BN			=  ( BLACK | KNIGHT);
+const Piece BB			=  ( BLACK | BISHOP);
+const Piece BQ			=  ( BLACK | QUEEN);
+const Piece BK			=  ( BLACK | KING);
+
+const Piece WP			=  ( WHITE | PAWN);
+const Piece WR			=  ( WHITE | ROOK);
+const Piece WN			=  ( WHITE | KNIGHT);
+const Piece WB			=  ( WHITE | BISHOP);
+const Piece WQ			=  ( WHITE | QUEEN);
+const Piece WK			=  ( WHITE | KING);
 
 /* Directions to move on board ( based on a 12 square wide board representation)
 * These are vectors that allow the program to comunicate moves
@@ -202,6 +219,4 @@ const int H1 = 117;
  static const int  SOUTHWEST =	( SOUTH + WEST );
 */
 
-
-#endif
 
