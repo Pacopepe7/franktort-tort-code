@@ -8,6 +8,7 @@
 
 #include "Definitions.h"
 #include "ChessBoard.h"
+#include <string>
 #include "utils.h"
 
 class ChessGame 
@@ -43,5 +44,5 @@ public:
 	/****************************************
 	* Testing funcs
 	****************************************/
-	int perft(ChessBoard & cb, int depth);
+	__int64 perft(ChessBoard & cb, int depth);
 }; // end class "ChessGame"

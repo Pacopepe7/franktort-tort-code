@@ -50,7 +50,7 @@
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -83,6 +83,7 @@
     <ClCompile Include="Evaluate.cpp" />
     <ClCompile Include="GenMoves.cpp" />
     <ClCompile Include="MakeMove.cpp" />
+    <ClCompile Include="Negamax.cpp" />
     <ClCompile Include="TheMaster.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -91,6 +92,7 @@
     <ClInclude Include="ChessEngine.h" />
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="Definitions.h" />
+    <ClInclude Include="scores.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

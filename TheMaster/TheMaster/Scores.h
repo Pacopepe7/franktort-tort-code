@@ -6,18 +6,18 @@
 
 #include "Definitions.h"
 
-typedef scores unsigned int;
+typedef  unsigned int score;
 
-score PAWN_WEIGTH		= 100;
-score KNIGHT_WEIGHT		= 300;
-score BISHOP_WEIGHT		= 325;
-score ROOK_WEIGHT		= 500;
-score QUEEN_WEIGHT		= 900;
+//////////////////////////////////////////////////////
+//http://chessprogramming.wikispaces.com/Point+Value
+//////////////////////////////////////////////////////
 
-struct eval_scores_t{
-	score BISHOP_PAIR		= 50;
-	score KNIGHT_PAIR		= 20;
-	} evalscores;
+score PAWN_WEIGHT		= 100;
+score KNIGHT_WEIGHT		= 350;
+score BISHOP_WEIGHT		= 350;
+score ROOK_WEIGHT		= 525;
+score QUEEN_WEIGHT		= 1000;
+
 
 
 

@@ -8,6 +8,7 @@
 */
 
 #include "ChessGame.h"
+#include "Scores.h"
 
 /*********************************************************************************************
 * evaluate()
@@ -16,49 +17,57 @@
 
 int ChessBoard::Evaluate(  )
 {
+	int value = 0, x;
+	Piece p;
+	int tomove = m_boardState.m_bWhitetomove? BLACK:WHITE;
+	int opponent = m_boardState.m_bWhitetomove? WHITE:BLACK;
 
-	int materialtomove = 0;
-	int materialtarget = 0;
-	int attackvaluetomove = 0;
-	int attackvaluetarget = 0;
-	int legalmoves = 0;
-	int target = WHITE;// (tomove == WHITE) ? BLACK : WHITE;
 	int targetkingposition;
-	int tomove = m_boardState.m_bWhitetomove;
+
 	if (m_boardState.m_bWhitetomove ) 
 		targetkingposition = m_boardState.m_sBlackkingposition;
 	else
 		targetkingposition = m_boardState.m_sWhitekingposition;
 	
-	ChessBoard evalnode = *this;
-
-	// make a draw check
-	//if ( tm.drawcheck( evalnode ) ) 
-	//	return 0;
-
-	// check if there are valid moves on this position,
-	//if not and in check, it's mate!
-	// if not and not in check, its stalemate
 
 
-	for (int x = 0; x < 144; x++)
+
+	for (int i = 0; i < 64; i++)
 	{
-		if ( getColorAt(x) == tomove )
-			materialtomove += currentposition[x];
-		if ( getColorAt(x) == target )
-			materialtarget += currentposition[x];
-	}
-	//
-	for (int x = 0; x < 144; x++)
-	{
-		if ( !(currentposition[x] == OUT))
+		x = At(insideboadonly[i]);
+		p = x;
+
+		if ( x & tomove )
 		{
-			attackvaluetomove += IsAttacked( x, tomove );
-			attackvaluetarget += IsAttacked( x, target );
+			if ( p & QUEEN /*isQueen(x)*/)
+			{
+				value += QUEEN_WEIGHT;
+			}
+			if ( p & ROOK/*isRook(x)*/)
+				value += ROOK_WEIGHT;
+			if ( p & BISHOP/*isBishop(x)*/)
+				value += BISHOP_WEIGHT;
+			if ( p & KNIGHT/*isKnight(x)*/)
+				value += KNIGHT_WEIGHT;
+			if ( p & PAWN/*isPawn(x)*/)
+				value += PAWN_WEIGHT;
 		}
+		if ( x & opponent )
+		{
+			if ( p & QUEEN/*isQueen(x)*/)
+				value -= QUEEN_WEIGHT;
+			if ( p & ROOK/*isRook(x)*/)
+				value -= ROOK_WEIGHT;
+			if ( p & BISHOP/*isBishop(x)*/)
+				value -= BISHOP_WEIGHT;
+			if ( p & KNIGHT/*isKnight(x)*/)
+				value -= KNIGHT_WEIGHT;
+			if ( p & PAWN/*isPawn(x)*/)
+				value -= PAWN_WEIGHT;
+		}
+		
 	}
-	//return ( ( materialtomove + attackvaluetomove ) - (materialtarget + attackvaluetarget) );
 	
 
-	return ( ( materialtomove ) - (materialtarget) );
+	return (value );
 }

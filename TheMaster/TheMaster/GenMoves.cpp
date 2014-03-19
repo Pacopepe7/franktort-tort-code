@@ -13,12 +13,14 @@ void ChessBoard::GenerateMoves ( void )
 	Piece tomove = m_boardState.m_bWhitetomove? WHITE:BLACK;
 	Piece enemy  = (tomove == WHITE)? BLACK:WHITE;
 	
-	int vector;
+	int vector, x;
 	
 
 	// search the board and if the piece at position X is ours, generate the moves
-	for(int x = 0; x < 144; x++)
+	for(int i = 0; i < 64; i++)
 	{	
+		x = insideboadonly[i];
+
 		if(  isColor(x,tomove)  )	
 		{
 			
@@ -132,9 +134,9 @@ void ChessBoard::GenerateMoves ( void )
 						//System.out.println("checking white short castle move");
 						if ( isEmpty( F1 )  && isEmpty(G1) )       
 						{
-							if ( (IsAttacked(E1 , BLACK) +
-								IsAttacked( F1, BLACK) + 
-								IsAttacked( G1, BLACK)) == 0  )
+							if (! (isAttacked(E1 , BLACK) |
+								isAttacked( F1, BLACK) | 
+								isAttacked( G1, BLACK))   )
 							{
 								//System.out.println("Adding white short castle move");
 								m_movestack.push( CHESSMOVE(E1, G1 , MT_CASTLE));
@@ -145,9 +147,9 @@ void ChessBoard::GenerateMoves ( void )
 					{
 						if ( isEmpty( D1) && isEmpty( C1) &&  isEmpty( B1)) 
 						{
-							if ( (IsAttacked( E1, BLACK) +
-								IsAttacked(  D1, BLACK) + 
-								IsAttacked(  C1, BLACK)) == 0  )
+							if ( !(isAttacked( E1, BLACK) |
+								isAttacked(  D1, BLACK) | 
+								isAttacked(  C1, BLACK))   )
 								m_movestack.push( CHESSMOVE(E1, C1 , MT_CASTLE));
 						}
 					}
@@ -159,9 +161,9 @@ void ChessBoard::GenerateMoves ( void )
 						if ( isEmpty( F8) && isEmpty(G8 ) )
 						{
 
-							if ( (IsAttacked(E8, WHITE) +
-								IsAttacked(  F8, WHITE) + 
-								IsAttacked(  G8, WHITE)) == 0  )
+							if ( !(isAttacked(E8, WHITE) |
+								isAttacked(  F8, WHITE) |
+								isAttacked(  G8, WHITE))   )
 								m_movestack.push( CHESSMOVE(E8, G8 , MT_CASTLE));
 						}
 					}
@@ -170,9 +172,9 @@ void ChessBoard::GenerateMoves ( void )
 						if ( isEmpty(D8) && isEmpty( C8) &&  isEmpty( B8) )
 						{
 
-							if ( (IsAttacked( E8, WHITE) +
-								IsAttacked(  D8, WHITE) + 
-								IsAttacked(  C8, WHITE)) == 0  )
+							if ( !(isAttacked( E8, WHITE) |
+								isAttacked(  D8, WHITE) | 
+								isAttacked(  C8, WHITE))  )
 								m_movestack.push( CHESSMOVE(E8, C8 , MT_CASTLE));
 						}
 					}

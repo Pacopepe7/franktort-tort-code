@@ -43,7 +43,10 @@ void ChessGame::Init ( void )
 string ChessGame::ProcessUCICommand( string command )
 {
 	long long value;
+	long long depth;
 	string sValue = "";
+	string sDepth = "";
+
 	 vector<string> tokens;
 	// QUIT
 	if ( command == "quit" )
@@ -98,16 +101,17 @@ string ChessGame::ProcessUCICommand( string command )
 	}
 	if (tokens[0] == "go")
 	{
-		value = NegaMax(cb, 4);
+		depth = 4;
+		value = NegaMax(cb, (int)depth);
 		sValue = std::to_string(value);
-		return "Testing...";
-		//return "info depth 4 score cp " + sValue + "\nbestmove " + cb.BestSoFar.ToString() + "\n";
+		sDepth = std::to_string(depth);
+		return "info depth " + sDepth + " score cp " + sValue + "\nbestmove " + cb.MakeString(cb.m_boardState.m_BestSoFar) + "\n";
 	}
 	if (tokens[0] == "perft")
 	{
 		long long depth = atoi(tokens[1].c_str());
-		value = perft(cb,int( depth));
-		sValue = std::to_string(value);
+		__int64 d = perft(cb,int( depth));
+		sValue = std::to_string(d);
 		return "perft for depth " + std::to_string(depth) + " is  " + sValue + "\n";
 	}
 	return "Not implemented\n";
@@ -323,9 +327,9 @@ string ChessGame::getResponce( void )
 
 */
 
-int ChessGame::perft(ChessBoard & currentBoard, int depth)
+__int64 ChessGame::perft(ChessBoard & currentBoard, int depth)
 {
-	unsigned int legalmoves = 0;
+	__int64 legalmoves = 0;
 	unsigned int movebeingevaluated;
 	if ( depth == -1)
 	{

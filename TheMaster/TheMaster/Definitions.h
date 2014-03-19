@@ -21,7 +21,7 @@ const Piece COLOR_MASK	= (WHITE | BLACK);
 
 
 
-const Piece PAWN				= 1 << 5;
+const Piece PAWN				= 1 << 4;
 const Piece KNIGHT				= PAWN << 1;
 const Piece BISHOP				= KNIGHT << 1;
 const Piece ROOK				= BISHOP << 1;
@@ -33,7 +33,7 @@ const Piece MT_ENPASSANTPOSSIBLE = EMPTY << 1;
 const Piece MT_PROMOTION		= MT_ENPASSANTPOSSIBLE << 1;
 const Piece MT_CAPTURE			= MT_PROMOTION << 1;
 const Piece MT_NORMAL			= MT_CAPTURE << 1;						// this move is just a normal move
-const Piece MT_ENPASSANT		= MT_NORMAL << 1;					// this move is a en passant capture
+const Piece MT_ENPASSANT		= MT_NORMAL << 1;						// this move is a en passant capture
 const Piece MT_CASTLE			= MT_ENPASSANT << 1;
 
 
@@ -73,6 +73,13 @@ const int NOTATIONMIN	=	0;
 const int COMPMIN		=   16  ;
 const int COMPMAX		=   144 - 16;
 const int INVALID		=	-1;
+
+/*****************************************/
+#define POSSIBLEMOVESKING 8
+#define POSSIBLEMOVESKNIGHT 8
+#define POSSIBLEMOVESROOK 4
+#define POSSIBLEMOVESBISHOP 4
+#define POSSIBLEMOVESQUEEN 8
 
 const int A8 = 26;
 const int B8 = 27;

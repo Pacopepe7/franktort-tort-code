@@ -110,7 +110,7 @@ bool ChessBoard::MakeMove ( ChessMove cm )
 	// this is illegal in chess.
 	if ( tomove == WHITE )
 	{
-		if (IsAttacked( m_boardState.m_sWhitekingposition, BLACK ) > 0 )
+		if (isAttacked( m_boardState.m_sWhitekingposition, BLACK )  )
 		{
 			m_boardState = tempboardstate;
 			return false;
@@ -118,7 +118,7 @@ bool ChessBoard::MakeMove ( ChessMove cm )
 	}
 	else
 	{
-		if (IsAttacked( m_boardState.m_sBlackkingposition, WHITE ) > 0 )
+		if (isAttacked( m_boardState.m_sBlackkingposition, WHITE )  )
 		{
 			m_boardState = tempboardstate;
 			return false;

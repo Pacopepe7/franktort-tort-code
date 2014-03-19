@@ -169,46 +169,6 @@
 //	}
 //	return currentBoard.BestSoFar.value;
 //} 
-/**************************************************************
-* Negamax
-* 
-*/
-int ChessGame::NegaMax( ChessBoard & currentBoard, int currentsearchdepth ) 
-{
-	if ( currentsearchdepth < 0 ) 
-		return currentBoard.Evaluate(  );
-
-	int legalmoves = 0;
-	int movestomate = 0;
-	int value;
-	unsigned int movebeingevaluated;
-	ChessBoard temp = currentBoard;
-	ChessBoard moveGenBoard = currentBoard;
-
-	moveGenBoard.GenerateMoves();
-	
-
-	while ( ! moveGenBoard.m_movestack.empty() )
-	{
-		movebeingevaluated =  moveGenBoard.m_movestack.empty();
-		
-		temp =  ChessBoard(currentBoard);
-		if ( temp.MakeMove( movebeingevaluated ) )
-		{
-			legalmoves++;
-			//if ( movebeingevaluated.capture  )
-			//	movebeingevaluated.value = -NegaMax( temp, currentsearchdepth);
-			//else
-				value = -NegaMax( temp, currentsearchdepth - 1);
-			if ( /*value >= currentBoard.BestSoFar.value*/TRUE )
-			{
-				/*currentBoard.BestIntSoFar = movebeingevaluated;
-				currentBoard.bestValueSoFar= value;*/
-			}
-		}
-	}
-	return 0 /*currentBoard.bestValueSoFar*/;
-} 
 
 
 /**************************************************************
