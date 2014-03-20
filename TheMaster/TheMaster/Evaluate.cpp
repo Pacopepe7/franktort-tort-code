@@ -42,28 +42,56 @@ int ChessBoard::Evaluate(  )
 			if ( p & QUEEN /*isQueen(x)*/)
 			{
 				value += QUEEN_WEIGHT;
+				value += PSQT_Q[i];
 			}
 			if ( p & ROOK/*isRook(x)*/)
+			{
 				value += ROOK_WEIGHT;
+				value += PSQT_R[i];
+			}
 			if ( p & BISHOP/*isBishop(x)*/)
+			{
 				value += BISHOP_WEIGHT;
+				value += PSQT_B[i];
+			}
 			if ( p & KNIGHT/*isKnight(x)*/)
+			{
 				value += KNIGHT_WEIGHT;
+				value += PSQT_N[i];
+			}
 			if ( p & PAWN/*isPawn(x)*/)
+			{
 				value += PAWN_WEIGHT;
+				//value += PSQT_P[i];
+			}
 		}
 		if ( x & opponent )
 		{
 			if ( p & QUEEN/*isQueen(x)*/)
+			{
 				value -= QUEEN_WEIGHT;
+				value -= PSQT_Q[63 -i];
+			}
 			if ( p & ROOK/*isRook(x)*/)
+			{
 				value -= ROOK_WEIGHT;
+				value -= PSQT_R[63 -i];
+			}
 			if ( p & BISHOP/*isBishop(x)*/)
+			{
 				value -= BISHOP_WEIGHT;
+				value -= PSQT_B[63 - i];
+			}
 			if ( p & KNIGHT/*isKnight(x)*/)
+			{
 				value -= KNIGHT_WEIGHT;
+				value -= PSQT_Q[63 - i];
+			}
 			if ( p & PAWN/*isPawn(x)*/)
+			{
 				value -= PAWN_WEIGHT;
+				//value += PSQT_Q[i];
+			}
 		}
 		
 	}

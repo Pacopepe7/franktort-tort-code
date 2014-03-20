@@ -45,6 +45,9 @@
     <ClCompile Include="MakeMove.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PieceSquareTables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessBoard.h">
@@ -63,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scores.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fixedLengthStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

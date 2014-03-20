@@ -101,7 +101,7 @@ string ChessGame::ProcessUCICommand( string command )
 	}
 	if (tokens[0] == "go")
 	{
-		depth = 4;
+		depth = 5;
 		value = NegaMax(cb, (int)depth);
 		sValue = std::to_string(value);
 		sDepth = std::to_string(depth);

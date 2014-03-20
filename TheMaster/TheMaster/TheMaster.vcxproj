@@ -84,6 +84,7 @@
     <ClCompile Include="GenMoves.cpp" />
     <ClCompile Include="MakeMove.cpp" />
     <ClCompile Include="Negamax.cpp" />
+    <ClCompile Include="PieceSquareTables.cpp" />
     <ClCompile Include="TheMaster.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
@@ -92,6 +93,7 @@
     <ClInclude Include="ChessEngine.h" />
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="Definitions.h" />
+    <ClInclude Include="fixedLengthStack.h" />
     <ClInclude Include="scores.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
