@@ -8,82 +8,29 @@
 #pragma once
 
 
-typedef enum {
-  A1, B1, C1, D1, E1, F1, G1, H1,
-  A2, B2, C2, D2, E2, F2, G2, H2,
-  A3, B3, C3, D3, E3, F3, G3, H3,
-  A4, B4, C4, D4, E4, F4, G4, H4,
-  A5, B5, C5, D5, E5, F5, G5, H5,
-  A6, B6, C6, D6, E6, F6, G6, H6,
-  A7, B7, C7, D7, E7, F7, G7, H7,
-  A8, B8, C8, D8, E8, F8, G8, H8,
-  BAD_SQUARE
-} squares;
-typedef enum { FILEA, FILEB, FILEC, FILED, FILEE, FILEF, FILEG, FILEH } files;
-typedef enum { RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8 } ranks;
-typedef enum { empty = 0, occupied = 0, pawn = 1, knight = 2, bishop = 3,
-  rook = 4, queen = 5, king = 6
-} PIECE;
-typedef enum { black = 0, white = 1 } COLOR;
 
-/************************************************
-* Square (short) (256 or 2^8)
-* empty  = 0
-* white X
-* black  X
-* pawn    X
-* rook     X
-* knight    X
-* bishop     X
-* queen       X
-* king         X
-*************************************************/
-typedef unsigned short  Square;
-/*************************************************
-* Piece saves all the info for a piece in bites:
-* First byte:
-* white X
-* black  X
-* pawn    X
-* rook     X
-* knight    X
-* bishop     X
-* queen       X
-* king         X
-* Second byte:
-* Position      XXXXXX
-* unused              XX
-**************************************************/
-typedef unsigned __int32 Piece;
-/*************************************************
-* ChessMove
-* TO: XXXXXX
-* FROM:     XXXXXX
-* Piece:     
-*/
-typedef unsigned __int16 ChessMove;
+typedef unsigned int Piece;
+typedef unsigned int ChessMove;
 
-
-const Piece WHITE						= 1 ; 
-const Piece BLACK						= 2 ;
 
 /************************************************/
 
 const unsigned int TRUE	= 1;
 const unsigned int FALSE= 0;
-const Square EMPTY						= 0;
+
 
 const Piece BLACK						= 1;
 const Piece WHITE						= 2;
 const Piece COLOR_MASK					= (WHITE | BLACK);
 
-const Piece PAWN						= 1 << 2;
+const Piece PAWN						= 1 << 4;
 const Piece KNIGHT						= PAWN << 1;
 const Piece BISHOP						= KNIGHT << 1;
 const Piece ROOK						= BISHOP << 1;
 const Piece QUEEN						= ROOK << 1;
 const Piece KING						= QUEEN << 1;
 const Piece OUT							= KING << 1;
+const Piece EMPTY						= OUT << 1;
 const Piece MT_ENPASSANTPOSSIBLE		= EMPTY << 1;
 const Piece MT_PROMOTION				= MT_ENPASSANTPOSSIBLE << 1;
 const Piece MT_CAPTURE					= MT_PROMOTION << 1;
@@ -279,6 +226,50 @@ const int H1 = 117;
  static const int  NORTHWEST =	( NORTH + WEST );
  static const int  SOUTHEAST =	( SOUTH + EAST );
  static const int  SOUTHWEST =	( SOUTH + WEST );
+
+ Depth
+Nodes
+Captures
+E.p.
+Castles
+Promotions
+Checks
+Checkmates
+0
+1
+0
+0
+0
+0
+0
+0
+1
+20
+400
+8,902
+197,281
+4,865,609
+119,060,324
+3,195,901,860
+3,195,901,860
+8
+84,998,978,956
+
+9
+2,439,530,234,167
+
+10
+69,352,859,712,417
+
+11
+2,097,651,003,696,806
+
+12
+62,854,969,236,701,747
+[2]
+13
+1,981,066,775,000,396,239
+
 */
 
 
