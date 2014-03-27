@@ -5,8 +5,39 @@
 * 
 */
 
-#include "ChessBoard.h"
+#include "ChessGame.h"
 #include <vector>
+
+
+/********************************************
+* Generates LEGAL moves for side to move
+*/
+void ChessGame::GenerateMoves( void )
+{
+	Color ctm = m_boardState.m_bWhitetomove? WHITE:BLACK;
+	for ( short i = 0; i < maxpieces[ctm]; i++)
+	{
+		if ( pieces[i][ctm].piece == PAWN)
+		{
+			if ( getRank(pieces[i][ctm].square) == pawnsecondrank[ctm] )
+				if ( isEmpty(pieces[i][ctm].square +  pawndirection[ctm]) && isEmpty(pieces[i][ctm].square +  (pawndirection[ctm] * 2)) )
+					mstack.push(
+					CM(pieces[i][ctm].square,
+					pieces[i][ctm].square +  (pawndirection[ctm] * 2),
+					MT_NORMAL,
+					pieces[i][ctm].square +  pawndirection[ctm]));
+			if (  isEmpty(pieces[i][ctm].square +  pawndirection[ctm]))
+				mstack.push(
+					CM(pieces[i][ctm].square,
+					pieces[i][ctm].square +  (pawndirection[ctm]),
+					MT_NORMAL,
+					0));
+
+		}
+
+	}
+
+}
 //
 //void ChessBoard::GenerateMoves ( void )
 //{

@@ -39,6 +39,10 @@ void ChessGame::Init ( void )
 
 	maxpieces[WHITE] = 0;
 	maxpieces[BLACK] = 0;
+	pawndirection[WHITE] = NORTH;
+	pawndirection[BLACK] = SOUTH;
+	pawnsecondrank[WHITE] = RANK2;
+	pawnsecondrank[BLACK] = RANK7;
 	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 /***************************************************
@@ -54,10 +58,12 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	short pieceindex = maxpieces[c];
 	pieces[pieceindex][c].piece  = p;
 	pieces[pieceindex][c].square = s;
+	pieces[pieceindex][c].color = c;
 	maxpieces[c]++;
 	Ox88Board[s].color = c;
 	Ox88Board[s].piece = p;
 	Ox88Board[s].square = s;
+	Ox88Board[s].index = pieceindex;
 }
 /***********************************************************
 *
@@ -244,7 +250,11 @@ void ChessGame::UnmakeMove( ChessMove cm)
 	static Square epsq =  getEPSquare(cm);
 	static MoveType mt = getMoveType(cm);
 
-	MovePiece(to, from); // going backwards...
+	if ( mt == MT_NORMAL)
+	{
+		MovePiece(to, from); // going backwards...
+		return;
+	}
 
 }
 void ChessGame::MakeMove( string cm)
@@ -257,24 +267,7 @@ void ChessGame::MakeMove( Square from, Square to)
 
 
 }
-/********************************************
-* Generates LEGAL moves for side to move
-*/
-void ChessGame::GenerateMoves( void )
-{
-	Color ctm = m_boardState.m_bWhitetomove? WHITE:BLACK;
-	for ( short i = 0; i < maxpieces[ctm]; i++)
-	{
-		if ( pieces[i][ctm].piece == PAWN)
-		{
 
-		}
-
-
-
-	}
-
-}
 __int64 ChessGame::perft( int depth)
 {
 	__int64 legalmoves = 0;
@@ -286,14 +279,14 @@ __int64 ChessGame::perft( int depth)
 	}
 	if ( depth == 0 ) 
 		return 1;
-	while ( ! m_movestack.empty() )
-		m_movestack.pop();
+	while ( ! mstack.empty() )
+		mstack.pop();
 	
 	GenerateMoves();
 
-	while ( ! m_movestack.empty()) 
+	while ( ! mstack.empty()) 
 	{
-		movebeingevaluated = m_movestack.pop();
+		movebeingevaluated = mstack.pop();
 		MakeMove( movebeingevaluated );
 		legalmoves += perft(  depth - 1);
 		UnmakeMove(movebeingevaluated);

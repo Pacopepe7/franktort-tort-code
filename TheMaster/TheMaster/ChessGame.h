@@ -52,11 +52,13 @@ private:
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
 	boardstate_t m_boardState;
-	Cstack <ChessMove> m_movestack;
+	Cstack <ChessMove> mstack;
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
 	Pieceinfo_t Ox88Board[128];
+	short pawndirection[COLORS];
+	short pawnsecondrank[COLORS];
 public:
 	/**************************************
 	* Constructor */

@@ -104,4 +104,21 @@ enum { A1 =  0, B1, C1, D1, E1, F1, G1, H1,
 	   A7 = 96, B7, C7, D7, E7, F7, G7, H7,
 	   A8 =112, B8, C8, D8, E8, F8, G8, H8};
 
+#define RANK1 (A1 >> 4)
+#define RANK2 (A2 >> 4)
+#define RANK3 (A3 >> 4)
+#define RANK4 (A4 >> 4)
+#define RANK5 (A5 >> 4)
+#define RANK6 (A6 >> 4)
+#define RANK7 (A7 >> 4)
+#define RANK8 (A8 >> 4)
+
+#define FILE1 (A1 & 4)
+#define FILE2 (B1 & 4)
+#define FILE3 (C1 & 4)
+#define FILE4 (D1 & 4)
+#define FILE5 (E1 & 4)
+#define FILE6 (F1 & 4)
+#define FILE7 (G1 & 4)
+#define FILE8 (H1 & 4)
 
