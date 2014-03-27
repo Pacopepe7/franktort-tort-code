@@ -31,18 +31,14 @@ void Tokenize(const string& str,
 	}
 }
 
-void Profiler(int section)
+int MakeInt(string s)
 {
-
-
+	return atoi(s.c_str());
 }
-void ProfilerEnd(int)
+string MakeString(int i)
 {
-
-
-}
-void ProfilerPrint(void)
-{
-
-
+	stringstream ss;
+	ss << i;
+	string str = ss.str();
+	return str;
 }

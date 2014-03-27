@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ChessBoard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ChessGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -48,14 +45,11 @@
     <ClCompile Include="PieceSquareTables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UCIInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessBoard.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ChessEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChessGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fixedLengthStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UCIInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

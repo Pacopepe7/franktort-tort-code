@@ -43,14 +43,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -78,7 +78,6 @@
   <ItemGroup>
     <ClCompile Include="algorithms.cpp" />
     <ClCompile Include="Attacked.cpp" />
-    <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="Evaluate.cpp" />
     <ClCompile Include="GenMoves.cpp" />
@@ -86,15 +85,15 @@
     <ClCompile Include="Negamax.cpp" />
     <ClCompile Include="PieceSquareTables.cpp" />
     <ClCompile Include="TheMaster.cpp" />
+    <ClCompile Include="UCIInterface.cpp" />
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessBoard.h" />
-    <ClInclude Include="ChessEngine.h" />
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="fixedLengthStack.h" />
     <ClInclude Include="scores.h" />
+    <ClInclude Include="UCIInterface.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

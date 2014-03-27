@@ -7,38 +7,22 @@
 */
 
 #include <iostream>
-#include <fstream>
 #include <string>
-#include "ChessGame.h"
-
-
+#include "UCIInterface.h"
 
 using namespace std;
 
 void main ( void )
-{
-	ChessGame TheMasterDriver;
-	
-	//Start a log file for commands
-	//fstream ofile;
-	//ofile.open("logfile.txt",ios::app);
-
+{	
 	string input, output;
-
+	
+	UCIInterface TheMasterUCI;
 	do
 	{
 		getline(cin, input);
-		
-		input = input;
-		//ofile << input << endl;
-
-		output =  TheMasterDriver.ProcessCommand(input);
-		//ofile << output;
-
+		TheMasterUCI.Command(input);
 		cout <<  output;
-
 	}while ( input != "quit" );
 
-	//ofile.close();
 	return;
 }

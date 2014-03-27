@@ -1,9 +1,9 @@
 /*
-  TheMaster, a UCI chess playing engine 
-  Copyright (C)2014 Francisco Tort
+TheMaster, a UCI chess playing engine 
+Copyright (C)2014 Francisco Tort
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /**********************************************
 * ChessGame.cpp
 * Class implementing a chess playing engine.
@@ -12,6 +12,16 @@
 *
 */
 #include "ChessGame.h"
+
+
+int  ChessGame::kingvectors[8]		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHWEST, SOUTHEAST };
+int  ChessGame::knightvectors[8]	= {
+	NORTH + NORTHWEST, NORTH + NORTHEAST, SOUTH + SOUTHWEST, SOUTH + SOUTHEAST, 
+	WEST + NORTHWEST, EAST + NORTHEAST, WEST + SOUTHWEST, EAST + SOUTHEAST
+};
+int  ChessGame::bishopvectors[8]	= { NORTHWEST,  NORTHEAST, SOUTHWEST, SOUTHEAST, 0, 0, 0, 0};
+int  ChessGame::rookvectors[8]		= { NORTH, SOUTH, EAST, WEST , 0, 0, 0, 0};
+int  ChessGame::queenvectors[8]		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHWEST, SOUTHEAST };
 
 /**
 * Chess Gane Constructor
@@ -26,311 +36,249 @@ ChessGame::ChessGame ( )
 */
 void ChessGame::Init ( void ) 
 {
-	checkmate		= false;
-	checkmated		= false;
-	gameover		= false;
-	depth			= 3;
-	evaldepth		= 3;
-	MODE			= CONSOLE;
-	cb.Init();
+
+	maxpieces[WHITE] = 0;
+	maxpieces[BLACK] = 0;
+	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
-
-/*********************************************
-* Process UCI command 
-* This function receives a string from the host
-* and attempts to perform some action on the board/game
-*/ 
-string ChessGame::ProcessUCICommand( string command )
-{
-	long long value;
-	long long depth;
-	string sValue = "";
-	string sDepth = "";
-
-	 vector<string> tokens;
-	// QUIT
-	if ( command == "quit" )
-	{
-		return "ok\n";
-	}
-	//ISREADY
-	if ( command == "isready" )
-	{
-		return "readyok\n";
-	}	
-	//Stop
-	if ( command == "stop" )
-	{
-		return "readyok\n";
-	}	
-
-	//PrintBoard
-	if ( command == "pb" )
-	{
-		return cb.PrintBoard();
-	}
-	// UCInewgame
-	if ( command == "ucinewgame" )
-	{
-		cb.Init();
-		return "ok\n";
-	}
-
-	// check for positions
-	Tokenize(command, tokens, " " );
-	if (tokens[0] == "position" && tokens.size() > 1)
-	{
-		// this position starts from the initial position
-		if ( tokens[1] == "startpos" )
-		{
-			cb.Init();
-			if ( tokens.size() == 2 )
-				return "\n";
-			// start making moves on the internal board until no more moves
-			for ( int c = 3; c < tokens.size(); c++)
-			{
-				//if (ValidateMove (  tokens[c] ) )
-					//cb.MakeMove( ChessMove( tokens[c])) ;
-
-			}
-			return "";
-		}
-		// this position is encoded in FEN
-		//not implemented
-		return "Fen not implemented\n";
-	}
-	if (tokens[0] == "go")
-	{
-		depth = 5;
-		value = NegaMax(cb, (int)depth);
-		sValue = std::to_string(value);
-		sDepth = std::to_string(depth);
-		return "info depth " + sDepth + " score cp " + sValue + "\nbestmove " + cb.MakeString(cb.m_boardState.m_BestSoFar) + "\n";
-	}
-	if (tokens[0] == "perft")
-	{
-		long long depth = atoi(tokens[1].c_str());
-		__int64 d = perft(cb,int( depth));
-		sValue = std::to_string(d);
-		return "perft for depth " + std::to_string(depth) + " is  " + sValue + "\n";
-	}
-	return "Not implemented\n";
-
-} // end process command
-
-
-
-/*******************************************
-* ValidateMove
-* This function takes a string and returns if this move can acutally be made in the
-* context of a chess game. It will attempt to make this move on a real chess board
-* So that hidden discoveries are detected. It uses the copy constructor
+/***************************************************
+* Analogy: Imagine you are taking pieces out of a box and "set"ing them
+* on a chess board.
 */
-bool ChessGame::ValidateMove ( string command )
+void ChessGame::Set(Piece p, Color c, Square s)
+{
+#ifdef _DEBUG
+	if ( ! isSquare(s)) 
+		return;
+#endif
+	short pieceindex = maxpieces[c];
+	pieces[pieceindex][c].piece  = p;
+	pieces[pieceindex][c].square = s;
+	maxpieces[c]++;
+	Ox88Board[s].color = c;
+	Ox88Board[s].piece = p;
+	Ox88Board[s].square = s;
+}
+/***********************************************************
+*
+*/
+void ChessGame::MovePiece(Square from, Square to)
+{
+#ifdef _DEBUG
+	if ( ! isSquare(from)) 
+		return;
+	if ( ! isSquare(to)) 
+		return;
+	if ( isEmpty(from))
+		return;
+	if ( ! isEmpty(to))
+		return;
+#endif
+	static short index;
+	static Color c;
+	c = Ox88Board[from].color;
+	index = Ox88Board[from].index;
+	/*************************************/
+	Ox88Board[to].piece = Ox88Board[from].piece;
+	Ox88Board[to].color = c;
+	Ox88Board[to].index = Ox88Board[from].index;
+	Ox88Board[to].square = Ox88Board[from].square;
+
+	pieces[index][c].square = to;
+}
+/***********************************************************
+*
+*/
+void ChessGame::CapturePiece(Square from, Square to)
+{
+
+}
+/***********************************************************
+*
+*/
+void ChessGame::Set(Piece p, Color c, short r, short f)
+{
+	Set(p, c, MakeSquare(r, f));
+}
+/***********************************************************
+* Removes Piece at Square and removes its piece data from array
+*/
+void ChessGame::Clear( Square s)
+{
+#ifdef _DEBUG
+	if ( ! isSquare(s)) 
+		return;
+	if ( isEmpty(s))
+		return;
+#endif
+	static short index;
+	static Color c;
+	c = Ox88Board[s].color;
+	index = Ox88Board[s].index;
+	/***************************/
+	pieces[index][c].color = NOCOLOR;
+	pieces[index][c].index = 0;
+	pieces[index][c].piece = EMPTY;
+	pieces[index][c].square = 0;
+
+	Ox88Board[s].color = NOCOLOR;
+	Ox88Board[s].index = 0;
+	Ox88Board[s].piece = EMPTY;
+	Ox88Board[s].square = 0;
+}
+void ChessGame::Fen(string fen)
+{
+	vector<string> tokens;
+	Tokenize(fen, tokens, " " );
+	int index = 0;
+	char col = 0;
+	char row = 7;
+
+	do {
+		switch(tokens[0][index] ) {
+		case 'K': Set(KING, WHITE, row , col);	col++; break;
+		case 'Q': Set(QUEEN, WHITE, row , col);	col++; break;
+		case 'R': Set(ROOK, WHITE, row , col);	col++; break;
+		case 'B': Set(BISHOP, WHITE, row , col);	col++; break;
+		case 'N': Set(KNIGHT, WHITE, row , col);	col++; break;
+		case 'P': Set(PAWN, WHITE, row , col);	col++; break;
+		case 'k': Set(KING, BLACK, row , col);	col++; break;
+		case 'q': Set(QUEEN, BLACK, row , col);	col++; break;
+		case 'r': Set(ROOK, BLACK, row , col);	col++; break;
+		case 'b': Set(BISHOP, BLACK, row , col);	col++; break;
+		case 'n': Set(KNIGHT, BLACK, row , col);	col++; break;
+		case 'p': Set(PAWN, BLACK, row , col);	col++; break;
+		case '/': row--; col=0; break;
+		case '1': col+=1; break;
+		case '2': col+=2; break;
+		case '3': col+=3; break;
+		case '4': col+=4; break;
+		case '5': col+=5; break;
+		case '6': col+=6; break;
+		case '7': col+=7; break;
+		case '8': col+=8; break;
+		};
+		index++;
+	} while ( index < tokens[0].length() );
+
+	if (tokens[1] =="w") {
+		m_boardState.m_bWhitetomove = TRUE;
+	} else {
+		m_boardState.m_bWhitetomove = FALSE;
+	}
+
+	index = 0;
+	do {
+		switch( tokens[2][index] ) {
+		case 'K': m_boardState.castling.whiteshort = true; break;
+		case 'Q': m_boardState.castling.whitelong = true; break;
+		case 'k': m_boardState.castling.blackshort = true; break;
+		case 'q': m_boardState.castling.blacklong = true; break;
+		}
+		index++;
+	} while (index < tokens[2].length()  );
+
+	//en passant quare
+	if ( tokens[3] == "-" )
+		state.eppossible = false;
+	else
+	{
+		state.eppossible = true;
+		state.epsquare = MakeSquare(tokens[4]);
+	}
+
+	// 50 move rule counter
+	if ( tokens[4] == "-" )
+		state.fiftymoverule = 0;
+	else
+	{
+		state.fiftymoverule = MakeInt(tokens[5]);
+	}
+	//move number
+	state.move = MakeInt(tokens[5]);
+}
+bool ChessGame::ValidateMove( string move)
 {
 	return true;
-	////make sure there is always a good copy of chessboard, make all operations on backup, do not
-	//// alter cb until actually making the move
-	//ChessBoard backup = ChessBoard ( cb );
-	//backup.GenerateMoves();
-	//ChessMove cm, goodchessmove;
-	////check if the move is in the move stack
-	//while ( ! backup.chessmoves.empty())
-	//{
-	//	cm = backup.chessmoves.top();
-	//	backup.chessmoves.pop();
-
-
-	//	if ( cm.ToString() == ( command ) )
-	//	{
-	//		// the move is in the stack, but can it actually be made on the board?
-	//		if ( backup.MakeMove ( cm ) )
-	//		{
-	//			// success!
-	//			//System.out.println("Move " + command + " is valid! ( ValidateMove )");
-	//			return true;
-	//		}
-	//	} // end if
-	//} // end while
-	////System.out.println("Move " + command + " is invalid ( ValidateMove )");
-	//return (false);
-} 
-/*******************************************
-* ReturnValidatedMove( command )
-* takes a string and returns the chess move corresponding to the command
-*/
-ChessMove ChessGame::ReturnValidatedMove( string command )
-{
-	//cb.GenerateMoves();
-	//ChessMove cm;
-	//while ( ! cb.chessmoves.empty())
-	//{
-	//	cm = (ChessMove) cb.chessmoves.top();
-	//	cb.chessmoves.pop();
-
-	//	if ( cm.ToString() == ( command ) )
-	//	{
-	//		//System.out.println("Success, move " + command + " was found to be legal on this position! (ReturnValidatedMove)");
-
-	//		return cm;
-	//	} // end if
-	//} // end while
-	////System.out.println("Error, move " + command + " was found not to be legal on this position! (ReturnValidatedMove)");
-
-	//return ( cb.nullmove );
-	return 0;
 }
-/*********************************************
-* Process command 
-* This function receives a string from the host and attempts to perform some action on the board/game
-* valid commands right now:
-* new
-* valid chess moves from the current position
-*/ 
-string ChessGame::ProcessCommand( string command )
+void ChessGame::MakeMove(ChessMove cm)
 {
-	/*long long sq = getIndex(command);
-	std::string s = to_string(sq);
-	return "Square is " + s ;*/
-
-	if ( MODE == UCI )
-		return ProcessUCICommand(command);
-	//if ( MODE == ICC )
-	//	ProcessICCCommand(command);
-
-	string responce;
-	//  UCI
-	if ( command == "uci" )
+	//assumes the move has been validated! (to do...)
+	static int our, theirs; // reusable counters
+	static Square from = getFromSquare(cm);
+	static Square to = getToSquare(cm);
+	static Square epsq =  getEPSquare(cm);
+	static MoveType mt = getMoveType(cm);
+	//static Piece q = getPromotingPiece(cm);
+#ifdef _DEBUG
+	if ( ! isSquare(from)) 
+		return;
+	if ( ! isSquare(to))
+		return;
+#endif
+	//Ep moves
+	if ( epsq == to)
 	{
-		MODE = UCI;
-		responce += "id name TheMaster\n";
-		responce += "id author Francisco Tort\n";
-		//responce += "option\n";
-		responce += "uciok\n";
-		//responce += "option name ky value";
-		return responce;
+
+
+		return;
 	}
-	// QUIT
-	if ( command == "quit" )
+	// no capture
+	if ( isEmpty(to)) 
 	{
-		return "ok\n";
+		MovePiece(from, to);
+		return;
+	}
+	//Capture
+	{
+
+		return;
 	}
 
-	return "";
-} // end process command
+}
 
-/***
-* getResponce ( ) 
-* returns a string that corresponds to the computer move in computer algebraic
-* This is the function that calls the search function and interprets the results
-*
-string ChessGame::getResponce( void ) 
+void ChessGame::UnmakeMove( ChessMove cm)
+{
+	static Square from = getFromSquare(cm);
+	static Square to = getToSquare(cm);
+	static Square epsq =  getEPSquare(cm);
+	static MoveType mt = getMoveType(cm);
+
+	MovePiece(to, from); // going backwards...
+
+}
+void ChessGame::MakeMove( string cm)
 {
 
-	int legalmoves = 0;
-	int movestomate = 0;
-	bool foundmate = false;
 
-	ChessMove cm = ChessMove( "a2a4");
-	cb.GenerateMoves();
-	while ( ! cb.chessmoves.empty() )
+}
+void ChessGame::MakeMove( Square from, Square to)
+{
+
+
+}
+/********************************************
+* Generates LEGAL moves for side to move
+*/
+void ChessGame::GenerateMoves( void )
+{
+	Color ctm = m_boardState.m_bWhitetomove? WHITE:BLACK;
+	for ( short i = 0; i < maxpieces[ctm]; i++)
 	{
-		cm = cb.chessmoves.top();
-		cb.chessmoves.pop();
-
-		//ChessBoard temp = new ChessBoard ( cb );
-		temp[depth] = ChessBoard( cb );
-		// for each move that is valid...
-		if (  temp[depth].MakeMove( cm ) )
+		if ( pieces[i][ctm].piece == PAWN)
 		{
-			// found at least one valid move
-			legalmoves++;
-			cm.value = -30000;
-			// set the parent so we know which move is best so far
-			//temp.parent = cb;
-			// return the negative of evaluate because we are interested in the best score for this side.
-			//cm.value = temp.evaluate();
-			//if ( drawcheck( temp[depth] ) ) 
-			// cm.value = 0;
-			//else
-			cm.value = -NegaMax( temp[depth] , depth - 1);
-			//cm.value = -AlphaBeta( temp[depth] , depth - 1, -40000, 40000);
-			//System.out.println("Move " + cm.out() + " value is : " + cm.value);
 
-
-			//if this move value > than current best.value, swap moves (update king of the hill)
-			if ( legalmoves != 0 )
-			{
-				if ( legalmoves == 1) // special case for first move
-				{
-					cb.BestSoFar = cm;
-					//System.out.println("Only so far = " + cm.out());
-				}
-				else // best so far exists, update if necessary
-				{
-					if ( cb.BestSoFar.value <= cm.value )
-					{
-						cb.BestSoFar = cm;
-						//System.out.println("Best so far = " + cm.out());
-					}
-				}
-			} // end if legal moves != 0
-		} // end validate move
-	} // end while chessmoves.empty()
-
-	//All the moves have been evaluated
-
-	//return appropiate value if no moves found, this does not need to return a value because there is
-	// no where to return it to.
-	if ( legalmoves == 0 ) 
-	{
-		if ( cb.sidetomove == WHITE )
-		{
-			if ( cb.IsAttacked( cb.whitekingposition, BLACK ) > 0) // white to move and white is attacked. Mate!
-			{
-				//System.out.println("Its mate!");
-				gameover = true;
-
-			}
-			else
-			{
-				//System.out.println("Stalemate!");
-				gameover = true;
-
-			}
 		}
-		else // cb.tomove == BLACK
-		{
-			if ( cb.IsAttacked( cb.blackkingposition, WHITE ) > 0) // black to move and black is attacked. Mate!
-			{
-				//System.out.println("Its mate!");
-				gameover = true;
 
-			}
-			else
-			{
-				//System.out.println("Stalemate!");
-				gameover = true;
 
-			}
-		} // endif
+
 	}
 
-	if (legalmoves > 0 )
-	{
-		//System.out.println("Returning best so far: " + cb.bestsofar.out() + " score: " + cb.bestsofar.value );
-		return cb.BestSoFar.ToString();
-	}
-	else
-		return "Game is over";
 }
-
-*/
-
-__int64 ChessGame::perft(ChessBoard & currentBoard, int depth)
+__int64 ChessGame::perft( int depth)
 {
 	__int64 legalmoves = 0;
-	unsigned int movebeingevaluated;
+	ChessMove movebeingevaluated;
 	if ( depth == -1)
 	{
 		legalmoves = 0;
@@ -338,25 +286,27 @@ __int64 ChessGame::perft(ChessBoard & currentBoard, int depth)
 	}
 	if ( depth == 0 ) 
 		return 1;
-	while ( ! currentBoard.m_movestack.empty() )
-		currentBoard.m_movestack.pop();
-	ChessBoard moveGenBoard = currentBoard;
-	ChessBoard temp = currentBoard;
-	ChessBoard recursive = currentBoard;
-
-	moveGenBoard.GenerateMoves();
+	while ( ! m_movestack.empty() )
+		m_movestack.pop();
 	
-	while ( ! moveGenBoard.m_movestack.empty()) 
+	GenerateMoves();
+
+	while ( ! m_movestack.empty()) 
 	{
-		movebeingevaluated = moveGenBoard.m_movestack.pop();
-		temp = currentBoard;
-		recursive = currentBoard;
-		if (temp.MakeMove( movebeingevaluated ) )
-		{
-			recursive.MakeMove(movebeingevaluated);
-			legalmoves += perft( recursive, depth - 1);
-		}
+		movebeingevaluated = m_movestack.pop();
+		MakeMove( movebeingevaluated );
+		legalmoves += perft(  depth - 1);
+		UnmakeMove(movebeingevaluated);
 	}
 	return legalmoves;
 } 
+
+/**************************************************************
+* PrintBoard ()
+*/
+
+void ChessGame::PrintBoard ( void ) 
+{
+
+}
 
