@@ -92,24 +92,24 @@ public:
 	*/
 	bool isSquare(Square sq)						{ return (( sq ) & 0x88)? 0:1; } ;
 	bool isEmpty(Square sq)							{ return ( ! Ox88Board[sq].piece );};
-	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BOTTOM6BITS) ; } ;
+	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-	Square getFromSquare(ChessMove cm)				{ return (cm & BOTTOM6BITS) ; } ;
-	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 6) & BOTTOM6BITS) ; } ;
-	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 12) & BOTTOM6BITS) ; } ;
-	Square getEPSquare(ChessMove cm)				{ return ( ( cm >> 18) & BOTTOM6BITS) ; } ;
+	Square getFromSquare(ChessMove cm)				{ return (cm & BYTE) ; } ;
+	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
+	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;
+	Square getEPSquare(ChessMove cm)				{ return ( ( cm >> 22) & BYTE) ; } ;
 	ChessMove CM( Square from, Square to, MoveType mt, Square epsq)
-	{ return ( ( from ) | ( to << 6) | ( mt << 12) | (epsq << 18) ) ; }
+	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (epsq << 22) ) ; }
 
 	Square MakeSquare(short r, short c)				{ return 16 * r + c;};
 	Square MakeSquare(string s)						{ 
-		/*string sq;
+		string sq;
 		short r = s[0] - 65;
-		short c = s[1] - 48;*/
-		return 0 /* 8 * r + c*/;
+		short c = s[1] - 48;
+		return MakeSquare(r, c);
 	};
 
 	/****************************************

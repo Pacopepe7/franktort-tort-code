@@ -43,6 +43,14 @@ void ChessGame::Init ( void )
 	pawndirection[BLACK] = SOUTH;
 	pawnsecondrank[WHITE] = RANK2;
 	pawnsecondrank[BLACK] = RANK7;
+
+	for (int i = 0; i < 64; i++)
+	{
+		Ox88Board[i].color = NOCOLOR;
+		Ox88Board[i].index = 0;
+		Ox88Board[i].piece = EMPTY;
+		Ox88Board[i].square = 0;
+	}
 	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 /***************************************************
@@ -59,11 +67,12 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	pieces[pieceindex][c].piece  = p;
 	pieces[pieceindex][c].square = s;
 	pieces[pieceindex][c].color = c;
-	maxpieces[c]++;
+	
 	Ox88Board[s].color = c;
 	Ox88Board[s].piece = p;
 	Ox88Board[s].square = s;
 	Ox88Board[s].index = pieceindex;
+	maxpieces[c]++;
 }
 /***********************************************************
 *
@@ -80,8 +89,8 @@ void ChessGame::MovePiece(Square from, Square to)
 	if ( ! isEmpty(to))
 		return;
 #endif
-	static short index;
-	static Color c;
+	short index;
+	Color c;
 	c = Ox88Board[from].color;
 	index = Ox88Board[from].index;
 	/*************************************/
@@ -91,6 +100,11 @@ void ChessGame::MovePiece(Square from, Square to)
 	Ox88Board[to].square = Ox88Board[from].square;
 
 	pieces[index][c].square = to;
+	
+	Ox88Board[from].piece = EMPTY;
+	Ox88Board[from].color = NOCOLOR;
+	Ox88Board[from].index = 0;
+	Ox88Board[from].square = 0;
 }
 /***********************************************************
 *
@@ -117,8 +131,8 @@ void ChessGame::Clear( Square s)
 	if ( isEmpty(s))
 		return;
 #endif
-	static short index;
-	static Color c;
+	short index;
+	Color c;
 	c = Ox88Board[s].color;
 	index = Ox88Board[s].index;
 	/***************************/
@@ -132,131 +146,14 @@ void ChessGame::Clear( Square s)
 	Ox88Board[s].piece = EMPTY;
 	Ox88Board[s].square = 0;
 }
-void ChessGame::Fen(string fen)
-{
-	vector<string> tokens;
-	Tokenize(fen, tokens, " " );
-	int index = 0;
-	char col = 0;
-	char row = 7;
 
-	do {
-		switch(tokens[0][index] ) {
-		case 'K': Set(KING, WHITE, row , col);	col++; break;
-		case 'Q': Set(QUEEN, WHITE, row , col);	col++; break;
-		case 'R': Set(ROOK, WHITE, row , col);	col++; break;
-		case 'B': Set(BISHOP, WHITE, row , col);	col++; break;
-		case 'N': Set(KNIGHT, WHITE, row , col);	col++; break;
-		case 'P': Set(PAWN, WHITE, row , col);	col++; break;
-		case 'k': Set(KING, BLACK, row , col);	col++; break;
-		case 'q': Set(QUEEN, BLACK, row , col);	col++; break;
-		case 'r': Set(ROOK, BLACK, row , col);	col++; break;
-		case 'b': Set(BISHOP, BLACK, row , col);	col++; break;
-		case 'n': Set(KNIGHT, BLACK, row , col);	col++; break;
-		case 'p': Set(PAWN, BLACK, row , col);	col++; break;
-		case '/': row--; col=0; break;
-		case '1': col+=1; break;
-		case '2': col+=2; break;
-		case '3': col+=3; break;
-		case '4': col+=4; break;
-		case '5': col+=5; break;
-		case '6': col+=6; break;
-		case '7': col+=7; break;
-		case '8': col+=8; break;
-		};
-		index++;
-	} while ( index < tokens[0].length() );
-
-	if (tokens[1] =="w") {
-		m_boardState.m_bWhitetomove = TRUE;
-	} else {
-		m_boardState.m_bWhitetomove = FALSE;
-	}
-
-	index = 0;
-	do {
-		switch( tokens[2][index] ) {
-		case 'K': m_boardState.castling.whiteshort = true; break;
-		case 'Q': m_boardState.castling.whitelong = true; break;
-		case 'k': m_boardState.castling.blackshort = true; break;
-		case 'q': m_boardState.castling.blacklong = true; break;
-		}
-		index++;
-	} while (index < tokens[2].length()  );
-
-	//en passant quare
-	if ( tokens[3] == "-" )
-		state.eppossible = false;
-	else
-	{
-		state.eppossible = true;
-		state.epsquare = MakeSquare(tokens[4]);
-	}
-
-	// 50 move rule counter
-	if ( tokens[4] == "-" )
-		state.fiftymoverule = 0;
-	else
-	{
-		state.fiftymoverule = MakeInt(tokens[5]);
-	}
-	//move number
-	state.move = MakeInt(tokens[5]);
-}
 bool ChessGame::ValidateMove( string move)
 {
 	return true;
 }
-void ChessGame::MakeMove(ChessMove cm)
-{
-	//assumes the move has been validated! (to do...)
-	static int our, theirs; // reusable counters
-	static Square from = getFromSquare(cm);
-	static Square to = getToSquare(cm);
-	static Square epsq =  getEPSquare(cm);
-	static MoveType mt = getMoveType(cm);
-	//static Piece q = getPromotingPiece(cm);
-#ifdef _DEBUG
-	if ( ! isSquare(from)) 
-		return;
-	if ( ! isSquare(to))
-		return;
-#endif
-	//Ep moves
-	if ( epsq == to)
-	{
 
 
-		return;
-	}
-	// no capture
-	if ( isEmpty(to)) 
-	{
-		MovePiece(from, to);
-		return;
-	}
-	//Capture
-	{
 
-		return;
-	}
-
-}
-
-void ChessGame::UnmakeMove( ChessMove cm)
-{
-	static Square from = getFromSquare(cm);
-	static Square to = getToSquare(cm);
-	static Square epsq =  getEPSquare(cm);
-	static MoveType mt = getMoveType(cm);
-
-	if ( mt == MT_NORMAL)
-	{
-		MovePiece(to, from); // going backwards...
-		return;
-	}
-
-}
 void ChessGame::MakeMove( string cm)
 {
 
@@ -268,38 +165,4 @@ void ChessGame::MakeMove( Square from, Square to)
 
 }
 
-__int64 ChessGame::perft( int depth)
-{
-	__int64 legalmoves = 0;
-	ChessMove movebeingevaluated;
-	if ( depth == -1)
-	{
-		legalmoves = 0;
-		return 0;
-	}
-	if ( depth == 0 ) 
-		return 1;
-	while ( ! mstack.empty() )
-		mstack.pop();
-	
-	GenerateMoves();
-
-	while ( ! mstack.empty()) 
-	{
-		movebeingevaluated = mstack.pop();
-		MakeMove( movebeingevaluated );
-		legalmoves += perft(  depth - 1);
-		UnmakeMove(movebeingevaluated);
-	}
-	return legalmoves;
-} 
-
-/**************************************************************
-* PrintBoard ()
-*/
-
-void ChessGame::PrintBoard ( void ) 
-{
-
-}
 

@@ -36,22 +36,21 @@ const Piece QUEEN						= 16;
 const Piece KING						= 32;
 
 /************************************************
-* 0 - 6 : from (6)
-* 7- 12 : to (6)
-* 13-18 : move type (6)
-* 19-24 : en Passant Square (6)
-* 25 - 30 : Piece captured (6 - for undoMove)
-* 31-32: 4 options for piece promoted: Q=00,R=01,B=10,N=11
+* 0 - 8 : from (8)
+* 9- 16 : to (8)
+* 17-22 : move type (6)
+* 23-30 : en Passant Square (8)
+* ////25 - 30 : Piece captured (6 - for undoMove)
+* /////31-32: 4 options for piece promoted: Q=00,R=01,B=10,N=11
 */
 typedef unsigned __int32	ChessMove; 
 
 
 typedef unsigned __int8		MoveType;
 
-const MoveType MT_ENPASSANTPOSSIBLE		= 1;
+const MoveType MT_NORMAL				= 1;
 const MoveType MT_PROMOTION				= 2;
 const MoveType MT_CAPTURE				= 4;
-const MoveType MT_NORMAL				= 8;					
 const MoveType MT_ENPASSANT				= 16;			
 const MoveType MT_CASTLE				= 32;
 
@@ -93,7 +92,7 @@ const int INVALID		=	128;
 /************************************************
 * MASKS
 */
-const Mask BOTTOM6BITS	= (1 | 2 | 4 | 8 | 16 | 32);
+const Mask BYTE	= (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128);
 
 enum { A1 =  0, B1, C1, D1, E1, F1, G1, H1,
 	   A2 = 16, B2, C2, D2, E2, F2, G2, H2,
