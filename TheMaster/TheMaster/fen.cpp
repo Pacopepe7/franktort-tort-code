@@ -6,7 +6,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "ChessGame.h"
-
+//Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 void ChessGame::Fen(string fen)
 {
 	vector<string> tokens;
@@ -42,19 +42,19 @@ void ChessGame::Fen(string fen)
 		index++;
 	} while ( index < tokens[0].length() );
 
-	if (tokens[1] =="w") {
-		m_boardState.m_bWhitetomove = TRUE;
+	if (tokens[1] == "w") {
+		state.ctm = WHITE;
 	} else {
-		m_boardState.m_bWhitetomove = FALSE;
+		state.ctm = BLACK;
 	}
 
 	index = 0;
 	do {
 		switch( tokens[2][index] ) {
-		case 'K': m_boardState.castling.whiteshort = true; break;
-		case 'Q': m_boardState.castling.whitelong = true; break;
-		case 'k': m_boardState.castling.blackshort = true; break;
-		case 'q': m_boardState.castling.blacklong = true; break;
+		case 'K': state.castling.whiteshort = true; break;
+		case 'Q': state.castling.whitelong = true; break;
+		case 'k': state.castling.blackshort = true; break;
+		case 'q': state.castling.blacklong = true; break;
 		}
 		index++;
 	} while (index < tokens[2].length()  );

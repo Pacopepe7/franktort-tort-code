@@ -13,6 +13,7 @@ using namespace std;
 __int64 ChessGame::perft( int depth)
 {
 	__int64 legalmoves = 0;
+	int moves;
 	ChessMove movebeingevaluated;
 	if ( depth == -1)
 	{
@@ -21,19 +22,18 @@ __int64 ChessGame::perft( int depth)
 	}
 	if ( depth == 0 ) 
 		return 1;
-	while ( ! mstack.empty() )
-		mstack.pop();
+	 mstack[state.ply].DumpStack();
 	
 	GenerateMoves();
-
-	while ( ! mstack.empty()) 
+	if ( depth == 1)
+		return mstack[state.ply].size();
+	while ( ! mstack[state.ply].empty()) 
 	{
-		movebeingevaluated = mstack.pop();
+		movebeingevaluated = mstack[state.ply].pop();
 		MakeMove( movebeingevaluated );
-		//cout << (int)getFromSquare(movebeingevaluated) << endl;
-		PrintBoard();
-		legalmoves += perft(  depth - 1);
-		//cout << (int)getFromSquare(movebeingevaluated) << endl;
+		
+		moves = perft(  depth - 1);
+		legalmoves += moves;
 		UnmakeMove(movebeingevaluated);
 	}
 	return legalmoves;

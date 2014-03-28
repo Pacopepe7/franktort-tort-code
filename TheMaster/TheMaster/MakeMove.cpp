@@ -12,13 +12,11 @@ using namespace std;
 void ChessGame::MakeMove(ChessMove cm)
 {
 	//assumes the move has been validated! (to do...)
-	int our, theirs; // reusable counters
 	Square from = getFromSquare(cm);
 	Square to = getToSquare(cm);
-	Square epsq =  getEPSquare(cm);
+	Square epsq =  getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
-
-	cout << "From: " << (int)from << ", To: " << (int)to << endl;
+	//cout << "From: " << (int)from << ", To: " << (int)to << endl;
 	//Piece q = getPromotingPiece(cm);
 #ifdef _DEBUG
 	if ( ! isSquare(from)) 
@@ -31,29 +29,25 @@ void ChessGame::MakeMove(ChessMove cm)
 	{
 
 
-		return;
+		;
 	}
 	// no capture
-	if ( isEmpty(to)) 
+	if ( mt == MT_NORMAL) 
 	{
 		MovePiece(from, to);
-		return;
+		
 	}
 	//Capture
+	if (mt == MT_CAPTURE )
 	{
-
-		return;
+		CapturePiece(from, to);
 	}
 
 
 	/************************************************/
 	//Update move info
 
-	state.m_bWhitetomove = state.m_bWhitetomove? false: true;
-
-	if ( mt != MT_CAPTURE )
-				state.fiftymoverule ++;
-	state.m_LastMove = cm;
+	SwitchSides();
 	state.ply++;
-
+	return;
 }

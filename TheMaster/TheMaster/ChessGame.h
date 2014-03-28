@@ -32,9 +32,9 @@ struct boardstate_t {
 	ChessMove m_BestSoFar;
 	int m_BestValueSoFar;
 	ChessMove m_LastMove;
-	bool m_bWhitetomove;
-	short m_sWhitekingposition;
-	short m_sBlackkingposition;
+	bool ctm;
+	short bk;
+	short wk;
 	short ply;
 	short move;
 	Square epsquare;
@@ -51,8 +51,8 @@ private:
 	static int  bishopvectors[8]	;
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
-	boardstate_t m_boardState;
-	Cstack <ChessMove> mstack;
+	static string  notation[128]		;
+	Cstack <ChessMove> mstack[700];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
@@ -77,9 +77,14 @@ public:
 	bool isPositionValid(void);
 	int  Evaluate(void);
 	void Command(string c);
-
-	short ColorToMove(void)		{ return m_boardState.m_bWhitetomove? BLACK:WHITE;};
-	short ColorNotToMove(void)	{ return m_boardState.m_bWhitetomove? WHITE:BLACK;};
+	void SwitchSides(void)		{ 
+		if ( state.ctm == WHITE)
+			state.ctm = BLACK;
+		else
+			state.ctm = WHITE;
+	};
+	short ColorOnMove(void)		{ return state.ctm;};
+	short ColorNotOnMove(void)	{ return state.ctm == WHITE? BLACK:WHITE;};
 
 	void Set(Piece p, Color c, Square s);
 	void Set(Piece p, Color c, short r, short f);
@@ -90,8 +95,9 @@ public:
 	/****************************************
 	* ChessMove helper Funcs
 	*/
-	bool isSquare(Square sq)						{ return (( sq ) & 0x88)? 0:1; } ;
-	bool isEmpty(Square sq)							{ return ( ! Ox88Board[sq].piece );};
+	bool isSquare(Square sq)						{ return ( ( sq ) & 0x88)? 0:1; } ;
+	bool isEmpty(Square sq)							{ return ( !Ox88Board[sq].piece  );};
+	bool isOpponent(Square sq)						{ return ( Ox88Board[sq].color == ColorNotOnMove());};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
@@ -100,10 +106,12 @@ public:
 	Square getFromSquare(ChessMove cm)				{ return (cm & BYTE) ; } ;
 	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
 	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;
-	Square getEPSquare(ChessMove cm)				{ return ( ( cm >> 22) & BYTE) ; } ;
-	ChessMove CM( Square from, Square to, MoveType mt, Square epsq)
-	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (epsq << 22) ) ; }
-
+	Square getDataSquare(ChessMove cm)				{ return ( ( cm >> 24) & BYTE) ; } ;
+	Piece getPiece(Square sq)						{ return (  Ox88Board[sq].piece );};
+	ChessMove CM( Square from, Square to, MoveType mt, Square data)
+	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }
+	void PrintMove(ChessMove cm);
+	string not(Square sq);
 	Square MakeSquare(short r, short c)				{ return 16 * r + c;};
 	Square MakeSquare(string s)						{ 
 		string sq;

@@ -13,16 +13,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "ChessGame.h"
 
-
-int  ChessGame::kingvectors[8]		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHWEST, SOUTHEAST };
+int  ChessGame::kingvectors[8]		= { NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
 int  ChessGame::knightvectors[8]	= {
-	NORTH + NORTHWEST, NORTH + NORTHEAST, SOUTH + SOUTHWEST, SOUTH + SOUTHEAST, 
-	WEST + NORTHWEST, EAST + NORTHEAST, WEST + SOUTHWEST, EAST + SOUTHEAST
-};
-int  ChessGame::bishopvectors[8]	= { NORTHWEST,  NORTHEAST, SOUTHWEST, SOUTHEAST, 0, 0, 0, 0};
+	NORTH + NORTHWEST, NORTH + NORTHEAST, EAST + NORTHEAST, EAST + SOUTHEAST, 
+	SOUTH + SOUTHEAST, SOUTH + SOUTHWEST,  WEST + SOUTHWEST, WEST + NORTHWEST,  };
+int  ChessGame::bishopvectors[8]	= { NORTHEAST, SOUTHEAST,  SOUTHWEST, NORTHWEST, 0, 0, 0, 0};
 int  ChessGame::rookvectors[8]		= { NORTH, SOUTH, EAST, WEST , 0, 0, 0, 0};
-int  ChessGame::queenvectors[8]		= { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHWEST, SOUTHEAST };
+int  ChessGame::queenvectors[8]		= { NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
 
+string ChessGame::notation[128]		= {
+	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "X",  "X", "X", "X", "X", "X", "X", "X"};
+	
 /**
 * Chess Gane Constructor
 */
@@ -43,8 +51,9 @@ void ChessGame::Init ( void )
 	pawndirection[BLACK] = SOUTH;
 	pawnsecondrank[WHITE] = RANK2;
 	pawnsecondrank[BLACK] = RANK7;
+	state.ply = 0;
 
-	for (int i = 0; i < 64; i++)
+	for (int i = 0; i < 128; i++)
 	{
 		Ox88Board[i].color = NOCOLOR;
 		Ox88Board[i].index = 0;
@@ -63,7 +72,15 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	if ( ! isSquare(s)) 
 		return;
 #endif
-	short pieceindex = maxpieces[c];
+	short pieceindex;
+	bool found = false;
+	
+	for (  pieceindex = 0; pieceindex < MAXPIECES && pieceindex < maxpieces[c]; pieceindex++)
+		if ( pieces[pieceindex][c].piece == EMPTY )
+		{
+			found = true;
+			break;
+		}
 	pieces[pieceindex][c].piece  = p;
 	pieces[pieceindex][c].square = s;
 	pieces[pieceindex][c].color = c;
@@ -72,6 +89,7 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	Ox88Board[s].piece = p;
 	Ox88Board[s].square = s;
 	Ox88Board[s].index = pieceindex;
+	if ( ! found)
 	maxpieces[c]++;
 }
 /***********************************************************
@@ -111,7 +129,8 @@ void ChessGame::MovePiece(Square from, Square to)
 */
 void ChessGame::CapturePiece(Square from, Square to)
 {
-
+	Clear(to);
+	MovePiece(from, to);
 }
 /***********************************************************
 *
@@ -131,10 +150,8 @@ void ChessGame::Clear( Square s)
 	if ( isEmpty(s))
 		return;
 #endif
-	short index;
-	Color c;
-	c = Ox88Board[s].color;
-	index = Ox88Board[s].index;
+	short index= Ox88Board[s].index;
+	Color c = Ox88Board[s].color;
 	/***************************/
 	pieces[index][c].color = NOCOLOR;
 	pieces[index][c].index = 0;

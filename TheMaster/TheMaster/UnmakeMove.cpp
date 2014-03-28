@@ -5,13 +5,14 @@
 * 
 */
 #include "ChessGame.h"
-
+#include <iostream>
+using namespace std;
 
 void ChessGame::UnmakeMove( ChessMove cm)
 {
 	Square from = getFromSquare(cm);
 	Square to = getToSquare(cm);
-	Square epsq =  getEPSquare(cm);
+	Square data =  getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
 
 	if ( mt == MT_NORMAL)
@@ -19,13 +20,15 @@ void ChessGame::UnmakeMove( ChessMove cm)
 		MovePiece(to, from); // going backwards...
 		
 	}
-	
+	if ( mt == MT_CAPTURE)
+	{
+		MovePiece(to, from);
+		Set(data, ColorOnMove(),to);
+
+	}
 	/************************************************/
 	//Update move info
-	state.m_bWhitetomove = state.m_bWhitetomove? false: true;
-
-	//if ( mt != MT_CAPTURE )
-	//			state.fiftymoverule ++;
-	
+	SwitchSides();
 	state.ply--;
+	return;
 }

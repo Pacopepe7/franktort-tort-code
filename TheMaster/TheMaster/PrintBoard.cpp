@@ -33,16 +33,16 @@ void ChessGame::PrintBoard ( void )
 		switch ( Ox88Board[i].piece)
 		{
 		case PAWN:
-			if (  ! Ox88Board[i].color ) //White is 0
+			if (  Ox88Board[i].color == WHITE ) //White is 0
 				cout << "P";
-			else
+			if (  Ox88Board[i].color == BLACK )
 				cout << "p";
 			break;
 		case KNIGHT:
 			if (  ! Ox88Board[i].color ) //WHite is 0
 				cout << "N";
 			else
-				cout << "k";
+				cout << "n";
 			break;
 		case BISHOP:
 			if (  ! Ox88Board[i].color ) //WHite is 0

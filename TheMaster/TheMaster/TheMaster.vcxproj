@@ -87,6 +87,7 @@
     <ClCompile Include="perft.cpp" />
     <ClCompile Include="PieceSquareTables.cpp" />
     <ClCompile Include="PrintBoard.cpp" />
+    <ClCompile Include="PrintMove.cpp" />
     <ClCompile Include="TheMaster.cpp" />
     <ClCompile Include="UCIInterface.cpp" />
     <ClCompile Include="UnmakeMove.cpp" />

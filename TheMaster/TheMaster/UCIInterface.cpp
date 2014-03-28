@@ -79,9 +79,10 @@ void UCIInterface::Command(string command )
 
 	if (tokens[0] == "perft")
 	{
-		for ( int i = 1; i < 3; i++)
+		for ( int i = 1; i < 9; i++)
 		{
-			cout << "perft for depth " << (i ) << " is  " << cg.perft(i) << "\n";
+			cout << "perft for depth " << ( i ) << " is  " << cg.perft(i) << "\n";
+			cg.Init();
 		}
 		return ;
 	}

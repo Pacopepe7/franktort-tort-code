@@ -39,7 +39,7 @@ const Piece KING						= 32;
 * 0 - 8 : from (8)
 * 9- 16 : to (8)
 * 17-22 : move type (6)
-* 23-30 : en Passant Square (8)
+* 23-30 : data bits ( if ep move, ep square (is never a capture). if capture, captured piece.
 * ////25 - 30 : Piece captured (6 - for undoMove)
 * /////31-32: 4 options for piece promoted: Q=00,R=01,B=10,N=11
 */
@@ -72,8 +72,8 @@ typedef __int8				File;
 */
 const Direction  NORTH		=	16;
 const Direction  SOUTH		=  -16;
-const Direction  EAST		=	1;
-const Direction  WEST		=	-1;
+const Direction  EAST		=	-1;
+const Direction  WEST		=	1;
 const Direction  NORTHEAST	=	( NORTH + EAST );
 const Direction  NORTHWEST	=	( NORTH + WEST );
 const Direction  SOUTHEAST	=	( SOUTH + EAST );
@@ -81,13 +81,6 @@ const Direction  SOUTHWEST	=	( SOUTH + WEST );
 
 
 const int INVALID		=	128;
-
-/*****************************************/
-#define POSSIBLEMOVESKING 8
-#define POSSIBLEMOVESKNIGHT 8
-#define POSSIBLEMOVESROOK 4
-#define POSSIBLEMOVESBISHOP 4
-#define POSSIBLEMOVESQUEEN 8
 
 /************************************************
 * MASKS
