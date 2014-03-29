@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "UCIInterface.h"
+#include <boost/timer/timer.hpp>
 
 UCIInterface::UCIInterface(void)
 {
@@ -79,8 +80,14 @@ void UCIInterface::Command(string command )
 
 	if (tokens[0] == "perft")
 	{
-		for ( int i = 1; i < 9; i++)
+#ifdef _DEBUG
+		for ( int i = 1; i < 6; i++)
+#else
+		for ( int i = 1; i < 8; i++)
+#endif
 		{
+			
+			boost::timer::auto_cpu_timer tt(6, "Perf ran on %w seconds\n");
 			cout << "perft for depth " << ( i ) << " is  " << cg.perft(i) << "\n";
 			cg.Init();
 		}

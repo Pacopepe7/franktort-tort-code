@@ -40,10 +40,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>
     </LinkIncremental>
+    <IncludePath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -56,6 +59,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libboost_timer-vc100-mt-gd-1_55.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,11 +77,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libboost_timer-vc100-mt-1_55.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="algorithms.cpp" />
     <ClCompile Include="Attacked.cpp" />
+    <ClCompile Include="AttackTables.cpp" />
     <ClCompile Include="ChessGame.cpp" />
     <ClCompile Include="Evaluate.cpp" />
     <ClCompile Include="fen.cpp" />

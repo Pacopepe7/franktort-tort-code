@@ -1,13 +1,60 @@
 /********************************************
 *
-*
+*http://web.archive.org/web/20071214140839/http://www.seanet.com/~brucemo/topics/0x88.htm
 */
 
-#include "ChessBoard.h"
+#include "ChessGame.h"
 
-
-bool ChessBoard::isAttacked ( int x, int side )
+/*********************************************
+* Did last move left opponent on check?
+*/
+bool ChessGame::isPositionValid(void)
 {
+	Color ctm = state.ctm;
+	Color opp = ColorNotOnMove(); // is opponent on check and its our turn (! invalid !)
+	Square kingsq = state.king[opp];
+	Square sq;
+	Piece PiecesAbleToAttack;
+	Piece attacker;
+	Square Attackersq;
+	for ( int i = 0; i < maxpieces[ctm]; i++)
+	{
+		attacker = pieces[i][ctm].piece;
+		Attackersq = pieces[i][ctm].square;
+		if ( attacker & PAWN )
+		{
+		}
+		if ( attacker & QUEEN )
+		{
+			if ( pieces[i][ctm].piece & QUEEN)
+			{
+				for ( int c = 0; c < 8; c++)
+				{
+					for ( sq = Attackersq + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c])
+						if ( isSquare(sq) && isOpponent(sq) )
+							return true;
+				}
+			}
+		}
+
+
+	}
+
+	return true;
+}
+bool ChessGame::Attacks(Square s1, Square s2)
+{
+	int diff = s2 - s1;
+	if ( diff % 17 == 0 ) // King, Queen, Bishop (diagonal)
+	{
+
+
+	}
+	return true;
+}
+bool ChessGame::isAttacked ( Square sq, Color side )
+{
+
 
 	// skip to square x, check if a piece from "side" is attacking this square
 	//checking for pawns, pawns are the only piece we care about the color, because they move 

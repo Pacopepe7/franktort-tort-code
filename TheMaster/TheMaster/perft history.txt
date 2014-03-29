@@ -1,0 +1,17 @@
+March 28, 2014 - UCI interface initialized
+perft
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001251 seconds
+perft for depth 2 is  400
+Perf ran on 0.001264 seconds
+perft for depth 3 is  8902
+Perf ran on 0.001612 seconds
+perft for depth 4 is  197742
+Perf ran on 0.006798 seconds
+perft for depth 5 is  4896998
+Perf ran on 0.123943 seconds
+perft for depth 6 is  120909581
+Perf ran on 11.764085 seconds
+perft for depth 7 is  3282734510
+Perf ran on 425.819411 seconds

@@ -7,33 +7,35 @@
 */
 #pragma once
 
-const unsigned int TRUE	= 1;
-const unsigned int FALSE= 0;
+#define TRUE	 1
+#define FALSE	 0
 
 /************************************************
 * COLORS
 */
 typedef short	Color;
-const Color WHITE						= 0;
-const Color BLACK						= 1;
-const Color NOCOLOR						= 2;
 
-const Color COLORS						= 2;
+#define WHITE						 0
+#define BLACK						 1
+#define NOCOLOR						 2
 
-const short MAXPIECES					= 16;
-const short INVALIDSQUARE				= 64;		
+#define COLORS						 2
+
+#define MAXPIECES					 16
+#define INVALIDSQUARE				 64		
+
 /************************************************
 * PIECES
 */
 typedef unsigned __int8		Piece;
 
-const Piece EMPTY						= 0;
-const Piece PAWN						= 1; 
-const Piece KNIGHT						= 2;
-const Piece BISHOP						= 4;
-const Piece ROOK						= 8;
-const Piece QUEEN						= 16;
-const Piece KING						= 32;
+#define EMPTY						 0
+#define PAWN						 1
+#define KNIGHT						 2
+#define BISHOP						 4
+#define ROOK						 8
+#define QUEEN						 16
+#define KING						 32
 
 /************************************************
 * 0 - 8 : from (8)
@@ -48,11 +50,11 @@ typedef unsigned __int32	ChessMove;
 
 typedef unsigned __int8		MoveType;
 
-const MoveType MT_NORMAL				= 1;
-const MoveType MT_PROMOTION				= 2;
-const MoveType MT_CAPTURE				= 4;
-const MoveType MT_ENPASSANT				= 16;			
-const MoveType MT_CASTLE				= 32;
+#define MT_NORMAL				 1
+#define MT_PROMOTION			 2
+#define MT_CAPTURE				 4
+#define MT_ENPASSANT			 16			
+#define MT_CASTLE				 32
 
 /************************************************
 * OTHER TYPES
@@ -70,14 +72,14 @@ typedef __int8				File;
 * These are vectors that allow the program to comunicate moves
 * and move the piece correctly in the array.
 */
-const Direction  NORTH		=	16;
-const Direction  SOUTH		=  -16;
-const Direction  EAST		=	-1;
-const Direction  WEST		=	1;
-const Direction  NORTHEAST	=	( NORTH + EAST );
-const Direction  NORTHWEST	=	( NORTH + WEST );
-const Direction  SOUTHEAST	=	( SOUTH + EAST );
-const Direction  SOUTHWEST	=	( SOUTH + WEST );
+#define  NORTH			(16)
+#define  SOUTH		  (-16)
+#define  EAST			(-1)
+#define  WEST			(1)
+#define  NORTHEAST		( NORTH + EAST )
+#define  NORTHWEST		( NORTH + WEST )
+#define  SOUTHEAST		( SOUTH + EAST )
+#define  SOUTHWEST		( SOUTH + WEST )
 
 
 const int INVALID		=	128;
@@ -85,7 +87,7 @@ const int INVALID		=	128;
 /************************************************
 * MASKS
 */
-const Mask BYTE	= (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128);
+#define BYTE	 (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128)
 
 enum { A1 =  0, B1, C1, D1, E1, F1, G1, H1,
 	   A2 = 16, B2, C2, D2, E2, F2, G2, H2,

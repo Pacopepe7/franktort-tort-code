@@ -52,6 +52,8 @@ void ChessGame::Init ( void )
 	pawnsecondrank[WHITE] = RANK2;
 	pawnsecondrank[BLACK] = RANK7;
 	state.ply = 0;
+	state.king[WHITE] = 0;
+	state.king[BLACK] = 0;
 
 	for (int i = 0; i < 128; i++)
 	{
@@ -61,6 +63,7 @@ void ChessGame::Init ( void )
 		Ox88Board[i].square = 0;
 	}
 	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	InitTables();
 }
 /***************************************************
 * Analogy: Imagine you are taking pieces out of a box and "set"ing them
@@ -89,6 +92,9 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	Ox88Board[s].piece = p;
 	Ox88Board[s].square = s;
 	Ox88Board[s].index = pieceindex;
+	//update king position
+	if ( p & KING)
+		state.king[c] = s;
 	if ( ! found)
 	maxpieces[c]++;
 }
@@ -116,6 +122,10 @@ void ChessGame::MovePiece(Square from, Square to)
 	Ox88Board[to].color = c;
 	Ox88Board[to].index = Ox88Board[from].index;
 	Ox88Board[to].square = Ox88Board[from].square;
+	//update king position
+	if ( Ox88Board[to].piece & KING)
+		state.king[c] = to;
+
 
 	pieces[index][c].square = to;
 	
@@ -123,6 +133,8 @@ void ChessGame::MovePiece(Square from, Square to)
 	Ox88Board[from].color = NOCOLOR;
 	Ox88Board[from].index = 0;
 	Ox88Board[from].square = 0;
+	
+	
 }
 /***********************************************************
 *
@@ -171,15 +183,15 @@ bool ChessGame::ValidateMove( string move)
 
 
 
-void ChessGame::MakeMove( string cm)
+bool ChessGame::MakeMove( string cm)
 {
 
-
+	return true;
 }
-void ChessGame::MakeMove( Square from, Square to)
+bool ChessGame::MakeMove( Square from, Square to)
 {
 
-
+	return true;
 }
 
 

@@ -33,8 +33,7 @@ struct boardstate_t {
 	int m_BestValueSoFar;
 	ChessMove m_LastMove;
 	bool ctm;
-	short bk;
-	short wk;
+	Square king[2];
 	short ply;
 	short move;
 	Square epsquare;
@@ -52,10 +51,11 @@ private:
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
 	static string  notation[128]		;
-	Cstack <ChessMove> mstack[700];
+	Cstack <ChessMove> mstack[250];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
+	Piece Attacks0x88[260];
 	Pieceinfo_t Ox88Board[128];
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
@@ -67,14 +67,16 @@ public:
 	* Game Functions
 	*/
 	void Init(void);
+	void InitTables(void);
+
 	void Fen(string fen);
 	void GenerateMoves(void);
 	bool ValidateMove( string move);
-	void MakeMove(ChessMove cm);
-	void MakeMove( string cm);
-	void MakeMove( Square from, Square to);
+	bool MakeMove(ChessMove cm);
+	bool MakeMove( string cm);
+	bool MakeMove( Square from, Square to);
 	void UnmakeMove( ChessMove cm);
-	bool isPositionValid(void);
+
 	int  Evaluate(void);
 	void Command(string c);
 	void SwitchSides(void)		{ 
@@ -91,18 +93,29 @@ public:
 	void MovePiece( Square s1, Square s2);
 	void CapturePiece( Square s1, Square s2);
 	void Clear(Square s);
-	bool Attacks(Square s1, Square s2);
+
+	/****************************************
+	* Check legality of move/position
+	*/
+	bool isPositionValid(void);
+	bool Attacks(Square s1, Square s2); 
+
+	bool isAttacked ( Square sq, Color side );
 	/****************************************
 	* ChessMove helper Funcs
 	*/
-	bool isSquare(Square sq)						{ return ( ( sq ) & 0x88)? 0:1; } ;
-	bool isEmpty(Square sq)							{ return ( !Ox88Board[sq].piece  );};
+	bool isSquare(Square sq)						{ return (  sq & 0x88)? 0:1; } ;
+	bool isEmpty(Square sq)							{ return ( Ox88Board[sq].piece == 0  );};
+
 	bool isOpponent(Square sq)						{ return ( Ox88Board[sq].color == ColorNotOnMove());};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
+
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
+
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
+
 	Square getFromSquare(ChessMove cm)				{ return (cm & BYTE) ; } ;
 	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
 	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;

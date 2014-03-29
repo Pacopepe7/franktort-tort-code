@@ -17,6 +17,7 @@ void main ( void )
 	string input, output;
 	
 	UCIInterface TheMasterUCI;
+	TheMasterUCI.Command("perft");
 	do
 	{
 		getline(cin, input);

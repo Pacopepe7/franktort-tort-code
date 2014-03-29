@@ -10,6 +10,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using namespace std;
 
+
 __int64 ChessGame::perft( int depth)
 {
 	__int64 legalmoves = 0;
@@ -27,14 +28,24 @@ __int64 ChessGame::perft( int depth)
 	GenerateMoves();
 	if ( depth == 1)
 		return mstack[state.ply].size();
+
 	while ( ! mstack[state.ply].empty()) 
 	{
 		movebeingevaluated = mstack[state.ply].pop();
-		MakeMove( movebeingevaluated );
+		//MakeMove( movebeingevaluated );
+		//if ( isPositionValid() )
+		//{
+		//moves = perft(  depth - 1);
+		//legalmoves += moves;
+		//}
 		
+		if ( MakeMove( movebeingevaluated ) )
+		{
 		moves = perft(  depth - 1);
 		legalmoves += moves;
 		UnmakeMove(movebeingevaluated);
+		}
+		
 	}
 	return legalmoves;
 } 

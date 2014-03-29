@@ -9,7 +9,7 @@
 #include <iostream>
 using namespace std;
 
-void ChessGame::MakeMove(ChessMove cm)
+bool ChessGame::MakeMove(ChessMove cm)
 {
 	//assumes the move has been validated! (to do...)
 	Square from = getFromSquare(cm);
@@ -20,10 +20,13 @@ void ChessGame::MakeMove(ChessMove cm)
 	//Piece q = getPromotingPiece(cm);
 #ifdef _DEBUG
 	if ( ! isSquare(from)) 
-		return;
+		return false;
 	if ( ! isSquare(to))
-		return;
+		return false;
 #endif
+	//Cannot capture the king
+	if ( getPiece(to) & KING)
+		return false;
 	//Ep moves
 	if ( epsq == to)
 	{
@@ -49,5 +52,5 @@ void ChessGame::MakeMove(ChessMove cm)
 
 	SwitchSides();
 	state.ply++;
-	return;
+	return true;
 }

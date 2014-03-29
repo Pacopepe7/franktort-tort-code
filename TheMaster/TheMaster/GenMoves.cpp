@@ -45,38 +45,6 @@ void ChessGame::GenerateMoves( void )
 
 			}
 		}
-		if ( pieces[i][ctm].piece & PAWN)
-		{
-			sq = curr + pawndirection[ctm];
-			if ( getRank(pieces[i][ctm].square) == pawnsecondrank[ctm] )
-				if ( isSquare(sq) && isSquare(curr +  (pawndirection[ctm] * 2)) && 
-					isEmpty(sq) && isEmpty(curr +  (pawndirection[ctm] * 2)) )
-					mstack[state.ply].push(
-					CM(curr,
-					curr +  (pawndirection[ctm] * 2),
-					MT_NORMAL,
-					sq));
-			
-			if ( isSquare(sq) && isEmpty(sq))
-				mstack[state.ply].push(
-				CM(curr,
-				sq,
-				MT_NORMAL,
-				0));
-			if ( isSquare(sq + EAST) && isOpponent(sq + EAST))
-				mstack[state.ply].push(
-				CM(curr,
-				sq + EAST,
-				MT_CAPTURE,
-				getPiece(sq + EAST)));
-			if ( isSquare(sq + WEST) && isOpponent(sq + WEST))
-				mstack[state.ply].push(
-				CM(curr,
-				sq + WEST,
-				MT_CAPTURE,
-				getPiece(sq + WEST)));
-
-		}
 
 		if ( pieces[i][ctm].piece & KING)
 		{
@@ -161,7 +129,39 @@ void ChessGame::GenerateMoves( void )
 					MT_CAPTURE,
 					getPiece(sq)));
 			}
-
 		}
+		if ( pieces[i][ctm].piece & PAWN)
+		{
+			sq = curr + pawndirection[ctm];
+			if ( getRank(pieces[i][ctm].square) == pawnsecondrank[ctm] )
+				if ( isSquare(sq) && isSquare(curr +  (pawndirection[ctm] * 2)) && 
+					isEmpty(sq) && isEmpty(curr +  (pawndirection[ctm] * 2)) )
+					mstack[state.ply].push(
+					CM(curr,
+					curr +  (pawndirection[ctm] * 2),
+					MT_NORMAL,
+					sq));
+
+			if ( isSquare(sq) && isEmpty(sq))
+				mstack[state.ply].push(
+				CM(curr,
+				sq,
+				MT_NORMAL,
+				0));
+			if ( isSquare(sq + EAST) && isOpponent(sq + EAST))
+				mstack[state.ply].push(
+				CM(curr,
+				sq + EAST,
+				MT_CAPTURE,
+				getPiece(sq + EAST)));
+			if ( isSquare(sq + WEST) && isOpponent(sq + WEST))
+				mstack[state.ply].push(
+				CM(curr,
+				sq + WEST,
+				MT_CAPTURE,
+				getPiece(sq + WEST)));
+		}
+
 	}
 }
+
