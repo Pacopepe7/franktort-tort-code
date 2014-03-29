@@ -36,7 +36,7 @@ struct boardstate_t {
 	Square king[2];
 	short ply;
 	short move;
-	Square epsquare;
+	Square epsquare[100];
 	bool eppossible;
 	short fiftymoverule;
 
@@ -59,6 +59,7 @@ private:
 	Pieceinfo_t Ox88Board[128];
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
+	short pawn_EP_rank[COLORS];
 public:
 	/**************************************
 	* Constructor */

@@ -9,12 +9,16 @@
 #include <iostream>
 using namespace std;
 
+/**************************************************
+* if return is false, no need to UnmakeMove
+*
+*/
 bool ChessGame::MakeMove(ChessMove cm)
 {
-	//assumes the move has been validated! (to do...)
+	//Does NOT assume the move has been validated! (to do...)
 	Square from = getFromSquare(cm);
 	Square to = getToSquare(cm);
-	Square epsq =  getDataSquare(cm);
+	Square data =  getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
 	//cout << "From: " << (int)from << ", To: " << (int)to << endl;
 	//Piece q = getPromotingPiece(cm);
@@ -27,25 +31,29 @@ bool ChessGame::MakeMove(ChessMove cm)
 	//Cannot capture the king
 	if ( getPiece(to) & KING)
 		return false;
-	//Ep moves
-	if ( epsq == to)
+	//Ep possible
+	if ( mt == MT_ENPASSANTPOSSIBLE ) 
 	{
-
-
-		;
+		state.epsquare[state.ply] = data;
+		MovePiece(from, to);
+	}
+	else
+		state.epsquare[state.ply] = 0;
+	// EP
+	if ( mt == MT_ENPASSANT )
+	{
+		//PrintBoard();
+		Clear(state.epsquare[state.ply - 1] - pawndirection[state.ctm] );
+		MovePiece(from, to);
+		//PrintBoard();
 	}
 	// no capture
 	if ( mt == MT_NORMAL) 
-	{
 		MovePiece(from, to);
-		
-	}
+
 	//Capture
 	if (mt == MT_CAPTURE )
-	{
 		CapturePiece(from, to);
-	}
-
 
 	/************************************************/
 	//Update move info

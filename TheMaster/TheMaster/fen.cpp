@@ -13,7 +13,7 @@ void ChessGame::Fen(string fen)
 	Tokenize(fen, tokens, " " );
 	int index = 0;
 	char col = 0;
-	char row = 7;
+	char row = 0;
 
 	do {
 		switch(tokens[0][index] ) {
@@ -29,7 +29,7 @@ void ChessGame::Fen(string fen)
 		case 'b': Set(BISHOP, BLACK, row , col);	col++; break;
 		case 'n': Set(KNIGHT, BLACK, row , col);	col++; break;
 		case 'p': Set(PAWN, BLACK, row , col);	col++; break;
-		case '/': row--; col=0; break;
+		case '/': row++; col=0; break;
 		case '1': col+=1; break;
 		case '2': col+=2; break;
 		case '3': col+=3; break;
@@ -65,7 +65,7 @@ void ChessGame::Fen(string fen)
 	else
 	{
 		state.eppossible = true;
-		state.epsquare = MakeSquare(tokens[4]);
+		state.epsquare[0] = MakeSquare(tokens[4]);
 	}
 
 	// 50 move rule counter

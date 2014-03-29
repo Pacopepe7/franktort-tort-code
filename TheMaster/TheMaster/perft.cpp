@@ -15,6 +15,7 @@ __int64 ChessGame::perft( int depth)
 {
 	__int64 legalmoves = 0;
 	int moves;
+	int currDepthMoves = 0;
 	ChessMove movebeingevaluated;
 	if ( depth == -1)
 	{
@@ -23,29 +24,30 @@ __int64 ChessGame::perft( int depth)
 	}
 	if ( depth == 0 ) 
 		return 1;
-	 mstack[state.ply].DumpStack();
-	
+	mstack[state.ply].DumpStack();
+
 	GenerateMoves();
-	if ( depth == 1)
-		return mstack[state.ply].size();
 
 	while ( ! mstack[state.ply].empty()) 
 	{
 		movebeingevaluated = mstack[state.ply].pop();
-		//MakeMove( movebeingevaluated );
-		//if ( isPositionValid() )
-		//{
-		//moves = perft(  depth - 1);
-		//legalmoves += moves;
-		//}
-		
-		if ( MakeMove( movebeingevaluated ) )
+
+		if ( MakeMove( movebeingevaluated )  )
 		{
-		moves = perft(  depth - 1);
-		legalmoves += moves;
-		UnmakeMove(movebeingevaluated);
+			if ( isPositionValid() ) 
+			{
+				moves = perft(  depth - 1);
+				currDepthMoves ++;
+				legalmoves += moves;
+			}
+				UnmakeMove(movebeingevaluated);
 		}
-		
+
+	}
+	if ( ! currDepthMoves )
+	{
+		//there are no valid moves, mate?
+		//PrintBoard();
 	}
 	return legalmoves;
 } 

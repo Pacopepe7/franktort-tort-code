@@ -47,11 +47,18 @@ void ChessGame::Init ( void )
 
 	maxpieces[WHITE] = 0;
 	maxpieces[BLACK] = 0;
+
 	pawndirection[WHITE] = NORTH;
 	pawndirection[BLACK] = SOUTH;
-	pawnsecondrank[WHITE] = RANK2;
-	pawnsecondrank[BLACK] = RANK7;
+
+	pawnsecondrank[WHITE] = 6;
+	pawnsecondrank[BLACK] = 1;
+
+	pawn_EP_rank[WHITE] = 3;
+	pawn_EP_rank[BLACK] = 4;
+
 	state.ply = 0;
+
 	state.king[WHITE] = 0;
 	state.king[BLACK] = 0;
 

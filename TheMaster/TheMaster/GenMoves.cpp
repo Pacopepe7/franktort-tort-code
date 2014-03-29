@@ -42,7 +42,6 @@ void ChessGame::GenerateMoves( void )
 						MT_CAPTURE,
 						getPiece(sq)));
 				}
-
 			}
 		}
 
@@ -85,9 +84,6 @@ void ChessGame::GenerateMoves( void )
 					sq,
 					MT_CAPTURE,
 					getPiece(sq)));
-
-
-
 			}
 		}
 		if ( pieces[i][ctm].piece & QUEEN)
@@ -107,8 +103,6 @@ void ChessGame::GenerateMoves( void )
 					sq,
 					MT_CAPTURE,
 					getPiece(sq)));
-
-
 			}
 		}
 		if ( pieces[i][ctm].piece & ROOK)
@@ -133,15 +127,32 @@ void ChessGame::GenerateMoves( void )
 		if ( pieces[i][ctm].piece & PAWN)
 		{
 			sq = curr + pawndirection[ctm];
+			//second/seventh rank special jump
 			if ( getRank(pieces[i][ctm].square) == pawnsecondrank[ctm] )
 				if ( isSquare(sq) && isSquare(curr +  (pawndirection[ctm] * 2)) && 
 					isEmpty(sq) && isEmpty(curr +  (pawndirection[ctm] * 2)) )
 					mstack[state.ply].push(
 					CM(curr,
 					curr +  (pawndirection[ctm] * 2),
-					MT_NORMAL,
+					MT_ENPASSANTPOSSIBLE,
 					sq));
-
+			//fifth and fourth rank special check for ep capture.
+			if ( getRank(pieces[i][ctm].square) == pawn_EP_rank[ctm] )
+			{
+				if ( sq + EAST == state.epsquare[state.ply - 1] ) 
+					mstack[state.ply].push(
+					CM(curr,
+					sq + EAST,
+					MT_ENPASSANT,
+					0));
+				if ( sq + WEST == state.epsquare[state.ply - 1] ) 
+					mstack[state.ply].push(
+					CM(curr,
+					sq + WEST,
+					MT_ENPASSANT,
+					0));
+			}
+			//
 			if ( isSquare(sq) && isEmpty(sq))
 				mstack[state.ply].push(
 				CM(curr,
@@ -161,7 +172,6 @@ void ChessGame::GenerateMoves( void )
 				MT_CAPTURE,
 				getPiece(sq + WEST)));
 		}
-
 	}
 }
 

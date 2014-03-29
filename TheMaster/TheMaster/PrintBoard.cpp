@@ -15,7 +15,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void ChessGame::PrintBoard ( void ) 
 {
+#ifdef _DEBUG
 	bool newrow = false;
+	cout << "----------------------" << endl;
+	if ( state.ctm ) cout << "   BLACK to move   " << endl;
+	else cout << "   WHITE to move   " << endl;
 	for ( int i = 0; i < 128; i++)
 	{
 		if ( ! isSquare(i) )
@@ -68,12 +72,9 @@ void ChessGame::PrintBoard ( void )
 			else
 				cout << "k";
 			break;
-	
 		}
-
-
 	}
 	cout << endl;
-
+#endif
 }
 

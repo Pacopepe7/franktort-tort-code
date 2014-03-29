@@ -83,7 +83,7 @@ void UCIInterface::Command(string command )
 #ifdef _DEBUG
 		for ( int i = 1; i < 6; i++)
 #else
-		for ( int i = 1; i < 8; i++)
+		for ( int i = 1; i < 11; i++)
 #endif
 		{
 			
