@@ -99,7 +99,7 @@ public:
 	* Check legality of move/position
 	*/
 	bool isPositionValid(void);
-	bool Attacks(Square s1, Square s2); 
+	Piece Attacks(Square s1, Square s2); 
 
 	bool isAttacked ( Square sq, Color side );
 	/****************************************

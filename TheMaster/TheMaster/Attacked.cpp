@@ -12,16 +12,20 @@ bool ChessGame::isPositionValid(void)
 {
 	Color ctm = state.ctm;
 	Color opp = ColorNotOnMove(); // is opponent on check and its our turn (! invalid !)
+
 	Square kingsq = state.king[opp];
 	Square sq;
 	Piece PiecesAbleToAttack;
 	Piece attacker;
 	Square Attackersq;
+	 
 
 	for ( int i = 0; i < maxpieces[ctm]; i++)
 	{
 		attacker = pieces[i][ctm].piece;
 		Attackersq = pieces[i][ctm].square;
+
+		PiecesAbleToAttack = Attacks(Attackersq, kingsq);
 
 		if ( attacker & PAWN )
 		{
@@ -76,15 +80,15 @@ bool ChessGame::isPositionValid(void)
 	}
 	return true;
 }
-bool ChessGame::Attacks(Square s1, Square s2)
+Piece ChessGame::Attacks(Square s1, Square s2)
 {
 	int diff = s2 - s1;
-	if ( diff % 17 == 0 ) // King, Queen, Bishop (diagonal)
+	//if ( diff % 17 == 0 ) // King, Queen, Bishop (diagonal)
 	{
 
 
 	}
-	return true;
+	return PAWN;
 }
 bool ChessGame::isAttacked ( Square sq, Color side )
 {

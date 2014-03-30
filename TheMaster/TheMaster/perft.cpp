@@ -34,7 +34,7 @@ __int64 ChessGame::perft( int depth)
 
 		if ( MakeMove( movebeingevaluated )  )
 		{
-			if ( isPositionValid() ) 
+			//if ( isPositionValid() ) 
 			{
 				moves = perft(  depth - 1);
 				currDepthMoves ++;
