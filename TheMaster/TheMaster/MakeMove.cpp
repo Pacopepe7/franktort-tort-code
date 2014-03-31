@@ -22,12 +22,11 @@ bool ChessGame::MakeMove(ChessMove cm)
 	MoveType mt = getMoveType(cm);
 	//cout << "From: " << (int)from << ", To: " << (int)to << endl;
 	//Piece q = getPromotingPiece(cm);
-#ifdef _DEBUG
-	if ( ! isSquare(from)) 
-		return false;
-	if ( ! isSquare(to))
-		return false;
-#endif
+
+ASSERT ( isSquare(from));
+ASSERT ( isSquare(to));
+ASSERT ( ! isEmpty(from));
+
 	//Cannot capture the king
 	if ( getPiece(to) & KING)
 		return false;
@@ -57,7 +56,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 
 	/************************************************/
 	//Update move info
-
+	state.m_LastMove = cm;
 	SwitchSides();
 	state.ply++;
 	return true;

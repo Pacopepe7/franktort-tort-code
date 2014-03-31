@@ -9,6 +9,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Definitions.h"
 #include <string>
 #include "utils.h"
+#include <assert.h>
 #include "fixedLengthStack.h"
 
 /************************************************/
@@ -29,10 +30,10 @@ struct castling_t {
 /************************************************/
 struct boardstate_t {
 	castling_t castling;
-	ChessMove m_BestSoFar;
-	int m_BestValueSoFar;
+	//ChessMove m_BestSoFar;
+	//int m_BestValueSoFar;
 	ChessMove m_LastMove;
-	bool ctm;
+	int ctm;
 	Square king[2];
 	short ply;
 	short move;
@@ -50,13 +51,13 @@ private:
 	static int  bishopvectors[8]	;
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
-	static string  notation[128]		;
-	Cstack <ChessMove> mstack[250];
+	static string  notation[MAXBOARDARRAY]		;
+	Cstack <ChessMove> mstack[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
-	Piece Attacks0x88[260];
-	Pieceinfo_t Ox88Board[128];
+	Piece Attacks0x88[ATTACKTABLEMAX];
+	Pieceinfo_t Ox88Board[MAXBOARDARRAY];
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
 	short pawn_EP_rank[COLORS];
@@ -68,7 +69,7 @@ public:
 	* Game Functions
 	*/
 	void Init(void);
-	void InitTables(void);
+	void InitAttackTables(void);
 
 	void Fen(string fen);
 	void GenerateMoves(void);
@@ -81,10 +82,7 @@ public:
 	int  Evaluate(void);
 	void Command(string c);
 	void SwitchSides(void)		{ 
-		if ( state.ctm == WHITE)
-			state.ctm = BLACK;
-		else
-			state.ctm = WHITE;
+		state.ctm = ColorNotOnMove();
 	};
 	short ColorOnMove(void)		{ return state.ctm;};
 	short ColorNotOnMove(void)	{ return state.ctm == WHITE? BLACK:WHITE;};
@@ -99,9 +97,9 @@ public:
 	* Check legality of move/position
 	*/
 	bool isPositionValid(void);
-	Piece Attacks(Square s1, Square s2); 
-
-	bool isAttacked ( Square sq, Color side );
+	bool isPositionValidNew(void);
+	Piece PiecesThatCanAttack(/* From */ Square s1,/* to */ Square s2); 
+	bool isAttackedbyPiece ( Square from, Square to, Color side, Piece p );
 	/****************************************
 	* ChessMove helper Funcs
 	*/
@@ -138,6 +136,7 @@ public:
 	* Testing funcs
 	****************************************/
 	void PrintBoard(void);
+	void PrintDebugMove(ChessMove cm);
 	__int64 perft(int depth);
 
 }; // end class "ChessGame"

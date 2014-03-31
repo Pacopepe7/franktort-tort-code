@@ -83,7 +83,6 @@ typedef __int8				File;
 #define  SOUTHWEST		( SOUTH + WEST )
 
 
-const int INVALID		=	128;
 
 /************************************************
 * MASKS
@@ -98,4 +97,16 @@ enum { A8 =  0, B8, C8, D8, E8, F8, G8, H8,
 	   A3 = 80, B3, C3, D3, E3, F3, G3, H3, 
 	   A2 = 96, B2, C2, D2, E2, F2, G2, H2,
 	   A1 =112, B1, C1, D1, E1, F1, G1, H1};
+
+
+#define MAXBOARDARRAY	128
+#define INVALID			(-1)
+#define MAXMOVES		250
+#define ATTACKTABLEINDEXOFFSET	260
+#define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
+#ifdef _DEBUG
+#define ASSERT assert
+#else
+#define ASSERT //
+#endif
 

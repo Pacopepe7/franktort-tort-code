@@ -37,6 +37,8 @@ string ChessGame::notation[128]		= {
 ChessGame::ChessGame ( ) 
 {
 	Init();
+	InitAttackTables();
+
 }
 /**
 * Init ()
@@ -58,7 +60,7 @@ void ChessGame::Init ( void )
 	pawn_EP_rank[BLACK] = 4;
 
 	state.ply = 0;
-
+	state.ctm = WHITE;
 	state.king[WHITE] = 0;
 	state.king[BLACK] = 0;
 
@@ -70,7 +72,6 @@ void ChessGame::Init ( void )
 		Ox88Board[i].square = 0;
 	}
 	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	InitTables();
 }
 /***************************************************
 * Analogy: Imagine you are taking pieces out of a box and "set"ing them
@@ -78,10 +79,10 @@ void ChessGame::Init ( void )
 */
 void ChessGame::Set(Piece p, Color c, Square s)
 {
-#ifdef _DEBUG
-	if ( ! isSquare(s)) 
-		return;
-#endif
+
+	ASSERT ( isSquare(s)) ;
+
+
 	short pieceindex;
 	bool found = false;
 	
@@ -110,16 +111,12 @@ void ChessGame::Set(Piece p, Color c, Square s)
 */
 void ChessGame::MovePiece(Square from, Square to)
 {
-#ifdef _DEBUG
-	if ( ! isSquare(from)) 
-		return;
-	if ( ! isSquare(to)) 
-		return;
-	if ( isEmpty(from))
-		return;
-	if ( ! isEmpty(to))
-		return;
-#endif
+	ASSERT ( isSquare(from)) ;
+	ASSERT ( isSquare(to)) ;
+	ASSERT ( !isEmpty(from));
+	ASSERT ( isEmpty(to));
+		
+
 	short index;
 	Color c;
 	c = Ox88Board[from].color;
@@ -163,12 +160,10 @@ void ChessGame::Set(Piece p, Color c, short r, short f)
 */
 void ChessGame::Clear( Square s)
 {
-#ifdef _DEBUG
-	if ( ! isSquare(s)) 
-		return;
-	if ( isEmpty(s))
-		return;
-#endif
+
+	ASSERT( isSquare(s));
+	ASSERT( !isEmpty(s));
+	
 	short index= Ox88Board[s].index;
 	Color c = Ox88Board[s].color;
 	/***************************/

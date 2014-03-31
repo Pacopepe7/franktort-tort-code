@@ -81,15 +81,15 @@ void UCIInterface::Command(string command )
 	if (tokens[0] == "perft")
 	{
 #ifdef _DEBUG
-		for ( int i = 1; i < 6; i++)
+		for ( int i = 1; i < 5; i++)
 #else
-		for ( int i = 1; i < 11; i++)
+		for ( int i = 1; i < 8; i++)
 #endif
 		{
-			
+			cg.Init();
 			boost::timer::auto_cpu_timer tt(6, "Perf ran on %w seconds\n");
 			cout << "perft for depth " << ( i ) << " is  " << cg.perft(i) << "\n";
-			cg.Init();
+			
 		}
 		return ;
 	}

@@ -75,6 +75,26 @@ void ChessGame::PrintBoard ( void )
 		}
 	}
 	cout << endl;
+
+	//print, to move pieces...
+	for ( int c = 0; c < maxpieces[ state.ctm]; c++)
+		cout << "c: " << c << ", P: " << (int)pieces[c][state.ctm].piece << " I: " <<  (int)pieces[c][state.ctm].square << endl;
+	for ( int c = 0; c < maxpieces[ ColorNotOnMove()]; c++)
+		cout << "c: " << c << ", P: " << (int)pieces[c][ColorNotOnMove()].piece << " I: " <<  (int)pieces[c][ColorNotOnMove()].square << endl;
+	Square from = getFromSquare(state.m_LastMove);
+	Square to = getToSquare(state.m_LastMove);
+	Square data =  getDataSquare(state.m_LastMove);
+	MoveType mt = getMoveType(state.m_LastMove);
+	cout << (int) state.m_LastMove << "f: " << (int)from << " t: " << (int)to << " data: " << (int)data << " MT: " << (int) mt << endl;
+
+	
 #endif
 }
-
+void  ChessGame::PrintDebugMove(ChessMove cm)
+{
+	Square from = getFromSquare(cm);
+	Square to = getToSquare(cm);
+	Square data =  getDataSquare(cm);
+	MoveType mt = getMoveType(cm);
+	cout << "DEBUG:" << (int) cm << "f: " << (int)from << " t: " << (int)to << " data: " << (int)data << " MT: " << (int) mt << endl;
+}

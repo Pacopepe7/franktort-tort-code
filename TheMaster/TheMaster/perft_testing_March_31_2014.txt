@@ -1,0 +1,96 @@
+New code:
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001609 seconds
+perft for depth 2 is  400
+Perf ran on 0.005000 seconds
+perft for depth 3 is  8902
+Perf ran on 0.119487 seconds
+perft for depth 4 is  197732
+Perf ran on 1.806525 seconds
+perft for depth 5 is  4895888
+Perf ran on 63.501165 seconds
+
+
+Old: 
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001614 seconds
+perft for depth 2 is  400
+Perf ran on 0.004781 seconds
+perft for depth 3 is  8902
+Perf ran on 0.067450 seconds
+perft for depth 4 is  197281
+Perf ran on 1.584752 seconds
+perft for depth 5 is  4865609
+Perf ran on 37.727062 seconds
+
+Found bug, new code:
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 3.201558 seconds
+perft for depth 2 is  400
+Perf ran on 0.005282 seconds
+perft for depth 3 is  8902
+Perf ran on 0.121980 seconds
+perft for depth 4 is  197281
+Perf ran on 1.735311 seconds
+perft for depth 5 is  4865609
+Perf ran on 63.330021 seconds
+
+Release:
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001229 seconds
+perft for depth 2 is  400
+Perf ran on 0.001292 seconds
+perft for depth 3 is  7954
+Perf ran on 0.008586 seconds
+perft for depth 4 is  177333
+Perf ran on 0.059933 seconds
+perft for depth 5 is  3949643
+Perf ran on 3.824104 seconds
+perft 6   32 secs
+
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.002569 seconds
+perft for depth 2 is  400
+Perf ran on 0.001373 seconds
+perft for depth 3 is  8902
+Perf ran on 0.004321 seconds
+perft for depth 4 is  197281
+Perf ran on 0.037715 seconds
+perft for depth 5 is  4865609
+Perf ran on 0.864419 seconds
+perft for depth 6 is  119060324
+Perf ran on 103.225341 seconds
+
+not compiling the asserts!
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001321 seconds
+perft for depth 2 is  400
+Perf ran on 0.001223 seconds
+perft for depth 3 is  8902
+Perf ran on 0.002799 seconds
+perft for depth 4 is  197281
+Perf ran on 0.037667 seconds
+perft for depth 5 is  4865609
+Perf ran on 0.852098 seconds
+perft for depth 6 is  119060324
+Perf ran on 43.437352 seconds
+fast...  Sharper v0.17 by Albert Bertilsson
+perft 4
+Nodes:     197281,  Time:    0 cs
+perft 5
+Nodes:    4865609,  Time:   13 cs
+perft 6
+Nodes:  119060324,  Time:  298 cs
+but 6x slower than sharper

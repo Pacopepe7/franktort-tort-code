@@ -14,7 +14,7 @@
 */
 void ChessGame::GenerateMoves( void )
 {
-	Color ctm = state.ctm;
+	Color ctm = ColorOnMove();
 	Square curr;
 	Square sq;
 	for ( short i = 0; i < maxpieces[ctm]; i++)
