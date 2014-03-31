@@ -12,6 +12,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <assert.h>
 #include "fixedLengthStack.h"
 
+struct SearchResult
+{
+	ChessMove best;
+	int value;
+};
 /************************************************/
 struct Pieceinfo_t
 {
@@ -30,8 +35,6 @@ struct castling_t {
 /************************************************/
 struct boardstate_t {
 	castling_t castling;
-	//ChessMove m_BestSoFar;
-	//int m_BestValueSoFar;
 	ChessMove m_LastMove;
 	int ctm;
 	Square king[2];
@@ -53,6 +56,7 @@ private:
 	static int  queenvectors[8]		;
 	static string  notation[MAXBOARDARRAY]		;
 	Cstack <ChessMove> mstack[MAXMOVES];
+	SearchResult chessresult[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
@@ -72,14 +76,23 @@ public:
 	void InitAttackTables(void);
 
 	void Fen(string fen);
+	/***************************************
+	* Main Functions
+	*/
+	int Evaluate(void);
+	int NegaMax(int depth);
+
+	/*****************************************
+	* Move Functions
+	*/
 	void GenerateMoves(void);
-	bool ValidateMove( string move);
+	//bool ValidateMove( string move);
 	bool MakeMove(ChessMove cm);
 	bool MakeMove( string cm);
 	bool MakeMove( Square from, Square to);
 	void UnmakeMove( ChessMove cm);
 
-	int  Evaluate(void);
+	
 	void Command(string c);
 	void SwitchSides(void)		{ 
 		state.ctm = ColorNotOnMove();
@@ -111,6 +124,7 @@ public:
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
+	int  get64Index(Square s)						{ return ( s & (!0x88));};
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;

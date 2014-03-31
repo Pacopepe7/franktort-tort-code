@@ -8,47 +8,44 @@
 */
 
 #include "ChessGame.h"
-#include "ChessBoard.h"
+#include "Evaluate.h"
 
 /**************************************************************
 * Negamax readable
 * 
 */
-//int ChessGame::NegaMax( ChessBoard & currentBoard, int currentsearchdepth ) 
-//{
-//	if ( currentsearchdepth < 0 ) 
-//		return currentBoard.Evaluate(  );
-//
-//	int legalmoves = 0;
-//	int movestomate = 0;
-//	int value;
-//	unsigned int movebeingevaluated;
-//	ChessBoard temp = currentBoard;
-//	ChessBoard moveGenBoard = currentBoard;
-//
-//	moveGenBoard.GenerateMoves();
-//	
-//
-//	while ( ! moveGenBoard.m_movestack.empty() )
-//	{
-//		movebeingevaluated =  moveGenBoard.m_movestack.pop();
-//		
-//		temp =  ChessBoard(currentBoard);
-//		if ( temp.MakeMove( movebeingevaluated ) )
-//		{
-//			legalmoves++;
-//			if ( temp.isCapture(temp.m_boardState.m_LastMove)  )
-//				value = -NegaMax( temp, currentsearchdepth);
-//			else
-//				value = -NegaMax( temp, currentsearchdepth - 1);
-//				
-//			if ( value >= currentBoard.m_boardState.m_BestValueSoFar )
-//			{
-//				currentBoard.m_boardState.m_BestValueSoFar = value;
-//				currentBoard.m_boardState.m_BestSoFar = movebeingevaluated;
-//			}
-//		}
-//	}
-//	return temp.m_boardState.m_BestValueSoFar;
-//} 
-//
+int ChessGame::NegaMax( int depth ) 
+{
+	if ( depth < 0 ) 
+		return Evaluate(  );
+
+	int legalmoves = 0;
+	int movestomate = 0;
+	int value, best = -INFINITY;
+
+	ChessMove movebeingevaluated;
+	mstack[state.ply].DumpStack();
+	GenerateMoves();
+
+	while ( ! mstack[state.ply].empty() )
+	{
+		movebeingevaluated =  mstack[state.ply].pop();
+		
+		if ( MakeMove( movebeingevaluated ) )
+		{
+			if ( isPositionValid())
+			{
+				value = -NegaMax(  depth - 1);
+			}
+			UnmakeMove(movebeingevaluated);
+			
+				
+			if ( value >= best )
+			{
+				best = value;
+			}
+		}
+	}
+	return best;
+} 
+

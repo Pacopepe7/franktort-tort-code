@@ -155,10 +155,7 @@ void ChessGame::Clear( Square s)
 	
 }
 
-bool ChessGame::ValidateMove( string move)
-{
-	return true;
-}
+
 
 
 

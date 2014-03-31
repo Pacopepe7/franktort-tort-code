@@ -34,13 +34,6 @@ __int64 ChessGame::perft( int depth)
 
 		if ( MakeMove( movebeingevaluated )  )
 		{
-			/*if ( isPositionValid() !=  isPositionValidOld())
-			{
-				PrintBoard();
-				if ( isPositionValid() ) cout << "Valid\n";
-				PrintDebugMove(movebeingevaluated);
-				isPositionValid();
-			}*/
 			if ( isPositionValid() ) 
 			{
 				moves = perft(  depth - 1);
