@@ -10,7 +10,7 @@
 * Did last move left opponent on check?
 */
 
-bool ChessGame::isPositionValidNew(void)
+bool ChessGame::isPositionValid(void)
 {
 	Color ctm = state.ctm;
 	Color opp = ColorNotOnMove(); // is opponent on check and its our turn (! invalid !)
@@ -30,7 +30,7 @@ bool ChessGame::isPositionValidNew(void)
 
 }
 
-bool ChessGame::isPositionValid(void)
+bool ChessGame::isPositionValidOld(void)
 {
 
 	Color ctm = state.ctm;
@@ -42,21 +42,8 @@ bool ChessGame::isPositionValid(void)
 	Piece attacker;
 	Square Attackersq;
 
-	////**********************************************/
-	//// Did the opponent just left his king in check?
-	//for ( int i = 0; i < maxpieces[ctm]; i++)
-	//{
-	//	if ( pieces[i][ctm].piece)
-	//	if ( isAttacked(pieces[i][ctm].square, kingsq, ctm))
-	//		return false;
-	//}
-
-	//return true;
-
-
 	/***********************************************/
-
-
+	
 	for ( int i = 0; i < maxpieces[ctm]; i++)
 	{
 		attacker = pieces[i][ctm].piece;
@@ -139,8 +126,6 @@ bool ChessGame::isAttackedbyPiece ( Square from, Square to, Color side, Piece p 
 	ASSERT ( !isEmpty( from ) );
 	ASSERT( p );
 	
-
-
 	//if ( from == G5 && to == F7)
 	//	PrintBoard();
 	Piece PiecesAbleToAttack = PiecesThatCanAttack(from, to);
@@ -149,8 +134,6 @@ bool ChessGame::isAttackedbyPiece ( Square from, Square to, Color side, Piece p 
 	int c;
 	Square sq;
 	
-	
-
 	if ( !(p & PiecesAbleToAttack))
 		return false;
 

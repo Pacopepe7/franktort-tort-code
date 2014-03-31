@@ -65,12 +65,8 @@ void ChessGame::Init ( void )
 	state.king[BLACK] = 0;
 
 	for (int i = 0; i < 128; i++)
-	{
-		Ox88Board[i].color = NOCOLOR;
-		Ox88Board[i].index = 0;
-		Ox88Board[i].piece = EMPTY;
-		Ox88Board[i].square = 0;
-	}
+		Ox88Board[i] = NULL;
+
 	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 /***************************************************
@@ -79,10 +75,8 @@ void ChessGame::Init ( void )
 */
 void ChessGame::Set(Piece p, Color c, Square s)
 {
-
 	ASSERT ( isSquare(s)) ;
-
-
+	
 	short pieceindex;
 	bool found = false;
 	
@@ -92,14 +86,12 @@ void ChessGame::Set(Piece p, Color c, Square s)
 			found = true;
 			break;
 		}
-	pieces[pieceindex][c].piece  = p;
-	pieces[pieceindex][c].square = s;
-	pieces[pieceindex][c].color = c;
+	Ox88Board[s] = &pieces[pieceindex][c];
+	Ox88Board[s]->piece  = p;
+	Ox88Board[s]->square = s;
+	Ox88Board[s]->color = c;
+	Ox88Board[s]->index = pieceindex;
 	
-	Ox88Board[s].color = c;
-	Ox88Board[s].piece = p;
-	Ox88Board[s].square = s;
-	Ox88Board[s].index = pieceindex;
 	//update king position
 	if ( p & KING)
 		state.king[c] = s;
@@ -116,29 +108,19 @@ void ChessGame::MovePiece(Square from, Square to)
 	ASSERT ( !isEmpty(from));
 	ASSERT ( isEmpty(to));
 		
+	Color c = Ox88Board[from]->color;
+	int index = Ox88Board[from]->index;
 
-	short index;
-	Color c;
-	c = Ox88Board[from].color;
-	index = Ox88Board[from].index;
 	/*************************************/
-	Ox88Board[to].piece = Ox88Board[from].piece;
-	Ox88Board[to].color = c;
-	Ox88Board[to].index = Ox88Board[from].index;
-	Ox88Board[to].square = Ox88Board[from].square;
 	//update king position
-	if ( Ox88Board[to].piece & KING)
+	if ( Ox88Board[from]->piece & KING)
 		state.king[c] = to;
-
-
-	pieces[index][c].square = to;
 	
-	Ox88Board[from].piece = EMPTY;
-	Ox88Board[from].color = NOCOLOR;
-	Ox88Board[from].index = 0;
-	Ox88Board[from].square = 0;
-	
-	
+	Ox88Board[from]->square = to;
+	/*************************************/
+		
+	Ox88Board[to] = Ox88Board[from];
+	Ox88Board[from] = NULL;
 }
 /***********************************************************
 *
@@ -164,18 +146,13 @@ void ChessGame::Clear( Square s)
 	ASSERT( isSquare(s));
 	ASSERT( !isEmpty(s));
 	
-	short index= Ox88Board[s].index;
-	Color c = Ox88Board[s].color;
 	/***************************/
-	pieces[index][c].color = NOCOLOR;
-	pieces[index][c].index = 0;
-	pieces[index][c].piece = EMPTY;
-	pieces[index][c].square = 0;
-
-	Ox88Board[s].color = NOCOLOR;
-	Ox88Board[s].index = 0;
-	Ox88Board[s].piece = EMPTY;
-	Ox88Board[s].square = 0;
+	Ox88Board[s]->color = NOCOLOR;
+	Ox88Board[s]->index = 0;
+	Ox88Board[s]->piece = EMPTY;
+	Ox88Board[s]->square = 0;
+	Ox88Board[s] = NULL;
+	
 }
 
 bool ChessGame::ValidateMove( string move)

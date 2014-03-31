@@ -93,4 +93,64 @@ perft 5
 Nodes:    4865609,  Time:   13 cs
 perft 6
 Nodes:  119060324,  Time:  298 cs
-but 6x slower than sharper
+but 6x slower than sharper at depth 5,
+
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001039 seconds
+perft for depth 2 is  400
+Perf ran on 0.000965 seconds
+perft for depth 3 is  8902
+Perf ran on 0.002142 seconds
+perft for depth 4 is  197281
+Perf ran on 0.029862 seconds
+perft for depth 5 is  4865609
+Perf ran on 0.623011 seconds
+perft for depth 6 is  119060324
+Perf ran on 18.807971 seconds
+
+New Verify position - UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.003058 seconds
+perft for depth 2 is  400
+Perf ran on 0.001276 seconds
+perft for depth 3 is  8902
+Perf ran on 0.003023 seconds
+perft for depth 4 is  197281
+Perf ran on 0.038841 seconds
+perft for depth 5 is  4865609
+Perf ran on 0.890477 seconds
+perft for depth 6 is  119060324
+Perf ran on 24.048668 seconds
+
+Old verify position - UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.002950 seconds
+perft for depth 2 is  400
+Perf ran on 0.001384 seconds
+perft for depth 3 is  8902
+Perf ran on 0.004950 seconds
+perft for depth 4 is  197281
+Perf ran on 0.083285 seconds
+perft for depth 5 is  4865609
+Perf ran on 1.940679 seconds
+
+After converting from board[] to * board[]
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001239 seconds
+perft for depth 2 is  400
+Perf ran on 0.001201 seconds
+perft for depth 3 is  8902
+Perf ran on 0.002481 seconds
+perft for depth 4 is  197281
+Perf ran on 0.029285 seconds
+perft for depth 5 is  4865609
+Perf ran on 0.788697 seconds
+perft for depth 6 is  119060324
+Perf ran on 21.353153 seconds
+

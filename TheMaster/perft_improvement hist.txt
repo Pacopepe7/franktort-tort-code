@@ -1,0 +1,34 @@
+March 30, 2014 - UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001739 seconds
+perft for depth 2 is  400
+Perf ran on 0.001955 seconds
+perft for depth 3 is  8902
+Perf ran on 0.003646 seconds
+perft for depth 4 is  197281
+Perf ran on 0.076970 seconds
+perft for depth 5 is  4865609
+Perf ran on 1.729311 seconds
+perft for depth 6 is  119060324
+Perf ran on 45.396748 seconds
+perft for depth 7 is  3195018407
+Perf ran on 1385.722482 seconds
+perft for depth 8 is  -13832501719
+Perf ran on 39554.568269 seconds
+
+Without validate position
+UCI interface initialized
+received perft from user
+perft for depth 1 is  20
+Perf ran on 0.001212 seconds
+perft for depth 2 is  400
+Perf ran on 0.001428 seconds
+perft for depth 3 is  8902
+Perf ran on 0.002153 seconds
+perft for depth 4 is  197742
+Perf ran on 0.020159 seconds
+perft for depth 5 is  4896795
+Perf ran on 0.472982 seconds
+perft for depth 6 is  120894444
+Perf ran on 11.529155 seconds

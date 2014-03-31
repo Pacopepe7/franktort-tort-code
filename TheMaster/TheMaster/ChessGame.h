@@ -57,7 +57,7 @@ private:
 	short maxpieces[2];
 	boardstate_t state;
 	Piece Attacks0x88[ATTACKTABLEMAX];
-	Pieceinfo_t Ox88Board[MAXBOARDARRAY];
+	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
 	short pawn_EP_rank[COLORS];
@@ -97,16 +97,16 @@ public:
 	* Check legality of move/position
 	*/
 	bool isPositionValid(void);
-	bool isPositionValidNew(void);
+	bool isPositionValidOld(void);
 	Piece PiecesThatCanAttack(/* From */ Square s1,/* to */ Square s2); 
 	bool isAttackedbyPiece ( Square from, Square to, Color side, Piece p );
 	/****************************************
 	* ChessMove helper Funcs
 	*/
-	bool isSquare(Square sq)						{ return (  sq & 0x88)? 0:1; } ;
-	bool isEmpty(Square sq)							{ return ( Ox88Board[sq].piece == 0  );};
+	bool isSquare(Square sq)						{ return ( (sq & 0x88))? 0:1; } ;
+	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
 
-	bool isOpponent(Square sq)						{ return ( Ox88Board[sq].color == ColorNotOnMove());};
+	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == ColorNotOnMove()));};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
@@ -119,7 +119,7 @@ public:
 	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
 	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;
 	Square getDataSquare(ChessMove cm)				{ return ( ( cm >> 24) & BYTE) ; } ;
-	Piece getPiece(Square sq)						{ return (  Ox88Board[sq].piece );};
+	Piece getPiece(Square sq)						{ return (  (Ox88Board[sq] == NULL)?1 : Ox88Board[sq]->piece );};
 	ChessMove CM( Square from, Square to, MoveType mt, Square data)
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }
 	void PrintMove(ChessMove cm);
