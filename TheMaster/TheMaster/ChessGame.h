@@ -48,7 +48,7 @@ struct boardstate_t {
 
 class ChessGame 
 {
-private:
+public:
 	static int  kingvectors[8]		;
 	static int  knightvectors[8]	;
 	static int  bishopvectors[8]	;
@@ -56,7 +56,7 @@ private:
 	static int  queenvectors[8]		;
 	static string  notation[MAXBOARDARRAY]		;
 	Cstack <ChessMove> mstack[MAXMOVES];
-	SearchResult chessresult[MAXMOVES];
+	//SearchResult chessresult[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
@@ -81,15 +81,14 @@ public:
 	*/
 	int Evaluate(void);
 	int NegaMax(int depth);
-
+	SearchResult chessresult[MAXMOVES]; // public
 	/*****************************************
 	* Move Functions
 	*/
 	void GenerateMoves(void);
 	//bool ValidateMove( string move);
 	bool MakeMove(ChessMove cm);
-	bool MakeMove( string cm);
-	bool MakeMove( Square from, Square to);
+	bool MakeMoveFromString( string cm);
 	void UnmakeMove( ChessMove cm);
 
 	
@@ -138,6 +137,7 @@ public:
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }
 	void PrintMove(ChessMove cm);
 	string not(Square sq);
+	string MakeAlgebraicMove( ChessMove cm);
 	Square MakeSquare(short r, short c)				{ return 16 * r + c;};
 	Square MakeSquare(string s)						{ 
 		string sq;

@@ -1,10 +1,10 @@
 /**********************************************
 /*
-  TheMaster, a UCI chess playing engine 
-  Copyright (C)2014 Francisco Tort
+TheMaster, a UCI chess playing engine 
+Copyright (C)2014 Francisco Tort
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "ChessGame.h"
@@ -18,10 +18,11 @@ int ChessGame::NegaMax( int depth )
 {
 	if ( depth < 0 ) 
 		return Evaluate(  );
-
 	int legalmoves = 0;
 	int movestomate = 0;
-	int value, best = -INFINITY;
+	int value, best;
+	value = INFINITY;
+	best = INFINITY;
 
 	ChessMove movebeingevaluated;
 	mstack[state.ply].DumpStack();
@@ -30,20 +31,20 @@ int ChessGame::NegaMax( int depth )
 	while ( ! mstack[state.ply].empty() )
 	{
 		movebeingevaluated =  mstack[state.ply].pop();
-		
+
 		if ( MakeMove( movebeingevaluated ) )
 		{
 			if ( isPositionValid())
 			{
 				value = -NegaMax(  depth - 1);
+				if ( value >= best )
+				{
+					chessresult[state.ply].best = movebeingevaluated;
+					chessresult[state.ply].value = value;
+				}
+
 			}
 			UnmakeMove(movebeingevaluated);
-			
-				
-			if ( value >= best )
-			{
-				best = value;
-			}
 		}
 	}
 	return best;

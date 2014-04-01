@@ -12,6 +12,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
 #include "ChessGame.h"
+#include <iostream>
+
+using namespace std;
+
 
 int  ChessGame::kingvectors[8]		= { NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
 int  ChessGame::knightvectors[8]	= {
@@ -22,14 +26,14 @@ int  ChessGame::rookvectors[8]		= { NORTH, SOUTH, EAST, WEST , 0, 0, 0, 0};
 int  ChessGame::queenvectors[8]		= { NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
 
 string ChessGame::notation[128]		= {
-	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "X",  "X", "X", "X", "X", "X", "X", "X",
-	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "X",  "X", "X", "X", "X", "X", "X", "X",
-	"a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3", "X",  "X", "X", "X", "X", "X", "X", "X",
-	"a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4", "X",  "X", "X", "X", "X", "X", "X", "X",
-	"a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5", "X",  "X", "X", "X", "X", "X", "X", "X",
-	"a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "X",  "X", "X", "X", "X", "X", "X", "X",
 	"a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7", "X",  "X", "X", "X", "X", "X", "X", "X",
-	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "X",  "X", "X", "X", "X", "X", "X", "X"};
+	"a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "X",  "X", "X", "X", "X", "X", "X", "X",
+	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "X",  "X", "X", "X", "X", "X", "X", "X"};
 	
 /**
 * Chess Gane Constructor
@@ -159,15 +163,50 @@ void ChessGame::Clear( Square s)
 
 
 
-bool ChessGame::MakeMove( string cm)
+bool ChessGame::MakeMoveFromString( string cm)
 {
-
-	return true;
+	cout << "move = " << cm << endl;
+	mstack[state.ply].DumpStack();
+	GenerateMoves();
+	cout << "Moves stack size = " << mstack[state.ply].size() << endl;
+	int moves = mstack[state.ply].size();
+	for ( int c = 0; c < moves; c++)
+	{
+		string movetemp;
+		movetemp = MakeAlgebraicMove(mstack[state.ply].pop());
+		cout << movetemp << endl;
+	}
+	GenerateMoves();
+	moves = mstack[state.ply].size();
+	cout << "Moves stack size = " << mstack[state.ply].size() << endl;
+	ChessMove _cm;
+	for ( int c = 0; c < moves; c++)
+	{
+		_cm =  mstack[state.ply].pop();
+		string move = MakeAlgebraicMove(_cm);
+		if (cm == move )
+		{
+			MakeMove(_cm);
+			return true;
+		}
+	}
+	return false;
 }
-bool ChessGame::MakeMove( Square from, Square to)
-{
 
-	return true;
+string ChessGame::MakeAlgebraicMove( ChessMove cm)
+{
+	string chessmove = "";
+
+	Square from = getFromSquare(cm);
+	Square to = getToSquare(cm);
+	ASSERT ( isSquare(from));
+	ASSERT ( isSquare(to));
+
+	chessmove = not(from);
+	chessmove += not(to);
+	//todo, promotion
+
+	return chessmove;
 }
 
 

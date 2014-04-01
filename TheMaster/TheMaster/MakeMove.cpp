@@ -59,5 +59,6 @@ ASSERT ( ! isEmpty(from));
 	state.m_LastMove = cm;
 	SwitchSides();
 	state.ply++;
+	//PrintBoard();
 	return true;
 }

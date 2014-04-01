@@ -19,7 +19,7 @@ void UCIInterface::Command(string command )
 		return;
 	vector <string> tokens;
 
-	cout << "received " << command << " from user\n";
+	//cout << "received " << command << " from user\n";
 	// QUIT
 	if ( command == "quit" )
 	{
@@ -42,7 +42,7 @@ void UCIInterface::Command(string command )
 	//PrintBoard
 	if ( command == "pb" )
 	{
-		//cout << cg.PrintBoard();
+		cg.PrintBoard();
 		return;
 	}
 	// UCInewgame
@@ -65,17 +65,16 @@ void UCIInterface::Command(string command )
 			// start making moves on the internal board until no more moves
 			for ( int c = 3; c < tokens.size(); c++)
 			{
-				cg.MakeMove(tokens[c]);
+				cg.MakeMoveFromString(tokens[c]);
 			}
 		}
 	}
 	if (tokens[0] == "go")
 	{
-		//depth = 5;
-		//value = NegaMax(cb, (int)depth);
-		//sValue = std::to_string(value);
-		//sDepth = std::to_string(depth);
-		//return "info depth " + sDepth + " score cp " + sValue + "\nbestmove " + cb.MakeString(cb.m_boardState.m_BestSoFar) + "\n";
+		int depth = 3;
+		int value = cg.NegaMax( depth);
+		ChessMove cm = cg.chessresult[cg.state.ply].best;
+		cout <<  "info depth " << depth << " score cp " << cg.chessresult[cg.state.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
 
 	if (tokens[0] == "perft")

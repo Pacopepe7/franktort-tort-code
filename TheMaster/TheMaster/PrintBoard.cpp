@@ -32,8 +32,11 @@ void ChessGame::PrintBoard ( void )
 			newrow = false; 
 			cout << endl;
 		}
-		if ( Ox88Board[i]->piece == EMPTY)
+		if ( Ox88Board[i] == NULL)
+		{
 			cout << " ";
+			continue;
+		}
 		switch ( Ox88Board[i]->piece)
 		{
 		case PAWN:
@@ -77,7 +80,7 @@ void ChessGame::PrintBoard ( void )
 	cout << endl;
 
 	//print, to move pieces...
-	for ( int c = 0; c < maxpieces[ state.ctm]; c++)
+	/*for ( int c = 0; c < maxpieces[ state.ctm]; c++)
 		cout << "c: " << c << ", P: " << (int)pieces[c][state.ctm].piece << " I: " <<  (int)pieces[c][state.ctm].square << endl;
 	for ( int c = 0; c < maxpieces[ ColorNotOnMove()]; c++)
 		cout << "c: " << c << ", P: " << (int)pieces[c][ColorNotOnMove()].piece << " I: " <<  (int)pieces[c][ColorNotOnMove()].square << endl;
@@ -85,7 +88,7 @@ void ChessGame::PrintBoard ( void )
 	Square to = getToSquare(state.m_LastMove);
 	Square data =  getDataSquare(state.m_LastMove);
 	MoveType mt = getMoveType(state.m_LastMove);
-	cout << (int) state.m_LastMove << "f: " << (int)from << " t: " << (int)to << " data: " << (int)data << " MT: " << (int) mt << endl;
+	cout << (int) state.m_LastMove << "f: " << (int)from << " t: " << (int)to << " data: " << (int)data << " MT: " << (int) mt << endl;*/
 
 	
 #endif

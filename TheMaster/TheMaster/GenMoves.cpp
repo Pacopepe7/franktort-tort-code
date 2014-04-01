@@ -14,6 +14,7 @@
 */
 void ChessGame::GenerateMoves( void )
 {
+	mstack[state.ply].DumpStack();
 	Color ctm = ColorOnMove();
 	Square curr;
 	Square sq;
