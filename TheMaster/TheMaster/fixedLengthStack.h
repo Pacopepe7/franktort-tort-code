@@ -32,13 +32,17 @@ public:
 		if ( index > MAXSTACK )
 			return;
 		arr[++index] = cm; 
+		ASSERT ( index < MAXSTACK);
 	} ;
+	T inspect(short i)
+	{
+		return arr[i];
+	}
 	int size(void){
 		return index + 1;}
 	void DumpStack(void)
 	{
 		index = -1;
-		return;
 	}
 	bool empty (void)				
 	{ 

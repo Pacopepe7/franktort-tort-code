@@ -17,6 +17,13 @@ struct SearchResult
 	ChessMove best;
 	int value;
 };
+struct Searchdata
+{
+	long long nodes;
+	long long legalnodes;
+	long long evaluates;
+	int maxdepth;
+};
 /************************************************/
 struct Pieceinfo_t
 {
@@ -54,9 +61,20 @@ public:
 	static int  bishopvectors[8]	;
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
+
+	static int PSQT_WP[64];
+	static int PSQT_BP[64];
+
+	static int PSQT_N[64];
+	static int PSQT_B[64];
+	static int PSQT_R[64];
+	static int PSQT_Q[64];
+	static int PSQT_K[64];
+	static int Ox88to64[128];
+	static int blackOx88to64[128];
+
 	static string  notation[MAXBOARDARRAY]		;
 	Cstack <ChessMove> mstack[MAXMOVES];
-	//SearchResult chessresult[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
 	boardstate_t state;
@@ -65,6 +83,7 @@ public:
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
 	short pawn_EP_rank[COLORS];
+	Searchdata searchdata;
 public:
 	/**************************************
 	* Constructor */
@@ -123,7 +142,13 @@ public:
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
-	int  get64Index(Square s)						{ return ( s & (!0x88));};
+	int  get64Index(Square s)						{ 
+		if ( s > 128)
+			PrintBoard();
+		ASSERT(s > -1);
+		ASSERT(s < 128);
+		return ( Ox88to64[s]);
+	};
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
@@ -132,6 +157,7 @@ public:
 	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
 	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;
 	Square getDataSquare(ChessMove cm)				{ return ( ( cm >> 24) & BYTE) ; } ;
+	bool isCapture(ChessMove cm)					{ return ( getMoveType(cm) == MT_CAPTURE);};
 	Piece getPiece(Square sq)						{ return (  (Ox88Board[sq] == NULL)?1 : Ox88Board[sq]->piece );};
 	ChessMove CM( Square from, Square to, MoveType mt, Square data)
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }

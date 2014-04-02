@@ -21,7 +21,12 @@ void UCIInterface::Command(string command )
 
 	//cout << "received " << command << " from user\n";
 	// QUIT
-	if ( command == "quit" )
+	if ( command == "uci" )
+	{
+		cout << "id name TheMaster\n";
+		cout << "id author Francisco Tort\n";
+		return;
+	}	if ( command == "quit" )
 	{
 		cout << "ok\n";
 		return;
@@ -71,9 +76,20 @@ void UCIInterface::Command(string command )
 	}
 	if (tokens[0] == "go")
 	{
-		int depth = 3;
-		int value = cg.NegaMax( depth);
+		boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
+		cg.searchdata.maxdepth = 0;
+		cg.searchdata.nodes = 0;
+		cg.searchdata.legalnodes = 0;
+		cg.searchdata.evaluates = 0;
+
+		int depth = 6;
+		int value = cg.NegaMax( depth );
 		ChessMove cm = cg.chessresult[cg.state.ply].best;
+		cout << "info MaxDepth = " << cg.searchdata.maxdepth;
+		cout << " nodes = " << cg.searchdata.nodes << endl;
+		cout << "info legalnodes = " << cg.searchdata.legalnodes;
+		cout << " evaluates = " << cg.searchdata.evaluates << endl;
+		
 		cout <<  "info depth " << depth << " score cp " << cg.chessresult[cg.state.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
 

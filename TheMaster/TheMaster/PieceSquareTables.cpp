@@ -4,11 +4,13 @@
 * March 18, 2014
 */
 #include "Definitions.h"
+#include "ChessGame.h"
+
 /*************************************************************************
 //http://chessprogramming.wikispaces.com/Simplified+evaluation+function
 ************************************************************************/
 // pawn
-static int PSQT_WP[MAXBOARDARRAY] = {
+int ChessGame::PSQT_WP[64] = {
  0,  0,  0,  0,  0,  0,  0,  0,
 50, 50, 50, 50, 50, 50, 50, 50,
 10, 10, 20, 30, 30, 20, 10, 10,
@@ -18,7 +20,7 @@ static int PSQT_WP[MAXBOARDARRAY] = {
  5, 10, 10,-20,-20, 10, 10,  5,
  0,  0,  0,  0,  0,  0,  0,  0};
 
- static int PSQT_BP[64] = {
+ int ChessGame:: PSQT_BP[64] = {
  0,  0,  0,  0,  0,  0,  0,  0,
  5, 10, 10,-20,-20, 10, 10,  5,
  5, -5,-10,  0,  0,-10, -5,  5,
@@ -29,7 +31,7 @@ static int PSQT_WP[MAXBOARDARRAY] = {
  0,  0,  0,  0,  0,  0,  0,  0};
 
 // knight
-static int PSQT_N[MAXBOARDARRAY] = {
+ int ChessGame::PSQT_N[64] = {
 -50,-40,-30,-30,-30,-30,-40,-50,
 -40,-20,  0,  0,  0,  0,-20,-40,
 -30,  0, 10, 15, 15, 10,  0,-30,
@@ -41,7 +43,7 @@ static int PSQT_N[MAXBOARDARRAY] = {
 
 
 // bishop
-static int PSQT_B[64] = {
+int ChessGame::PSQT_B[64] = {
 -20,-10,-10,-10,-10,-10,-10,-20,
 -10,  0,  0,  0,  0,  0,  0,-10,
 -10,  0,  5, 10, 10,  5,  0,-10,
@@ -53,7 +55,7 @@ static int PSQT_B[64] = {
 
 
 //rook
-static int PSQT_R[64] = {
+ int ChessGame::PSQT_R[64] = {
   0,  0,  0,  0,  0,  0,  0,  0,
   5, 10, 10, 10, 10, 10, 10,  5,
  -5,  0,  0,  0,  0,  0,  0, -5,
@@ -65,7 +67,7 @@ static int PSQT_R[64] = {
 
 
 //queen
- static int PSQT_Q[64] = {
+ int ChessGame::PSQT_Q[64] = {
 -20,-10,-10, -5, -5,-10,-10,-20,
 -10,  0,  0,  0,  0,  0,  0,-10,
 -10,  0,  5,  5,  5,  5,  0,-10,

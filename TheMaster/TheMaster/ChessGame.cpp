@@ -24,6 +24,34 @@ int  ChessGame::knightvectors[8]	= {
 int  ChessGame::bishopvectors[8]	= { NORTHEAST, SOUTHEAST,  SOUTHWEST, NORTHWEST, 0, 0, 0, 0};
 int  ChessGame::rookvectors[8]		= { NORTH, SOUTH, EAST, WEST , 0, 0, 0, 0};
 int  ChessGame::queenvectors[8]		= { NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
+int ChessGame::Ox88to64[128] = {
+	//63, 62, 61, 60, 59, 58, 57, 56, 0,0,0,0,0,0,0,0,//0-15
+	//55, 54, 53, 52, 51, 50, 49, 48, 0,0,0,0,0,0,0,0,//16-
+	//47, 46, 45, 44, 43, 42, 41, 40, 0,0,0,0,0,0,0,0,//32
+	//39, 38, 37, 36, 35, 34, 33, 32, 0,0,0,0,0,0,0,0,//48
+	//31, 30, 29, 28, 27, 26, 25, 24, 0,0,0,0,0,0,0,0,//64
+	//23, 22, 21, 20, 19, 18, 17, 16, 0,0,0,0,0,0,0,0,//80
+	//15, 14, 13, 12, 11, 10,  9,  8, 0,0,0,0,0,0,0,0,//96
+	// 7,  6,  5,  4,  3,  2,  1,  0, 0,0,0,0,0,0,0,0};//112
+
+	0, 1, 2, 3, 4, 5, 6, 7,				0,0,0,0,0,0,0,0,
+	8, 9, 10, 11, 12, 13, 14, 15,		0,0,0,0,0,0,0,0,
+	16, 17, 18, 19, 20, 21, 22, 23,		0,0,0,0,0,0,0,0,
+	24, 25, 26, 27, 28, 29, 30, 31,		0,0,0,0,0,0,0,0,
+	32, 33, 34, 35, 36, 37, 38, 39,		0,0,0,0,0,0,0,0,
+	40, 41, 42, 43, 44, 45, 46, 47,		0,0,0,0,0,0,0,0,
+	48, 49, 50, 51, 52, 53, 54, 55,		0,0,0,0,0,0,0,0,
+	56, 57, 58, 59, 60, 61, 62,	63,		0,0,0,0,0,0,0,0};
+
+int ChessGame::blackOx88to64[128] = {
+	56, 57, 58, 59, 60, 61, 62,	63,		0,0,0,0,0,0,0,0,
+	48, 49, 50, 51, 52, 53, 54, 55,		0,0,0,0,0,0,0,0,
+	40, 41, 42, 43, 44, 45, 46, 47,		0,0,0,0,0,0,0,0,
+	32, 33, 34, 35, 36, 37, 38, 39,		0,0,0,0,0,0,0,0,
+	24, 25, 26, 27, 28, 29, 30, 31,		0,0,0,0,0,0,0,0,
+	16, 17, 18, 19, 20, 21, 22, 23,		0,0,0,0,0,0,0,0,
+	8, 9, 10, 11, 12, 13, 14, 15,		0,0,0,0,0,0,0,0,
+	0, 1, 2, 3, 4, 5, 6, 7,				0,0,0,0,0,0,0,0};
 
 string ChessGame::notation[128]		= {
 	"a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "X",  "X", "X", "X", "X", "X", "X", "X",
@@ -165,28 +193,17 @@ void ChessGame::Clear( Square s)
 
 bool ChessGame::MakeMoveFromString( string cm)
 {
-	cout << "move = " << cm << endl;
+	//cout << "move = " << cm << endl;
 	mstack[state.ply].DumpStack();
 	GenerateMoves();
-	cout << "Moves stack size = " << mstack[state.ply].size() << endl;
-	int moves = mstack[state.ply].size();
-	for ( int c = 0; c < moves; c++)
+		ChessMove _cm;
+	for ( int c = 0; c < mstack[state.ply].size(); c++)
 	{
-		string movetemp;
-		movetemp = MakeAlgebraicMove(mstack[state.ply].pop());
-		cout << movetemp << endl;
-	}
-	GenerateMoves();
-	moves = mstack[state.ply].size();
-	cout << "Moves stack size = " << mstack[state.ply].size() << endl;
-	ChessMove _cm;
-	for ( int c = 0; c < moves; c++)
-	{
-		_cm =  mstack[state.ply].pop();
+		_cm =  mstack[state.ply].inspect(c);
 		string move = MakeAlgebraicMove(_cm);
 		if (cm == move )
 		{
-			MakeMove(_cm);
+			MakeMove(_cm);//validate missing...
 			return true;
 		}
 	}

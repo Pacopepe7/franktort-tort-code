@@ -6,15 +6,27 @@ Copyright (C)2014 Francisco Tort
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+/*int alphaBeta( int alpha, int beta, int depthleft ) {
+   if( depthleft == 0 ) return quiesce( alpha, beta );
+   for ( all moves)  {
+      score = -alphaBeta( -beta, -alpha, depthleft - 1 );
+      if( score >= beta )
+         return beta;   //  fail hard beta-cutoff
+      if( score > alpha )
+         alpha = score; // alpha acts like max in MiniMax
+   }
+   return alpha;
+}
+http://chessprogramming.wikispaces.com/Alpha-Beta
+*/
 #include "ChessGame.h"
 #include "Evaluate.h"
 
 /**************************************************************
-* Negamax readable
+* Alpha Beta
 * 
 */
-int ChessGame::NegaMax( int depth ) 
+int ChessGame::AlphaBeta( int depth , int alpha, int beta) 
 {
 
 	if ( depth == 0 ) 
@@ -22,8 +34,7 @@ int ChessGame::NegaMax( int depth )
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score, max;
-	if ( searchdata.maxdepth < state.ply)
-		searchdata.maxdepth = state.ply + 1;
+	
 	max = -INFINITY;
 
 	ChessMove movebeingevaluated;
@@ -36,19 +47,20 @@ int ChessGame::NegaMax( int depth )
 
 		if ( MakeMove( movebeingevaluated ) )
 		{
-			searchdata.nodes++;
 			if ( isPositionValid())
 			{
-				searchdata.legalnodes++;
-				/*if ( isCapture(movebeingevaluated))
+				if ( isCapture(movebeingevaluated))
 				{
-						score = -NegaMax(  depth );
+					
+						score = -AlphaBeta(  depth, -beta, -alpha );
 				}
-				else*/
-					score = -NegaMax(  depth - 1);
-				if ( score >= max )
+				else
+					score = -AlphaBeta(  depth - 1, -beta, -alpha);
+				if ( score >= beta )
+					reutrn beta;
+				if ( score > alpha )
 				{
-					max = score;
+					alpha = score;
 					chessresult[state.ply-1].best = movebeingevaluated;
 					chessresult[state.ply-1].value = score;
 				}
@@ -56,6 +68,6 @@ int ChessGame::NegaMax( int depth )
 			UnmakeMove(movebeingevaluated);
 		}
 	}
-	return max;
+	return alpha;
 } 
 
