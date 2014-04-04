@@ -8,6 +8,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Definitions.h"
 #include <string>
+#include <iostream>
 #include "utils.h"
 #include <assert.h>
 #include "fixedLengthStack.h"
@@ -17,11 +18,14 @@ struct SearchResult
 	ChessMove best;
 	int value;
 };
+enum SearchMethod { NEGAMAX, ALPHABETA, MTDF, CUSTOM};
 struct Searchdata
 {
 	long long nodes;
 	long long legalnodes;
 	long long evaluates;
+	long long regularnodes;
+	long long quietnodes;
 	int maxdepth;
 };
 /************************************************/
@@ -72,8 +76,10 @@ public:
 	static int PSQT_K[64];
 	static int Ox88to64[128];
 	static int blackOx88to64[128];
-
-	static string  notation[MAXBOARDARRAY]		;
+	bool debug;
+	int depth;
+	SearchMethod searchmethod;
+	static string  notation[MAXBOARDARRAY];
 	Cstack <ChessMove> mstack[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
@@ -96,10 +102,13 @@ public:
 
 	void Fen(string fen);
 	/***************************************
-	* Main Functions
+	* Main Search Functions
 	*/
 	int Evaluate(void);
 	int NegaMax(int depth);
+	int QuietNegaMax(int depth);
+	int AlphaBeta(int depth, int alpha, int beta);
+	int QuietAlphaBeta(int depth, int alpha, int beta);
 	SearchResult chessresult[MAXMOVES]; // public
 	/*****************************************
 	* Move Functions
@@ -171,7 +180,10 @@ public:
 		short c = s[1] - 48;
 		return MakeSquare(r, c);
 	};
-
+	void PrintPV(void){
+		for ( int c = 0; c < state.ply; c++)
+			cout << " " << MakeAlgebraicMove(chessresult[c ].best) << " ";
+	}
 	/****************************************
 	* Testing funcs
 	****************************************/

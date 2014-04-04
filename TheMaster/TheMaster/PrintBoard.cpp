@@ -15,7 +15,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 void ChessGame::PrintBoard ( void ) 
 {
-#ifdef _DEBUG
 	bool newrow = false;
 	cout << "----------------------" << endl;
 	if ( state.ctm ) cout << "   BLACK to move   " << endl;
@@ -90,8 +89,6 @@ void ChessGame::PrintBoard ( void )
 	MoveType mt = getMoveType(state.m_LastMove);
 	cout << (int) state.m_LastMove << "f: " << (int)from << " t: " << (int)to << " data: " << (int)data << " MT: " << (int) mt << endl;*/
 
-	
-#endif
 }
 void  ChessGame::PrintDebugMove(ChessMove cm)
 {

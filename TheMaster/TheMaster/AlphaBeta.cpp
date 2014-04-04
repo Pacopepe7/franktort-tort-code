@@ -3,8 +3,6 @@
 TheMaster, a UCI chess playing engine 
 Copyright (C)2014 Francisco Tort
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*int alphaBeta( int alpha, int beta, int depthleft ) {
    if( depthleft == 0 ) return quiesce( alpha, beta );
@@ -21,6 +19,7 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 */
 #include "ChessGame.h"
 #include "Evaluate.h"
+#include <iostream>
 
 /**************************************************************
 * Alpha Beta
@@ -29,13 +28,13 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 int ChessGame::AlphaBeta( int depth , int alpha, int beta) 
 {
 
-	if ( depth == 0 ) 
-		return Evaluate(  );
+	if ( depth < 1 ) 
+		return QuietAlphaBeta( depth - 1, -beta, -alpha );
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score, max;
-	
-	max = -INFINITY;
+	if ( searchdata.maxdepth < state.ply)
+		searchdata.maxdepth = state.ply + 1;
 
 	ChessMove movebeingevaluated;
 	mstack[state.ply].DumpStack();
@@ -44,20 +43,63 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	while ( ! mstack[state.ply].empty() )
 	{
 		movebeingevaluated =  mstack[state.ply].pop();
-
 		if ( MakeMove( movebeingevaluated ) )
 		{
+			searchdata.nodes++;
 			if ( isPositionValid())
 			{
-				if ( isCapture(movebeingevaluated))
-				{
-					
-						score = -AlphaBeta(  depth, -beta, -alpha );
-				}
-				else
-					score = -AlphaBeta(  depth - 1, -beta, -alpha);
+				searchdata.legalnodes++;
+				searchdata.regularnodes++;
+				score = -AlphaBeta(  depth - 1, -beta, -alpha);
 				if ( score >= beta )
-					reutrn beta;
+				{
+					UnmakeMove(movebeingevaluated);
+					return beta;
+				}
+				if ( score > alpha )
+				{
+					alpha = score;
+					chessresult[state.ply-1].best = movebeingevaluated;
+					chessresult[state.ply-1].value = score;
+				}
+			}
+			UnmakeMove(movebeingevaluated);
+		}
+	}
+	return alpha;
+} 
+
+int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta) 
+{
+	int legalmoves = 0;
+	int movestomate = 0;
+	int score, max;
+	if ( searchdata.maxdepth < state.ply)
+		searchdata.maxdepth = state.ply + 1;
+
+	ChessMove movebeingevaluated;
+	mstack[state.ply].DumpStack();
+	GenerateMoves();
+
+	while ( ! mstack[state.ply].empty() )
+	{
+		movebeingevaluated =  mstack[state.ply].pop();
+		if ( MakeMove( movebeingevaluated ) )
+		{
+			searchdata.nodes++;
+			if ( isPositionValid())
+			{
+				searchdata.legalnodes++;
+				searchdata.quietnodes++;
+				if ( isCapture(movebeingevaluated) )
+					score = -AlphaBeta(  depth - 1, -beta, -alpha);
+				else
+					score = Evaluate();
+				if ( score >= beta )
+				{
+					UnmakeMove(movebeingevaluated);
+					return beta;
+				}
 				if ( score > alpha )
 				{
 					alpha = score;

@@ -95,7 +95,15 @@ void ChessGame::Init ( void )
 	state.ctm = WHITE;
 	state.king[WHITE] = 0;
 	state.king[BLACK] = 0;
+	searchmethod = NEGAMAX;
 
+#ifdef _DEBUG
+	debug = true;
+	depth = 4;
+#else
+	debug = false;
+	depth = 4;
+#endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
 

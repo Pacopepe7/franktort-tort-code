@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "UCIInterface.h"
+#include "Evaluate.h"
 #include <boost/timer/timer.hpp>
 
 UCIInterface::UCIInterface(void)
@@ -76,23 +77,40 @@ void UCIInterface::Command(string command )
 	}
 	if (tokens[0] == "go")
 	{
-		boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
-		cg.searchdata.maxdepth = 0;
-		cg.searchdata.nodes = 0;
-		cg.searchdata.legalnodes = 0;
-		cg.searchdata.evaluates = 0;
-
-		int depth = 6;
-		int value = cg.NegaMax( depth );
+		int value;
+		if ( cg.debug )	boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
+		ClearSearchData();
+		switch (cg.searchmethod)
+		{
+		case NEGAMAX:
+			value = cg.NegaMax( cg.depth );
+			break;
+		case ALPHABETA:
+			value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
+			break;
+		}
+		PrintSearchData();
 		ChessMove cm = cg.chessresult[cg.state.ply].best;
-		cout << "info MaxDepth = " << cg.searchdata.maxdepth;
-		cout << " nodes = " << cg.searchdata.nodes << endl;
-		cout << "info legalnodes = " << cg.searchdata.legalnodes;
-		cout << " evaluates = " << cg.searchdata.evaluates << endl;
-		
-		cout <<  "info depth " << depth << " score cp " << cg.chessresult[cg.state.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
+		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.state.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
-
+	if (tokens[0] == "debug")
+	{
+		if (tokens[1] == "on")
+			cg.debug = true;
+		if (tokens[1] == "off")
+			cg.debug = false;
+	}
+	if (tokens[0] == "depth")
+	{
+		cg.depth = atoi(tokens[1].c_str());
+	}
+	if (tokens[0] == "search")
+	{
+		if (tokens[1] == "n")
+			cg.searchmethod = NEGAMAX;
+		if (tokens[1] == "ab")
+			cg.searchmethod = ALPHABETA;
+	}
 	if (tokens[0] == "perft")
 	{
 #ifdef _DEBUG
@@ -109,6 +127,28 @@ void UCIInterface::Command(string command )
 		return ;
 	}
 
+
+}
+void UCIInterface::ClearSearchData(void)
+{
+	if ( cg.debug){
+		cg.searchdata.maxdepth = 0;
+		cg.searchdata.nodes = 0;
+		cg.searchdata.legalnodes = 0;
+		cg.searchdata.evaluates = 0;
+		cg.searchdata.quietnodes = 0;
+		cg.searchdata.regularnodes = 0;}
+
+}
+void UCIInterface::PrintSearchData(void)
+{
+	if (cg.debug){
+		cout << "info MaxDepth = " << cg.searchdata.maxdepth;
+		cout << " nodes = " << cg.searchdata.nodes << endl;
+		cout << "info legalnodes = " << cg.searchdata.legalnodes;
+		cout << " evaluates = " << cg.searchdata.evaluates << endl;
+		cout << "info regular nodes = " << cg.searchdata.regularnodes << endl;
+		cout << "info quietnodes = " << cg.searchdata.quietnodes << endl;}
 
 }
 UCIInterface::~UCIInterface(void)
