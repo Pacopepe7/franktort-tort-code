@@ -12,16 +12,16 @@
 
 bool ChessGame::isPositionValid(void)
 {
-	state.ctm;
-	Square kingsq = state.king[state.opp];
+	state[ply].ctm;
+	Square kingsq = state[ply].king[state[ply].opp];
 
 	/**********************************************
 	* Did the opponent just left his king in check?
 	*/
-	for ( int i = 0; i < maxpieces[state.ctm]; i++)
+	for ( int i = 0; i < maxpieces[state[ply].ctm]; i++)
 	{
-		if ( pieces[i][state.ctm].piece)
-			if ( isAttackedbyPiece(pieces[i][state.ctm].square, kingsq, state.ctm, pieces[i][state.ctm].piece ))
+		if ( pieces[i][state[ply].ctm].piece)
+			if ( isAttackedbyPiece(pieces[i][state[ply].ctm].square, kingsq, state[ply].ctm, pieces[i][state[ply].ctm].piece ))
 				return false;
 	}
 

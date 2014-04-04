@@ -17,7 +17,7 @@ void ChessGame::PrintBoard ( void )
 {
 	bool newrow = false;
 	cout << "----------------------" << endl;
-	if ( state.ctm ) cout << "   BLACK to move   " << endl;
+	if ( state[ply].ctm ) cout << "   BLACK to move   " << endl;
 	else cout << "   WHITE to move   " << endl;
 	for ( int i = 0; i < 128; i++)
 	{

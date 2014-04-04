@@ -57,6 +57,11 @@ typedef unsigned __int8		MoveType;
 #define MT_CASTLE				 32
 #define MT_ENPASSANTPOSSIBLE	 64
 
+/***********************************************/
+#define NONE					0
+#define SHORT					1
+#define LONG					2
+#define BOTH					3
 /************************************************
 * OTHER TYPES
 */

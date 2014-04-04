@@ -21,7 +21,7 @@
 int ChessGame::Evaluate(void)
 {
 	int result = 0;
-	int ctm = state.ctm;
+	int ctm = state[ply].ctm;
 	int opp = ColorNotOnMove();
 	searchdata.evaluates++;
 	Square sq, oppsq;

@@ -43,40 +43,40 @@ void ChessGame::Fen(string fen)
 	} while ( index < tokens[0].length() );
 
 	if (tokens[1] == "w") {
-		state.ctm = WHITE;
-		state.opp = BLACK;
+		state[ply].ctm = WHITE;
+		state[ply].opp = BLACK;
 	} else {
-		state.ctm = BLACK;
-		state.opp = WHITE;
+		state[ply].ctm = BLACK;
+		state[ply].opp = WHITE;
 	}
 
 	index = 0;
 	do {
 		switch( tokens[2][index] ) {
-		case 'K': state.castling.whiteshort = true; break;
-		case 'Q': state.castling.whitelong = true; break;
-		case 'k': state.castling.blackshort = true; break;
-		case 'q': state.castling.blacklong = true; break;
+		case 'K': state[ply].castling[WHITE] |= SHORT; break;
+		case 'Q': state[ply].castling[WHITE] |= LONG; break;
+		case 'k': state[ply].castling[BLACK] |= SHORT; break;
+		case 'q': state[ply].castling[BLACK] |= LONG; break;
 		}
 		index++;
 	} while (index < tokens[2].length()  );
 
 	//en passant quare
 	if ( tokens[3] == "-" )
-		state.eppossible = false;
+		state[ply].eppossible = false;
 	else
 	{
-		state.eppossible = true;
-		state.epsquare[0] = MakeSquare(tokens[4]);
+		state[ply].eppossible = true;
+		state[ply].epsquare[0] = MakeSquare(tokens[4]);
 	}
 
 	// 50 move rule counter
 	if ( tokens[4] == "-" )
-		state.fiftymoverule = 0;
+		state[ply].fiftymoverule = 0;
 	else
 	{
-		state.fiftymoverule = MakeInt(tokens[5]);
+		state[ply].fiftymoverule = MakeInt(tokens[5]);
 	}
 	//move number
-	state.move = MakeInt(tokens[5]);
+	state[ply].move = MakeInt(tokens[5]);
 }

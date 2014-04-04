@@ -24,15 +24,15 @@ __int64 ChessGame::perft( int depth)
 	}
 	if ( depth == 0 ) 
 		return 1;
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 
 	GenerateMoves();
 
-	while ( ! mstack[state.ply].empty()) 
+	while ( ! mstack[ply].empty()) 
 	{
-		movebeingevaluated = mstack[state.ply].pop();
-				PrintBoard();
-				PrintMove(movebeingevaluated);
+		movebeingevaluated = mstack[ply].pop();
+				//PrintBoard();
+				//PrintMove(movebeingevaluated);
 		if ( MakeMove( movebeingevaluated )  )
 		{
 			if ( isPositionValid() ) 

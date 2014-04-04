@@ -33,16 +33,16 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score, max;
-	if ( searchdata.maxdepth < state.ply)
-		searchdata.maxdepth = state.ply + 1;
+	if ( searchdata.maxdepth < ply)
+		searchdata.maxdepth = ply + 1;
 
 	ChessMove movebeingevaluated;
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	while ( ! mstack[state.ply].empty() )
+	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[state.ply].pop();
+		movebeingevaluated =  mstack[ply].pop();
 		if ( MakeMove( movebeingevaluated ) )
 		{
 			searchdata.nodes++;
@@ -59,8 +59,8 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 				if ( score > alpha )
 				{
 					alpha = score;
-					chessresult[state.ply-1].best = movebeingevaluated;
-					chessresult[state.ply-1].value = score;
+					chessresult[ply-1].best = movebeingevaluated;
+					chessresult[ply-1].value = score;
 				}
 			}
 			UnmakeMove(movebeingevaluated);
@@ -74,16 +74,16 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score, max;
-	if ( searchdata.maxdepth < state.ply)
-		searchdata.maxdepth = state.ply + 1;
+	if ( searchdata.maxdepth < ply)
+		searchdata.maxdepth = ply + 1;
 
 	ChessMove movebeingevaluated;
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	while ( ! mstack[state.ply].empty() )
+	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[state.ply].pop();
+		movebeingevaluated =  mstack[ply].pop();
 		if ( MakeMove( movebeingevaluated ) )
 		{
 			searchdata.nodes++;
@@ -103,8 +103,8 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 				if ( score > alpha )
 				{
 					alpha = score;
-					chessresult[state.ply-1].best = movebeingevaluated;
-					chessresult[state.ply-1].value = score;
+					chessresult[ply-1].best = movebeingevaluated;
+					chessresult[ply-1].value = score;
 				}
 			}
 			UnmakeMove(movebeingevaluated);

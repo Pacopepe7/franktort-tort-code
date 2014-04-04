@@ -21,17 +21,17 @@ int ChessGame::NegaMax( int depth )
 		//return QuietNegaMax(depth - 1);
 
 	int score, max;
-	if ( searchdata.maxdepth < state.ply)
-		searchdata.maxdepth = state.ply + 1;
+	if ( searchdata.maxdepth < ply)
+		searchdata.maxdepth = ply + 1;
 	max = -INFINITY;
 
 	ChessMove movebeingevaluated;
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	while ( ! mstack[state.ply].empty() )
+	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[state.ply].pop();
+		movebeingevaluated =  mstack[ply].pop();
 
 		if ( MakeMove( movebeingevaluated ) )
 		{
@@ -44,8 +44,8 @@ int ChessGame::NegaMax( int depth )
 				if ( score >= max )
 				{
 					max = score;
-					chessresult[state.ply-1].best = movebeingevaluated;
-					chessresult[state.ply-1].value = score;
+					chessresult[ply-1].best = movebeingevaluated;
+					chessresult[ply-1].value = score;
 				}
 			}
 			UnmakeMove(movebeingevaluated);
@@ -59,17 +59,17 @@ int ChessGame::QuietNegaMax( int depth )
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score, max;
-	if ( searchdata.maxdepth < state.ply)
-		searchdata.maxdepth = state.ply + 1;
+	if ( searchdata.maxdepth < ply)
+		searchdata.maxdepth = ply + 1;
 	max = -INFINITY;
 
 	ChessMove movebeingevaluated;
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	while ( ! mstack[state.ply].empty() )
+	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[state.ply].pop();
+		movebeingevaluated =  mstack[ply].pop();
 
 		if ( MakeMove( movebeingevaluated ) )
 		{
@@ -83,8 +83,8 @@ int ChessGame::QuietNegaMax( int depth )
 				if ( score >= max )
 				{
 					max = score;
-					chessresult[state.ply-1].best = movebeingevaluated;
-					chessresult[state.ply-1].value = score;
+					chessresult[ply-1].best = movebeingevaluated;
+					chessresult[ply-1].value = score;
 				}
 			}
 			UnmakeMove(movebeingevaluated);

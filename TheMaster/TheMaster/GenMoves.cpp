@@ -14,7 +14,7 @@
 */
 void ChessGame::GenerateMoves( void )
 {
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 	Color ctm = ColorOnMove();
 	Square curr;
 	Square sq;
@@ -31,13 +31,13 @@ void ChessGame::GenerateMoves( void )
 				if ( isSquare(sq))
 				{
 					if (isEmpty(sq))
-						mstack[state.ply].push(
+						mstack[ply].push(
 						CM(curr,
 						sq,
 						MT_NORMAL,
 						0));
 					if (isOpponent(sq))
-						mstack[state.ply].push(
+						mstack[ply].push(
 						CM(curr,
 						sq,
 						MT_CAPTURE,
@@ -49,29 +49,35 @@ void ChessGame::GenerateMoves( void )
 		if ( pieces[i][ctm].piece & KING)
 		{
 			//Castling Moves
-			if ( state.castling.whiteshort)
+			if ( ctm == WHITE)
 			{
-				if ( !isAttacked(E1, state.opp) &&  !isAttacked(F1, state.opp) &&  !isAttacked(G1, state.opp) &&
+			if ( state[ply].castling[ctm] & SHORT )
+			{
+				if ( !isAttacked(E1, state[ply].opp) &&  !isAttacked(F1, state[ply].opp) &&  !isAttacked(G1, state[ply].opp) &&
 					  isEmpty(F1) && isEmpty(G1))
-					  mstack[state.ply].push(CM(E1,	G1, MT_CASTLE,0));
+					  mstack[ply].push(CM(E1,	G1, MT_CASTLE,0));
 			}
-			if ( state.castling.whitelong)
+			if ( state[ply].castling[ctm] & LONG)
 			{
-				if ( !isAttacked(E1, state.opp) &&  !isAttacked(D1, state.opp) &&  !isAttacked(C1, state.opp) &&
+				if ( !isAttacked(E1, state[ply].opp) &&  !isAttacked(D1, state[ply].opp) &&  !isAttacked(C1, state[ply].opp) &&
 					  isEmpty(D1) && isEmpty(C1) && isEmpty(B1))
-					  mstack[state.ply].push(CM(E1,	C1, MT_CASTLE,0));
+					  mstack[ply].push(CM(E1,	C1, MT_CASTLE,0));
 			}
-			if ( state.castling.blackshort)
+			}
+			else
 			{
-				if ( !isAttacked(E8, state.opp) &&  !isAttacked(F8, state.opp) &&  !isAttacked(G8, state.opp) &&
+			if ( state[ply].castling[ctm] & SHORT)
+			{
+				if ( !isAttacked(E8, state[ply].opp) &&  !isAttacked(F8, state[ply].opp) &&  !isAttacked(G8, state[ply].opp) &&
 					  isEmpty(F8) && isEmpty(G8))
-					  mstack[state.ply].push(CM(E8,	G8, MT_CASTLE,0));
+					  mstack[ply].push(CM(E8,	G8, MT_CASTLE,0));
 			}
-			if ( state.castling.blacklong)
+			if ( state[ply].castling[ctm] & LONG)
 			{
-				if ( !isAttacked(E8, state.opp) &&  !isAttacked(D8, state.opp) &&  !isAttacked(C8, state.opp) &&
+				if ( !isAttacked(E8, state[ply].opp) &&  !isAttacked(D8, state[ply].opp) &&  !isAttacked(C8, state[ply].opp) &&
 					  isEmpty(D8) && isEmpty(C8) && isEmpty(B8))
-					  mstack[state.ply].push(CM(E8,	C8, MT_CASTLE,0));
+					  mstack[ply].push(CM(E8,	C8, MT_CASTLE,0));
+			}
 			}
 			for ( int c = 0; c < 8; c++)
 			{
@@ -79,13 +85,13 @@ void ChessGame::GenerateMoves( void )
 				if ( isSquare(sq))
 				{
 					if ( isEmpty(sq))
-						mstack[state.ply].push(
+						mstack[ply].push(
 						CM(curr,
 						sq,
 						MT_NORMAL,
 						0));
 					if ( isOpponent(sq))
-						mstack[state.ply].push(
+						mstack[ply].push(
 						CM(curr,
 						sq,
 						MT_CAPTURE,
@@ -98,14 +104,14 @@ void ChessGame::GenerateMoves( void )
 			for ( int c = 0; c < 4; c++)
 			{
 				for ( sq = curr + bishopvectors[c]; isSquare(sq) && isEmpty(sq); sq += bishopvectors[c])
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					sq,
 					MT_NORMAL,
 					0));
 
 				if ( isSquare(sq) && isOpponent(sq) )
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					sq,
 					MT_CAPTURE,
@@ -117,14 +123,14 @@ void ChessGame::GenerateMoves( void )
 			for ( int c = 0; c < 8; c++)
 			{
 				for ( sq = curr + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c])
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					sq,
 					MT_NORMAL,
 					0));
 
 				if ( isSquare(sq) && isOpponent(sq) )
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					sq,
 					MT_CAPTURE,
@@ -136,14 +142,14 @@ void ChessGame::GenerateMoves( void )
 			for ( int c = 0; c < 4; c++)
 			{
 				for ( sq = curr + rookvectors[c]; isSquare(sq) && isEmpty(sq); sq += rookvectors[c])
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					sq,
 					MT_NORMAL,
 					0));
 
 				if ( isSquare(sq) && isOpponent(sq) )
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					sq,
 					MT_CAPTURE,
@@ -157,7 +163,7 @@ void ChessGame::GenerateMoves( void )
 			if ( getRank(pieces[i][ctm].square) == pawnsecondrank[ctm] )
 				if ( isSquare(sq) && isSquare(curr +  (pawndirection[ctm] * 2)) && 
 					isEmpty(sq) && isEmpty(curr +  (pawndirection[ctm] * 2)) )
-					mstack[state.ply].push(
+					mstack[ply].push(
 					CM(curr,
 					curr +  (pawndirection[ctm] * 2),
 					MT_ENPASSANTPOSSIBLE,
@@ -165,14 +171,14 @@ void ChessGame::GenerateMoves( void )
 			//fifth and fourth rank special check for ep capture.
 			if ( getRank(pieces[i][ctm].square) == pawn_EP_rank[ctm] )
 			{
-				if ( sq + EAST == state.epsquare[state.ply - 1] ) 
-					mstack[state.ply].push(
+				if ( sq + EAST == state[ply].epsquare[ply - 1] ) 
+					mstack[ply].push(
 					CM(curr,
 					sq + EAST,
 					MT_ENPASSANT,
 					0));
-				if ( sq + WEST == state.epsquare[state.ply - 1] ) 
-					mstack[state.ply].push(
+				if ( sq + WEST == state[ply].epsquare[ply - 1] ) 
+					mstack[ply].push(
 					CM(curr,
 					sq + WEST,
 					MT_ENPASSANT,
@@ -180,19 +186,19 @@ void ChessGame::GenerateMoves( void )
 			}
 			//
 			if ( isSquare(sq) && isEmpty(sq))
-				mstack[state.ply].push(
+				mstack[ply].push(
 				CM(curr,
 				sq,
 				MT_NORMAL,
 				0));
 			if ( isSquare(sq + EAST) && isOpponent(sq + EAST))
-				mstack[state.ply].push(
+				mstack[ply].push(
 				CM(curr,
 				sq + EAST,
 				MT_CAPTURE,
 				getPiece(sq + EAST)));
 			if ( isSquare(sq + WEST) && isOpponent(sq + WEST))
-				mstack[state.ply].push(
+				mstack[ply].push(
 				CM(curr,
 				sq + WEST,
 				MT_CAPTURE,

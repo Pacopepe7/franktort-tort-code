@@ -33,11 +33,11 @@ ASSERT ( ! isEmpty(from));
 	//Ep possible
 	if ( mt == MT_ENPASSANTPOSSIBLE ) 
 	{
-		state.epsquare[state.ply] = data;
+		state[ply].epsquare[ply] = data;
 		MovePiece(from, to);
 	}
 	else
-		state.epsquare[state.ply] = 0;
+		state[ply].epsquare[ply] = 0;
 	//Castle
 	if ( mt == MT_CASTLE )
 	{
@@ -45,32 +45,32 @@ ASSERT ( ! isEmpty(from));
 			Clear(H1);
 			MovePiece(E1, G1);
 			Set(ROOK, WHITE, F1);
-			state.castling.whiteshort = false;
+			state[ply].castling[WHITE] = NONE;
 		}
 		if ( to == C1){
 			Clear(A1);
 			MovePiece(E1, C1);
 			Set(ROOK, WHITE, D1);
-			state.castling.whitelong = false;
+			state[ply].castling[WHITE] = NONE;
 		}
 		if ( to == G8){
 			Clear(H8);
 			MovePiece(E8, G8);
 			Set(ROOK, BLACK, F8);
-			state.castling.blackshort = false;
+			state[ply].castling[BLACK] = NONE;
 		}
 		if ( to == C8){
 			Clear(A8);
 			MovePiece(E8, C8);
 			Set(ROOK, BLACK, D8);
-			state.castling.blacklong = false;
+			state[ply].castling[BLACK] = NONE;
 		}
 	}
 	// EP
 	if ( mt == MT_ENPASSANT )
 	{
 		//PrintBoard();
-		Clear(state.epsquare[state.ply - 1] - pawndirection[state.ctm] );
+		Clear(state[ply].epsquare[ply - 1] - pawndirection[state[ply].ctm] );
 		MovePiece(from, to);
 		//PrintBoard();
 	}
@@ -84,9 +84,9 @@ ASSERT ( ! isEmpty(from));
 
 	/************************************************/
 	//Update move info
-	state.m_LastMove = cm;
+	state[ply].m_LastMove = cm;
 	SwitchSides();
-	state.ply++;
+	ply++;
 	//PrintBoard();
 	return true;
 }

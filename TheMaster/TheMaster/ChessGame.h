@@ -36,21 +36,14 @@ struct Pieceinfo_t
 	Square square;
 	short index;
 };
-/************************************************/
-struct castling_t { 
-	bool whiteshort;
-	bool whitelong;
-	bool blackshort;
-	bool blacklong;
-};
+
 /************************************************/
 struct boardstate_t {
-	castling_t castling;
+	int castling[2];
 	ChessMove m_LastMove;
 	int ctm;
 	int opp;
 	Square king[2];
-	short ply;
 	short move;
 	Square epsquare[100];
 	bool eppossible;
@@ -84,7 +77,8 @@ public:
 	Cstack <ChessMove> mstack[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	short maxpieces[2];
-	boardstate_t state;
+	short ply;
+	boardstate_t state[300];
 	Piece Attacks0x88[ATTACKTABLEMAX];
 	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
 	short pawndirection[COLORS];
@@ -123,11 +117,11 @@ public:
 	
 	void Command(string c);
 	void SwitchSides(void)		{ 
-		state.opp = state.ctm;
-		state.ctm = ColorNotOnMove();
+		state[ply].opp = state[ply].ctm;
+		state[ply].ctm = ColorNotOnMove();
 	};
-	short ColorOnMove(void)		{ return state.ctm;};
-	short ColorNotOnMove(void)	{ return state.ctm == WHITE? BLACK:WHITE;};
+	short ColorOnMove(void)		{ return state[ply].ctm;};
+	short ColorNotOnMove(void)	{ return state[ply].ctm == WHITE? BLACK:WHITE;};
 
 	void Set(Piece p, Color c, Square s);
 	void Set(Piece p, Color c, short r, short f);
@@ -147,7 +141,7 @@ public:
 	bool isSquare(Square sq)						{ return ( (sq & 0x88))? 0:1; } ;
 	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
 	bool isAttacked(Square, Color c);
-	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == state.opp));};
+	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == state[ply].opp));};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
@@ -182,7 +176,7 @@ public:
 		return MakeSquare(r, c);
 	};
 	void PrintPV(void){
-		for ( int c = 0; c < state.ply; c++)
+		for ( int c = 0; c < ply; c++)
 			cout << " " << MakeAlgebraicMove(chessresult[c ].best) << " ";
 	}
 	/****************************************

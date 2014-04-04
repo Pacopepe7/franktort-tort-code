@@ -90,8 +90,8 @@ void UCIInterface::Command(string command )
 			break;
 		}
 		PrintSearchData();
-		ChessMove cm = cg.chessresult[cg.state.ply].best;
-		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.state.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
+		ChessMove cm = cg.chessresult[cg.ply].best;
+		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
 	if (tokens[0] == "debug")
 	{

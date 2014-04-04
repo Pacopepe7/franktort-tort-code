@@ -90,12 +90,14 @@ void ChessGame::Init ( void )
 
 	pawn_EP_rank[WHITE] = 3;
 	pawn_EP_rank[BLACK] = 4;
-
-	state.ply = 0;
-	state.ctm = WHITE;
-	state.opp = BLACK;
-	state.king[WHITE] = 0;
-	state.king[BLACK] = 0;
+	ply = 0;
+	
+	state[ply].ctm = WHITE;
+	state[ply].opp = BLACK;
+	state[ply].king[WHITE] = 0;
+	state[ply].king[BLACK] = 0;
+	state[ply].castling[state[ply].ctm] = BOTH;
+	state[ply].castling[state[ply].opp] = BOTH;
 	searchmethod = NEGAMAX;
 
 #ifdef _DEBUG
@@ -108,8 +110,8 @@ void ChessGame::Init ( void )
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
 
-	//Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
+	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	//Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
 }
 /***************************************************
 * Analogy: Imagine you are taking pieces out of a box and "set"ing them
@@ -136,7 +138,7 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	
 	//update king position
 	if ( p & KING)
-		state.king[c] = s;
+		state[ply].king[c] = s;
 	if ( ! found)
 	maxpieces[c]++;
 }
@@ -156,7 +158,7 @@ void ChessGame::MovePiece(Square from, Square to)
 	/*************************************/
 	//update king position
 	if ( Ox88Board[from]->piece & KING)
-		state.king[c] = to;
+		state[ply].king[c] = to;
 	
 	Ox88Board[from]->square = to;
 	/*************************************/
@@ -204,12 +206,12 @@ void ChessGame::Clear( Square s)
 bool ChessGame::MakeMoveFromString( string cm)
 {
 	//cout << "move = " << cm << endl;
-	mstack[state.ply].DumpStack();
+	mstack[ply].DumpStack();
 	GenerateMoves();
 		ChessMove _cm;
-	for ( int c = 0; c < mstack[state.ply].size(); c++)
+	for ( int c = 0; c < mstack[ply].size(); c++)
 	{
-		_cm =  mstack[state.ply].inspect(c);
+		_cm =  mstack[ply].inspect(c);
 		string move = MakeAlgebraicMove(_cm);
 		if (cm == move )
 		{
