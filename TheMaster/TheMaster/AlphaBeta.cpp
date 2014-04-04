@@ -32,7 +32,7 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		return QuietAlphaBeta( depth - 1, -beta, -alpha );
 	int legalmoves = 0;
 	int movestomate = 0;
-	int score, max;
+	int score;
 	if ( searchdata.maxdepth < ply)
 		searchdata.maxdepth = ply + 1;
 
@@ -73,7 +73,7 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 {
 	int legalmoves = 0;
 	int movestomate = 0;
-	int score, max;
+	int score;
 	if ( searchdata.maxdepth < ply)
 		searchdata.maxdepth = ply + 1;
 

@@ -41,14 +41,10 @@ struct Pieceinfo_t
 struct boardstate_t {
 	int castling[2];
 	ChessMove m_LastMove;
-	int ctm;
-	int opp;
 	Square king[2];
 	short move;
-	Square epsquare[100];
-	bool eppossible;
+	Square epsquare;
 	short fiftymoverule;
-
 };
 
 class ChessGame 
@@ -70,21 +66,27 @@ public:
 	static int PSQT_K[64];
 	static int Ox88to64[128];
 	static int blackOx88to64[128];
-	bool debug;
-	int depth;
-	SearchMethod searchmethod;
-	static string  notation[MAXBOARDARRAY];
-	Cstack <ChessMove> mstack[MAXMOVES];
-	Pieceinfo_t pieces[MAXPIECES][COLORS];
-	short maxpieces[2];
-	short ply;
-	boardstate_t state[300];
+	static string  notation[MAXBOARDARRAY];	
 	Piece Attacks0x88[ATTACKTABLEMAX];
 	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
 	short pawn_EP_rank[COLORS];
+	
+	bool debug;
+	int depth;
+	SearchMethod searchmethod;
 	Searchdata searchdata;
+
+	Cstack <ChessMove> mstack[MAXMOVES];
+
+	Pieceinfo_t pieces[MAXPIECES][COLORS];
+	short maxpieces[2];
+
+	short ply;
+	Color ctm, opp;
+	boardstate_t state[300];
+
 public:
 	/**************************************
 	* Constructor */
@@ -109,19 +111,20 @@ public:
 	* Move Functions
 	*/
 	void GenerateMoves(void);
-	//bool ValidateMove( string move);
 	bool MakeMove(ChessMove cm);
 	bool MakeMoveFromString( string cm);
 	void UnmakeMove( ChessMove cm);
 
 	
 	void Command(string c);
-	void SwitchSides(void)		{ 
-		state[ply].opp = state[ply].ctm;
-		state[ply].ctm = ColorNotOnMove();
+	void SwitchSides(int dir)		{ 
+		opp = ctm;
+		ctm = (ctm == WHITE)? BLACK:WHITE;
+		ply += dir;
+		ASSERT((ply > -1) );
 	};
-	short ColorOnMove(void)		{ return state[ply].ctm;};
-	short ColorNotOnMove(void)	{ return state[ply].ctm == WHITE? BLACK:WHITE;};
+	Color ColorOnMove(void)		{ return ctm;};
+	Color ColorNotOnMove(void)	{ return opp;};
 
 	void Set(Piece p, Color c, Square s);
 	void Set(Piece p, Color c, short r, short f);
@@ -141,7 +144,7 @@ public:
 	bool isSquare(Square sq)						{ return ( (sq & 0x88))? 0:1; } ;
 	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
 	bool isAttacked(Square, Color c);
-	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == state[ply].opp));};
+	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == opp));};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
@@ -149,8 +152,8 @@ public:
 	int  get64Index(Square s)						{ 
 		if ( s > 128)
 			PrintBoard();
-		ASSERT(s > -1);
-		ASSERT(s < 128);
+		ASSERT((s > -1) && "get64Index: Square is less than -1");
+		ASSERT((s < 128) &&  "get64Index: Square is !< 128");
 		return ( Ox88to64[s]);
 	};
 

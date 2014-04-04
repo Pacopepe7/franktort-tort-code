@@ -17,4 +17,4 @@ void Tokenize(const string& str,
 
 int MakeInt(string s);
 string MakeString(int i);
-void Assert(bool condition);
+//void Assert(bool condition);

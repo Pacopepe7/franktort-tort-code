@@ -32,7 +32,7 @@ public:
 		if ( index > MAXSTACK )
 			return;
 		arr[++index] = cm; 
-		ASSERT ( index < MAXSTACK);
+		ASSERT ( (index < MAXSTACK) && "Cstack: index < MAXSTACK");
 	} ;
 	T inspect(short i)
 	{

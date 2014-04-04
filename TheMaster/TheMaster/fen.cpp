@@ -6,9 +6,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "ChessGame.h"
-//Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+/*****************************************************************
+* FEN from: http://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
+*/
 void ChessGame::Fen(string fen)
 {
+	Init();
+	if( debug ){
+		cout << "Creating position from FEN\n";
+		cout << fen << endl;}
 	vector<string> tokens;
 	Tokenize(fen, tokens, " " );
 	int index = 0;
@@ -43,11 +49,11 @@ void ChessGame::Fen(string fen)
 	} while ( index < tokens[0].length() );
 
 	if (tokens[1] == "w") {
-		state[ply].ctm = WHITE;
-		state[ply].opp = BLACK;
+		ctm = WHITE;
+		opp = BLACK;
 	} else {
-		state[ply].ctm = BLACK;
-		state[ply].opp = WHITE;
+		ctm = BLACK;
+		opp = WHITE;
 	}
 
 	index = 0;
@@ -63,12 +69,9 @@ void ChessGame::Fen(string fen)
 
 	//en passant quare
 	if ( tokens[3] == "-" )
-		state[ply].eppossible = false;
+		state[ply].epsquare = INVALID;
 	else
-	{
-		state[ply].eppossible = true;
-		state[ply].epsquare[0] = MakeSquare(tokens[4]);
-	}
+		state[ply].epsquare = MakeSquare(tokens[4]);
 
 	// 50 move rule counter
 	if ( tokens[4] == "-" )

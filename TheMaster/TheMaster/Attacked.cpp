@@ -12,16 +12,15 @@
 
 bool ChessGame::isPositionValid(void)
 {
-	state[ply].ctm;
-	Square kingsq = state[ply].king[state[ply].opp];
+	Square kingsq = state[ply].king[opp];
 
 	/**********************************************
 	* Did the opponent just left his king in check?
 	*/
-	for ( int i = 0; i < maxpieces[state[ply].ctm]; i++)
+	for ( int i = 0; i < maxpieces[ctm]; i++)
 	{
-		if ( pieces[i][state[ply].ctm].piece)
-			if ( isAttackedbyPiece(pieces[i][state[ply].ctm].square, kingsq, state[ply].ctm, pieces[i][state[ply].ctm].piece ))
+		if ( pieces[i][ctm].piece)
+			if ( isAttackedbyPiece(pieces[i][ctm].square, kingsq, ctm, pieces[i][ctm].piece ))
 				return false;
 	}
 
@@ -35,8 +34,8 @@ bool ChessGame::isPositionValid(void)
 Piece ChessGame::PiecesThatCanAttack(Square s1, Square s2)
 {
 
-	ASSERT ( isSquare(s1) );
-	ASSERT ( isSquare(s2));
+	ASSERT ( isSquare(s1) && "PiecesThatCanAttack: s1 not a Square" );
+	ASSERT ( isSquare(s2) && "PiecesThatCanAttack: s2 not a Square");
 	int diff = s2 - s1;
 	return Attacks0x88[diff + ATTACKTABLEINDEXOFFSET];
 }
@@ -46,10 +45,10 @@ Piece ChessGame::PiecesThatCanAttack(Square s1, Square s2)
 bool ChessGame::isAttackedbyPiece ( Square from, Square to, Color side, Piece p )
 {
 
-	ASSERT( isSquare(from) );
-	ASSERT( isSquare(to) );
-	ASSERT ( !isEmpty( from ) );
-	ASSERT( p );
+	ASSERT( isSquare(from) && "isAttackedbyPiece: " );
+	ASSERT( isSquare(to)  && "isAttackedbyPiece: ");
+	ASSERT ( !isEmpty( from )  && "isAttackedbyPiece: ");
+	ASSERT( p  && "isAttackedbyPiece: ");
 
 	//if ( from == G5 && to == F7)
 	//	PrintBoard();
@@ -100,7 +99,7 @@ bool ChessGame::isAttackedbyPiece ( Square from, Square to, Color side, Piece p 
 */
 bool ChessGame::isAttacked(Square sq, Color c)
 {
-	ASSERT (isSquare(sq));
+	ASSERT (isSquare(sq) && "isAttacked: ");
 	for ( int i = 0; i < maxpieces[c]; i++)
 	{
 		if ( pieces[i][c].piece)

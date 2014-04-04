@@ -18,7 +18,8 @@ typedef short	Color;
 #define WHITE						 0
 #define BLACK						 1
 #define NOCOLOR						 2
-
+#define FORWARD						 1
+#define BACK						(-1)
 #define COLORS						 2
 
 #define MAXPIECES					 16
@@ -115,3 +116,4 @@ enum { A8 =  0, B8, C8, D8, E8, F8, G8, H8,
 #define ASSERT //
 #endif
 
+#define STARTPOS "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"

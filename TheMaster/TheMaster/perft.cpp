@@ -31,20 +31,20 @@ __int64 ChessGame::perft( int depth)
 	while ( ! mstack[ply].empty()) 
 	{
 		movebeingevaluated = mstack[ply].pop();
-				//PrintBoard();
-				//PrintMove(movebeingevaluated);
+
 		if ( MakeMove( movebeingevaluated )  )
 		{
 			if ( isPositionValid() ) 
 			{
+				/*if ( getMoveType(state[ply].m_LastMove) == MT_CAPTURE){
+					PrintBoard();
+					PrintMove(movebeingevaluated);}*/
 				moves = perft(  depth - 1);
 				currDepthMoves ++;
 				legalmoves += moves;
 			}
-				UnmakeMove(movebeingevaluated);
-				
+			UnmakeMove(movebeingevaluated);
 		}
-
 	}
 	if ( ! currDepthMoves )
 	{

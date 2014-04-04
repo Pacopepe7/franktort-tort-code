@@ -68,6 +68,8 @@ string ChessGame::notation[128]		= {
 */
 ChessGame::ChessGame ( ) 
 {
+	if( debug )
+		cout << "Initializing ChessGame\n";
 	Init();
 	InitAttackTables();
 
@@ -78,10 +80,9 @@ ChessGame::ChessGame ( )
 */
 void ChessGame::Init ( void ) 
 {
-
-	maxpieces[WHITE] = 0;
-	maxpieces[BLACK] = 0;
-
+	if( debug )
+		cout << "Initializing ChessGame\n";
+	maxpieces[WHITE] = maxpieces[BLACK] = 0;
 	pawndirection[WHITE] = NORTH;
 	pawndirection[BLACK] = SOUTH;
 
@@ -92,12 +93,12 @@ void ChessGame::Init ( void )
 	pawn_EP_rank[BLACK] = 4;
 	ply = 0;
 	
-	state[ply].ctm = WHITE;
-	state[ply].opp = BLACK;
-	state[ply].king[WHITE] = 0;
-	state[ply].king[BLACK] = 0;
-	state[ply].castling[state[ply].ctm] = BOTH;
-	state[ply].castling[state[ply].opp] = BOTH;
+	ctm = WHITE;
+	opp = BLACK;
+
+	state[ply].king[WHITE] = state[ply].king[BLACK] = 0;
+	state[ply].castling[WHITE] = state[ply].castling[BLACK] = BOTH;
+
 	searchmethod = NEGAMAX;
 
 #ifdef _DEBUG
@@ -109,9 +110,6 @@ void ChessGame::Init ( void )
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
-
-	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	//Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
 }
 /***************************************************
 * Analogy: Imagine you are taking pieces out of a box and "set"ing them
@@ -154,11 +152,6 @@ void ChessGame::MovePiece(Square from, Square to)
 		
 	Color c = Ox88Board[from]->color;
 	int index = Ox88Board[from]->index;
-
-	/*************************************/
-	//update king position
-	if ( Ox88Board[from]->piece & KING)
-		state[ply].king[c] = to;
 	
 	Ox88Board[from]->square = to;
 	/*************************************/

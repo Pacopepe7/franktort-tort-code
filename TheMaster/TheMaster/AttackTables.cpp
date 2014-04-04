@@ -15,6 +15,9 @@
 // Largest diff : H1(119) - A8 (0) - 119
 void ChessGame::InitAttackTables ( void )
 {
+		if( debug )
+		cout << "Initializing Attack Tables\n";
+
 	Square curr, sq;
 	int diff, c;
 	for ( c = 0; c < ATTACKTABLEMAX; c++)

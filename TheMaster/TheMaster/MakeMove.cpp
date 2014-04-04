@@ -20,24 +20,28 @@ bool ChessGame::MakeMove(ChessMove cm)
 	Square to = getToSquare(cm);
 	Square data =  getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
-	//cout << "From: " << (int)from << ", To: " << (int)to << endl;
-	//Piece q = getPromotingPiece(cm);
+	
 
-ASSERT ( isSquare(from));
-ASSERT ( isSquare(to));
-ASSERT ( ! isEmpty(from));
+	ASSERT ( isSquare(from) && "MakeMove");
+	ASSERT ( isSquare(to) && "MakeMove");
+	ASSERT ( ! isEmpty(from ) && "MakeMove");
 
 	//Cannot capture the king
 	if ( getPiece(to) & KING)
 		return false;
+
+	//set state corresponding to next ply
+	memcpy(&state[ply + 1], &state[ply], sizeof(boardstate_t));
+	state[ply + 1].m_LastMove = cm;
+
 	//Ep possible
 	if ( mt == MT_ENPASSANTPOSSIBLE ) 
 	{
-		state[ply].epsquare[ply] = data;
+		state[ply + 1].epsquare = data;
 		MovePiece(from, to);
 	}
 	else
-		state[ply].epsquare[ply] = 0;
+		state[ply + 1].epsquare = INVALID;
 	//Castle
 	if ( mt == MT_CASTLE )
 	{
@@ -45,34 +49,32 @@ ASSERT ( ! isEmpty(from));
 			Clear(H1);
 			MovePiece(E1, G1);
 			Set(ROOK, WHITE, F1);
-			state[ply].castling[WHITE] = NONE;
+			state[ply + 1].castling[WHITE] = NONE;
 		}
 		if ( to == C1){
 			Clear(A1);
 			MovePiece(E1, C1);
 			Set(ROOK, WHITE, D1);
-			state[ply].castling[WHITE] = NONE;
+			state[ply + 1].castling[WHITE] = NONE;
 		}
 		if ( to == G8){
 			Clear(H8);
 			MovePiece(E8, G8);
 			Set(ROOK, BLACK, F8);
-			state[ply].castling[BLACK] = NONE;
+			state[ply + 1].castling[BLACK] = NONE;
 		}
 		if ( to == C8){
 			Clear(A8);
 			MovePiece(E8, C8);
 			Set(ROOK, BLACK, D8);
-			state[ply].castling[BLACK] = NONE;
+			state[ply + 1].castling[BLACK] = NONE;
 		}
 	}
 	// EP
 	if ( mt == MT_ENPASSANT )
 	{
-		//PrintBoard();
-		Clear(state[ply].epsquare[ply - 1] - pawndirection[state[ply].ctm] );
+		Clear(state[ply].epsquare  );
 		MovePiece(from, to);
-		//PrintBoard();
 	}
 	// no capture
 	if ( mt == MT_NORMAL) 
@@ -80,13 +82,14 @@ ASSERT ( ! isEmpty(from));
 
 	//Capture
 	if (mt == MT_CAPTURE )
-		CapturePiece(from, to);
+		CapturePiece(from, to );
 
+	/*************************************/
+	//update king position
+	if ( getPiece(to) & KING)
+		state[ply + 1].king[ctm] = to;
 	/************************************************/
 	//Update move info
-	state[ply].m_LastMove = cm;
-	SwitchSides();
-	ply++;
-	//PrintBoard();
+	SwitchSides(FORWARD);	
 	return true;
 }

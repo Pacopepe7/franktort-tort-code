@@ -15,7 +15,7 @@
 void ChessGame::GenerateMoves( void )
 {
 	mstack[ply].DumpStack();
-	Color ctm = ColorOnMove();
+	
 	Square curr;
 	Square sq;
 	for ( short i = 0; i < maxpieces[ctm]; i++)
@@ -53,13 +53,13 @@ void ChessGame::GenerateMoves( void )
 			{
 			if ( state[ply].castling[ctm] & SHORT )
 			{
-				if ( !isAttacked(E1, state[ply].opp) &&  !isAttacked(F1, state[ply].opp) &&  !isAttacked(G1, state[ply].opp) &&
+				if ( !isAttacked(E1, opp) &&  !isAttacked(F1, opp) &&  !isAttacked(G1, opp) &&
 					  isEmpty(F1) && isEmpty(G1))
 					  mstack[ply].push(CM(E1,	G1, MT_CASTLE,0));
 			}
 			if ( state[ply].castling[ctm] & LONG)
 			{
-				if ( !isAttacked(E1, state[ply].opp) &&  !isAttacked(D1, state[ply].opp) &&  !isAttacked(C1, state[ply].opp) &&
+				if ( !isAttacked(E1, opp) &&  !isAttacked(D1, opp) &&  !isAttacked(C1, opp) &&
 					  isEmpty(D1) && isEmpty(C1) && isEmpty(B1))
 					  mstack[ply].push(CM(E1,	C1, MT_CASTLE,0));
 			}
@@ -68,13 +68,13 @@ void ChessGame::GenerateMoves( void )
 			{
 			if ( state[ply].castling[ctm] & SHORT)
 			{
-				if ( !isAttacked(E8, state[ply].opp) &&  !isAttacked(F8, state[ply].opp) &&  !isAttacked(G8, state[ply].opp) &&
+				if ( !isAttacked(E8, opp) &&  !isAttacked(F8, opp) &&  !isAttacked(G8, opp) &&
 					  isEmpty(F8) && isEmpty(G8))
 					  mstack[ply].push(CM(E8,	G8, MT_CASTLE,0));
 			}
 			if ( state[ply].castling[ctm] & LONG)
 			{
-				if ( !isAttacked(E8, state[ply].opp) &&  !isAttacked(D8, state[ply].opp) &&  !isAttacked(C8, state[ply].opp) &&
+				if ( !isAttacked(E8, opp) &&  !isAttacked(D8, opp) &&  !isAttacked(C8, opp) &&
 					  isEmpty(D8) && isEmpty(C8) && isEmpty(B8))
 					  mstack[ply].push(CM(E8,	C8, MT_CASTLE,0));
 			}
@@ -171,13 +171,13 @@ void ChessGame::GenerateMoves( void )
 			//fifth and fourth rank special check for ep capture.
 			if ( getRank(pieces[i][ctm].square) == pawn_EP_rank[ctm] )
 			{
-				if ( sq + EAST == state[ply].epsquare[ply - 1] ) 
+				if ( sq + EAST == state[ply].epsquare ) 
 					mstack[ply].push(
 					CM(curr,
 					sq + EAST,
 					MT_ENPASSANT,
 					0));
-				if ( sq + WEST == state[ply].epsquare[ply - 1] ) 
+				if ( sq + WEST == state[ply].epsquare ) 
 					mstack[ply].push(
 					CM(curr,
 					sq + WEST,

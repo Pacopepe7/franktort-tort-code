@@ -15,20 +15,23 @@ void ChessGame::UnmakeMove( ChessMove cm)
 	Square data =  getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
 
+	ASSERT ( isSquare(from) && "UnmakeMove");
+	ASSERT ( isSquare(to) && "UnmakeMove");
+
 	if ( mt == MT_NORMAL )
 		MovePiece(to, from); // going backwards...
 
 	if ( mt == MT_CAPTURE)
 	{
 		MovePiece(to, from);
-		Set(data, ColorOnMove(),to);
+		Set(data,ctm,to);
 	}
 	if( mt == MT_ENPASSANTPOSSIBLE )
 		MovePiece(to, from);
 
 	if( mt == MT_ENPASSANT )
 	{
-		Set(PAWN, ColorOnMove(), to + pawndirection[state[ply].ctm]);
+		Set(PAWN, ctm, to + pawndirection[ctm]);
 		MovePiece(to, from);
 	}
 	if( mt == MT_CASTLE)
@@ -53,12 +56,11 @@ void ChessGame::UnmakeMove( ChessMove cm)
 			MovePiece(C8, E8);
 			Set(ROOK, BLACK, A8);
 		}
-		state[ply-1].castling[WHITE] = state[ply-2].castling[WHITE];
-		state[ply-1].castling[BLACK] = state[ply-2].castling[BLACK];
+
 	}
 	/************************************************/
 	//Update move info
-	SwitchSides();
-	ply--;
+	SwitchSides(BACK);
+	/*************************************/
 	return;
 }

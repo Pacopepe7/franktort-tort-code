@@ -58,6 +58,14 @@ void UCIInterface::Command(string command )
 		cout << "ok\n";
 		return ;
 	}
+	// selftest
+	if ( command == "bist" )
+	{
+		cout << "Running Built In Self Test\n";
+		bist();		
+		cout << "Built In Self Test Completed\n";
+		return ;
+	}
 	// check for positions
 	Tokenize(command, tokens, " " );
 	if (tokens[0] == "position" && tokens.size() > 1)
@@ -114,20 +122,18 @@ void UCIInterface::Command(string command )
 	if (tokens[0] == "perft")
 	{
 #ifdef _DEBUG
-		for ( int i = 1; i < 5; i++)
+		for ( int i = 1; i < 6; i++)
 #else
 		for ( int i = 1; i < 6; i++)
 #endif
 		{
 			cg.Init();
+			cg.Fen(STARTPOS);
 			boost::timer::auto_cpu_timer tt(6, "Perf ran on %w seconds\n");
 			cout << "perft for depth " << ( i ) << " is  " << cg.perft(i) << "\n";
-			
 		}
 		return ;
 	}
-
-
 }
 void UCIInterface::ClearSearchData(void)
 {
@@ -138,7 +144,6 @@ void UCIInterface::ClearSearchData(void)
 		cg.searchdata.evaluates = 0;
 		cg.searchdata.quietnodes = 0;
 		cg.searchdata.regularnodes = 0;}
-
 }
 void UCIInterface::PrintSearchData(void)
 {
@@ -149,7 +154,36 @@ void UCIInterface::PrintSearchData(void)
 		cout << " evaluates = " << cg.searchdata.evaluates << endl;
 		cout << "info regular nodes = " << cg.searchdata.regularnodes << endl;
 		cout << "info quietnodes = " << cg.searchdata.quietnodes << endl;}
+}
+/***********************************************************
+* http://chessprogramming.wikispaces.com/Perft+Results#cite_note-4
+*/
+void UCIInterface::bist(void)
+{
+	cout << "Checking Move Generator\n";
+	cg.Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
+	ASSERT (cg.perft(1) == 20);
+	ASSERT (cg.perft(2) == 400);
+	ASSERT (cg.perft(3) == 8902);
+	ASSERT (cg.perft(4) == 197281);
+	ASSERT (cg.perft(5) == 4865609);
+	//ASSERT (cg.perft(6) == 119060324);
+
+	cg.Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
+	ASSERT (cg.perft(1) == 48);
+	ASSERT (cg.perft(2) == 2039);
+	ASSERT (cg.perft(3) == 97862);
+	ASSERT (cg.perft(4) == 4085603);
+	ASSERT (cg.perft(5) == 193690690);
+
+	cg.Fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
+	ASSERT (cg.perft(1) == 14);
+	ASSERT (cg.perft(2) == 191);
+	ASSERT (cg.perft(3) == 2812);
+	ASSERT (cg.perft(4) == 43238);
+	ASSERT (cg.perft(5) == 674624);
+	cout << "Move Generator CHecked fine\n";
 }
 UCIInterface::~UCIInterface(void)
 {
