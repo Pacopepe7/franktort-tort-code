@@ -48,6 +48,31 @@ void ChessGame::GenerateMoves( void )
 
 		if ( pieces[i][ctm].piece & KING)
 		{
+			//Castling Moves
+			if ( state.castling.whiteshort)
+			{
+				if ( !isAttacked(E1, state.opp) &&  !isAttacked(F1, state.opp) &&  !isAttacked(G1, state.opp) &&
+					  isEmpty(F1) && isEmpty(G1))
+					  mstack[state.ply].push(CM(E1,	G1, MT_CASTLE,0));
+			}
+			if ( state.castling.whitelong)
+			{
+				if ( !isAttacked(E1, state.opp) &&  !isAttacked(D1, state.opp) &&  !isAttacked(C1, state.opp) &&
+					  isEmpty(D1) && isEmpty(C1) && isEmpty(B1))
+					  mstack[state.ply].push(CM(E1,	C1, MT_CASTLE,0));
+			}
+			if ( state.castling.blackshort)
+			{
+				if ( !isAttacked(E8, state.opp) &&  !isAttacked(F8, state.opp) &&  !isAttacked(G8, state.opp) &&
+					  isEmpty(F8) && isEmpty(G8))
+					  mstack[state.ply].push(CM(E8,	G8, MT_CASTLE,0));
+			}
+			if ( state.castling.blacklong)
+			{
+				if ( !isAttacked(E8, state.opp) &&  !isAttacked(D8, state.opp) &&  !isAttacked(C8, state.opp) &&
+					  isEmpty(D8) && isEmpty(C8) && isEmpty(B8))
+					  mstack[state.ply].push(CM(E8,	C8, MT_CASTLE,0));
+			}
 			for ( int c = 0; c < 8; c++)
 			{
 				sq = curr + kingvectors[c];

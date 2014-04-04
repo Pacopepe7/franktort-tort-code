@@ -38,6 +38,34 @@ ASSERT ( ! isEmpty(from));
 	}
 	else
 		state.epsquare[state.ply] = 0;
+	//Castle
+	if ( mt == MT_CASTLE )
+	{
+		if ( to == G1){
+			Clear(H1);
+			MovePiece(E1, G1);
+			Set(ROOK, WHITE, F1);
+			state.castling.whiteshort = false;
+		}
+		if ( to == C1){
+			Clear(A1);
+			MovePiece(E1, C1);
+			Set(ROOK, WHITE, D1);
+			state.castling.whitelong = false;
+		}
+		if ( to == G8){
+			Clear(H8);
+			MovePiece(E8, G8);
+			Set(ROOK, BLACK, F8);
+			state.castling.blackshort = false;
+		}
+		if ( to == C8){
+			Clear(A8);
+			MovePiece(E8, C8);
+			Set(ROOK, BLACK, D8);
+			state.castling.blacklong = false;
+		}
+	}
 	// EP
 	if ( mt == MT_ENPASSANT )
 	{

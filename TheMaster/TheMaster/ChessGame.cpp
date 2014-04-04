@@ -93,6 +93,7 @@ void ChessGame::Init ( void )
 
 	state.ply = 0;
 	state.ctm = WHITE;
+	state.opp = BLACK;
 	state.king[WHITE] = 0;
 	state.king[BLACK] = 0;
 	searchmethod = NEGAMAX;
@@ -107,7 +108,8 @@ void ChessGame::Init ( void )
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
 
-	Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	//Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
 }
 /***************************************************
 * Analogy: Imagine you are taking pieces out of a box and "set"ing them

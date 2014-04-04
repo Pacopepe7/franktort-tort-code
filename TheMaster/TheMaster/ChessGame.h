@@ -48,6 +48,7 @@ struct boardstate_t {
 	castling_t castling;
 	ChessMove m_LastMove;
 	int ctm;
+	int opp;
 	Square king[2];
 	short ply;
 	short move;
@@ -122,6 +123,7 @@ public:
 	
 	void Command(string c);
 	void SwitchSides(void)		{ 
+		state.opp = state.ctm;
 		state.ctm = ColorNotOnMove();
 	};
 	short ColorOnMove(void)		{ return state.ctm;};
@@ -137,7 +139,6 @@ public:
 	* Check legality of move/position
 	*/
 	bool isPositionValid(void);
-	bool isPositionValidOld(void);
 	Piece PiecesThatCanAttack(/* From */ Square s1,/* to */ Square s2); 
 	bool isAttackedbyPiece ( Square from, Square to, Color side, Piece p );
 	/****************************************
@@ -145,8 +146,8 @@ public:
 	*/
 	bool isSquare(Square sq)						{ return ( (sq & 0x88))? 0:1; } ;
 	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
-
-	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == ColorNotOnMove()));};
+	bool isAttacked(Square, Color c);
+	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == state.opp));};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;

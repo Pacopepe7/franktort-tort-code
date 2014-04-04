@@ -31,7 +31,8 @@ __int64 ChessGame::perft( int depth)
 	while ( ! mstack[state.ply].empty()) 
 	{
 		movebeingevaluated = mstack[state.ply].pop();
-
+				PrintBoard();
+				PrintMove(movebeingevaluated);
 		if ( MakeMove( movebeingevaluated )  )
 		{
 			if ( isPositionValid() ) 
@@ -41,6 +42,7 @@ __int64 ChessGame::perft( int depth)
 				legalmoves += moves;
 			}
 				UnmakeMove(movebeingevaluated);
+				
 		}
 
 	}

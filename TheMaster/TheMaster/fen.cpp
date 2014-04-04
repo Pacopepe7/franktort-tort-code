@@ -44,8 +44,10 @@ void ChessGame::Fen(string fen)
 
 	if (tokens[1] == "w") {
 		state.ctm = WHITE;
+		state.opp = BLACK;
 	} else {
 		state.ctm = BLACK;
+		state.opp = WHITE;
 	}
 
 	index = 0;

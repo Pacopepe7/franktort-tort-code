@@ -31,7 +31,33 @@ void ChessGame::UnmakeMove( ChessMove cm)
 		Set(PAWN, ColorOnMove(), to + pawndirection[state.ctm]);
 		MovePiece(to, from);
 	}
-
+	if( mt == MT_CASTLE)
+	{
+		if ( to == G1){
+			Clear(F1);
+			MovePiece(G1, E1);
+			Set(ROOK, WHITE, H1);
+			state.castling.whiteshort = true;
+		}
+		if ( to == C1){
+			Clear(D1);
+			MovePiece(C1, E1);
+			Set(ROOK, WHITE, A1);
+			state.castling.whitelong = true;
+		}
+		if ( to == G8){
+			Clear(F8);
+			MovePiece(G8, E8);
+			Set(ROOK, BLACK, H8);
+			state.castling.blackshort = true;
+		}
+		if ( to == C8){
+			Clear(D8);
+			MovePiece(C8, E8);
+			Set(ROOK, BLACK, A8);
+			state.castling.blacklong = true;
+		}
+	}
 	/************************************************/
 	//Update move info
 	SwitchSides();

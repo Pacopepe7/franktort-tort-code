@@ -116,7 +116,7 @@ void UCIInterface::Command(string command )
 #ifdef _DEBUG
 		for ( int i = 1; i < 5; i++)
 #else
-		for ( int i = 1; i < 8; i++)
+		for ( int i = 1; i < 6; i++)
 #endif
 		{
 			cg.Init();

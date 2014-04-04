@@ -11,8 +11,8 @@ using namespace std;
 
 string ChessGame::not(Square sq)
 {
-	if ( ! isSquare(sq))
-		return "ERROR!!!";
+	ASSERT( ! isSquare(sq));
+
 	return notation[sq];
 
 }
@@ -21,6 +21,6 @@ void ChessGame::PrintMove(ChessMove cm)
 	Square from = getFromSquare(cm);
 	Square to = getToSquare(cm);
 
-	cout << not(from) << "-" << not(to) << "   ";
+	cout << not(from) << "-" << not(to) << "   " << endl;
 
 }
