@@ -66,6 +66,7 @@ void UCIInterface::Command(string command )
 		cout << "Built In Self Test Completed\n";
 		return ;
 	}
+
 	// check for positions
 	Tokenize(command, tokens, " " );
 	if (tokens[0] == "position" && tokens.size() > 1)
@@ -81,6 +82,10 @@ void UCIInterface::Command(string command )
 			{
 				cg.MakeMoveFromString(tokens[c]);
 			}
+		}
+		if ( tokens[1] == "fen")
+		{
+			cg.Fen(command.substr(13, 200));
 		}
 	}
 	if (tokens[0] == "go")
@@ -206,6 +211,7 @@ void UCIInterface::bist(void)
 	
 	cout << "Move Generator Checked fine\n";
 }
+//1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - 0 1
 UCIInterface::~UCIInterface(void)
 {
 	cout << "UCI interface desrtucted" << endl;

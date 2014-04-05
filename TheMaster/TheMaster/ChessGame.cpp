@@ -103,14 +103,14 @@ void ChessGame::Init ( void )
 	state[ply].king[WHITE] = state[ply].king[BLACK] = 0;
 	state[ply].castling[WHITE] = state[ply].castling[BLACK] = NONE;
 
-	searchmethod = NEGAMAX;
+	searchmethod = ALPHABETA;
 
 #ifdef _DEBUG
 	debug = true;
 	depth = 4;
 #else
 	debug = false;
-	depth = 4;
+	depth = 8;
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
@@ -195,10 +195,6 @@ void ChessGame::Clear( Square s)
 	Ox88Board[s] = NULL;
 	
 }
-
-
-
-
 
 bool ChessGame::MakeMoveFromString( string cm)
 {

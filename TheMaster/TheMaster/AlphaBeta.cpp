@@ -28,8 +28,9 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 int ChessGame::AlphaBeta( int depth , int alpha, int beta) 
 {
 
-	if ( depth < 1 ) 
-		return QuietAlphaBeta( depth - 1, -beta, -alpha );
+	if ( depth == 0 ) 
+		return Evaluate();
+		//return QuietAlphaBeta( depth - 1, -beta, -alpha );
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score;
@@ -40,31 +41,34 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	while ( ! mstack[ply].empty() )
-	{
+	while ( ! mstack[ply].empty() )	{
 		movebeingevaluated =  mstack[ply].pop();
-		if ( MakeMove( movebeingevaluated ) )
-		{
+		if ( MakeMove( movebeingevaluated ) ){
 			searchdata.nodes++;
-			if ( isPositionValid())
-			{
+			if ( isPositionValid())	{
+				legalmoves++;
 				searchdata.legalnodes++;
 				searchdata.regularnodes++;
 				score = -AlphaBeta(  depth - 1, -beta, -alpha);
-				if ( score >= beta )
-				{
+				if ( score >= beta )				{
 					UnmakeMove(movebeingevaluated);
-					return beta;
+					return beta;				
 				}
-				if ( score > alpha )
-				{
+				if ( score > alpha )				{
 					alpha = score;
 					chessresult[ply-1].best = movebeingevaluated;
-					chessresult[ply-1].value = score;
+					chessresult[ply-1].value = score;				
 				}
 			}
 			UnmakeMove(movebeingevaluated);
 		}
+	}
+	if ( ! legalmoves)	{
+		//if in check, return mate, else (stalemate) return 0;
+		if ( isAttacked(state[ply].king[ctm], opp))
+			return -INFINITY;
+		else
+			return 0;
 	}
 	return alpha;
 } 

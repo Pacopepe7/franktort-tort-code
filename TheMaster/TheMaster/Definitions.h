@@ -120,7 +120,7 @@ enum { A8 =  0, B8, C8, D8, E8, F8, G8, H8,
 #define MAXMOVES		250
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
-#undef NDEBUG
+//#undef NDEBUG
 #ifdef _DEBUG
 #define ASSERT assert
 #else
