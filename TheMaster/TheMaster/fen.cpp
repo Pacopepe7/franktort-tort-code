@@ -82,4 +82,7 @@ void ChessGame::Fen(string fen)
 	}
 	//move number
 	state[ply].move = MakeInt(tokens[5]);
+#ifdef _DEBUG
+	//PrintBoard();
+#endif
 }

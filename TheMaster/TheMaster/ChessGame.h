@@ -41,6 +41,7 @@ struct Pieceinfo_t
 struct boardstate_t {
 	int castling[2];
 	ChessMove m_LastMove;
+	ChessMove currentMove;
 	Square king[2];
 	short move;
 	Square epsquare;
@@ -72,6 +73,7 @@ public:
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
 	short pawn_EP_rank[COLORS];
+	short pawn_promotion_rank[COLORS];
 	
 	bool debug;
 	int depth;
@@ -159,7 +161,9 @@ public:
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-
+	Piece getCapture(Piece);
+	Piece getPromotion(Piece);
+	Piece SetCapturePromotion(Piece cap, Piece pro);
 	Square getFromSquare(ChessMove cm)				{ return (cm & BYTE) ; } ;
 	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
 	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;

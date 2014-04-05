@@ -124,7 +124,7 @@ void UCIInterface::Command(string command )
 #ifdef _DEBUG
 		for ( int i = 1; i < 6; i++)
 #else
-		for ( int i = 1; i < 6; i++)
+		for ( int i = 1; i < 8; i++)
 #endif
 		{
 			cg.Init();
@@ -163,27 +163,48 @@ void UCIInterface::bist(void)
 	cout << "Checking Move Generator\n";
 	cg.Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-	ASSERT (cg.perft(1) == 20);
-	ASSERT (cg.perft(2) == 400);
-	ASSERT (cg.perft(3) == 8902);
-	ASSERT (cg.perft(4) == 197281);
-	ASSERT (cg.perft(5) == 4865609);
-	//ASSERT (cg.perft(6) == 119060324);
+	ASSERT (cg.perft(1) == 20);				cout << "Init perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 400);			cout << "Init perft(2) OK!\n";
+	ASSERT (cg.perft(3) == 8902);			cout << "Init perft(3) OK!\n";
+	ASSERT (cg.perft(4) == 197281);			cout << "Init perft(4) OK!\n";
+	ASSERT (cg.perft(5) == 4865609);		cout << "Init perft(5) OK!\n";
+	ASSERT (cg.perft(6) == 119060324);		cout << "Init perft(6) OK!\n";
 
 	cg.Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
-	ASSERT (cg.perft(1) == 48);
-	ASSERT (cg.perft(2) == 2039);
-	ASSERT (cg.perft(3) == 97862);
-	ASSERT (cg.perft(4) == 4085603);
-	ASSERT (cg.perft(5) == 193690690);
+	ASSERT (cg.perft(1) == 48);				cout << "Test pos 2 perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 2039);			cout << "Test pos 2 perft(2) OK!\n";
+	ASSERT (cg.perft(3) == 97862);			cout << "Test pos 2 perft(3) OK!\n";
+	ASSERT (cg.perft(4) == 4085603);		cout << "Test pos 2 perft(4) OK!\n";
+	ASSERT (cg.perft(5) == 193690690);		cout << "Test pos 2 perft(5) OK!\n";
 
 	cg.Fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
-	ASSERT (cg.perft(1) == 14);
-	ASSERT (cg.perft(2) == 191);
-	ASSERT (cg.perft(3) == 2812);
-	ASSERT (cg.perft(4) == 43238);
-	ASSERT (cg.perft(5) == 674624);
-	cout << "Move Generator CHecked fine\n";
+	ASSERT (cg.perft(1) == 14);				cout << "Test pos 3 perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 191);			cout << "Test pos 3 perft(2) OK!\n";
+	ASSERT (cg.perft(3) == 2812);			cout << "Test pos 3 perft(3) OK!\n";
+	ASSERT (cg.perft(4) == 43238);			cout << "Test pos 3 perft(4) OK!\n";
+	ASSERT (cg.perft(5) == 674624);			cout << "Test pos 3 perft(5) OK!\n";
+
+	cg.Fen("r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1");
+	ASSERT (cg.perft(1) == 6);				cout << "Test pos 4 perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 264);			cout << "Test pos 4 perft(2) OK!\n";
+	ASSERT (cg.perft(3) == 9467);			cout << "Test pos 4 perft(3) OK!\n";
+	ASSERT (cg.perft(4) == 422333);			cout << "Test pos 4 perft(4) OK!\n";
+	ASSERT (cg.perft(5) == 15833292);		cout << "Test pos 4 perft(5) OK!\n";
+
+	cg.Fen("rnbqkb1r/pp1p1ppp/2p5/4P3/2B5/8/PPP1NnPP/RNBQK2R w KQkq - 0 6");
+	ASSERT (cg.perft(1) == 42);				cout << "Test pos 5 perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 1352);			cout << "Test pos 5 perft(2) OK!\n";
+	ASSERT (cg.perft(3) == 53392);			cout << "Test pos 5 perft(3) OK!\n";
+	
+	cg.Fen("r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10");
+	ASSERT (cg.perft(1) == 46);				cout << "Test pos 6 perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 2079);			cout << "Test pos 6 perft(2) OK!\n";
+	ASSERT (cg.perft(3) == 89890);			cout << "Test pos 6 perft(3) OK!\n";
+	ASSERT (cg.perft(1) == 3894594);		cout << "Test pos 6 perft(4) OK!\n";
+	ASSERT (cg.perft(2) == 164075551);		cout << "Test pos 6 perft(5) OK!\n";
+	ASSERT (cg.perft(3) == 6923051137);		cout << "Test pos 6 perft(6) OK!\n";
+	
+	cout << "Move Generator Checked fine\n";
 }
 UCIInterface::~UCIInterface(void)
 {

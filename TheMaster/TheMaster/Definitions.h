@@ -38,6 +38,16 @@ typedef unsigned __int8		Piece;
 #define QUEEN						 16
 #define KING						 32
 
+// PROMOTION/CAPTURE encode/decode in a single byte
+#define KNIGHT_CAP					1
+#define BISHOP_CAP					2
+#define ROOK_CAP					4
+#define QUEEN_CAP					8
+
+#define KNIGHT_PRO					16
+#define BISHOP_PRO					32
+#define ROOK_PRO					64
+#define QUEEN_PRO					128
 /************************************************
 * 0 - 8 : from (8)
 * 9- 16 : to (8)
@@ -110,6 +120,7 @@ enum { A8 =  0, B8, C8, D8, E8, F8, G8, H8,
 #define MAXMOVES		250
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
+#undef NDEBUG
 #ifdef _DEBUG
 #define ASSERT assert
 #else

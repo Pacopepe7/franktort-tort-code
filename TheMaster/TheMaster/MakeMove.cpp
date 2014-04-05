@@ -20,7 +20,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	Square to = getToSquare(cm);
 	Square data =  getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
-	
+	//PrintMove(cm);
 
 	ASSERT ( isSquare(from) && "MakeMove");
 	ASSERT ( isSquare(to) && "MakeMove");
@@ -30,6 +30,11 @@ bool ChessGame::MakeMove(ChessMove cm)
 	if ( getPiece(to) & KING)
 		return false;
 
+	//PrintBoard();
+	/*state[ply].currentMove = cm;
+	for ( int c = 0; c < ply; c++)
+		PrintMove(state[c].currentMove);
+	PrintMove(cm);*/
 	//set state corresponding to next ply
 	memcpy(&state[ply + 1], &state[ply], sizeof(boardstate_t));
 	state[ply + 1].m_LastMove = cm;
@@ -42,6 +47,14 @@ bool ChessGame::MakeMove(ChessMove cm)
 	}
 	else
 		state[ply + 1].epsquare = INVALID;
+	if ( from == A1 || to == A1)
+		state[ply + 1].castling[WHITE] = state[ply + 1].castling[WHITE] & SHORT;
+	if ( from == H1 || to == H1)
+		state[ply + 1].castling[WHITE] = state[ply + 1].castling[WHITE] & LONG;
+	if ( from == A8 || to == A8)
+		state[ply + 1].castling[BLACK] = state[ply + 1].castling[BLACK] &  SHORT;
+	if ( from == H8 || to == H8)
+		state[ply + 1].castling[BLACK] = state[ply + 1].castling[BLACK] &  LONG;
 	//Castle
 	if ( mt == MT_CASTLE )
 	{
@@ -73,7 +86,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	// EP
 	if ( mt == MT_ENPASSANT )
 	{
-		Clear(state[ply].epsquare  );
+		Clear(state[ply].epsquare - pawndirection[ctm] );
 		MovePiece(from, to);
 	}
 	// no capture
@@ -83,11 +96,24 @@ bool ChessGame::MakeMove(ChessMove cm)
 	//Capture
 	if (mt == MT_CAPTURE )
 		CapturePiece(from, to );
+	//Protion
+	if (mt == MT_PROMOTION )
+	{
+		Clear(from);
+		Set(data, ctm, to);
+	}
+	if (mt == (MT_PROMOTION | MT_CAPTURE) )
+	{
+		Clear(to);
+		Clear(from);
+		Set(getPromotion(data), ctm, to);
+	}
 
 	/*************************************/
 	//update king position
-	if ( getPiece(to) & KING)
+	if ( getPiece(to) & KING){
 		state[ply + 1].king[ctm] = to;
+		state[ply + 1].castling[ctm] = NONE;}
 	/************************************************/
 	//Update move info
 	SwitchSides(FORWARD);	

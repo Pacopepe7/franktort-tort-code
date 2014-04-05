@@ -36,9 +36,9 @@ __int64 ChessGame::perft( int depth)
 		{
 			if ( isPositionValid() ) 
 			{
-				/*if ( getMoveType(state[ply].m_LastMove) == MT_CAPTURE){
-					PrintBoard();
-					PrintMove(movebeingevaluated);}*/
+				//if ( getMoveType(state[ply].m_LastMove) == MT_CAPTURE){
+					//PrintBoard();
+					//PrintMove(movebeingevaluated);
 				moves = perft(  depth - 1);
 				currDepthMoves ++;
 				legalmoves += moves;

@@ -91,13 +91,17 @@ void ChessGame::Init ( void )
 
 	pawn_EP_rank[WHITE] = 3;
 	pawn_EP_rank[BLACK] = 4;
+
+	pawn_promotion_rank[WHITE] = 1;
+	pawn_promotion_rank[BLACK] = 6;
+
 	ply = 0;
 	
 	ctm = WHITE;
 	opp = BLACK;
 
 	state[ply].king[WHITE] = state[ply].king[BLACK] = 0;
-	state[ply].castling[WHITE] = state[ply].castling[BLACK] = BOTH;
+	state[ply].castling[WHITE] = state[ply].castling[BLACK] = NONE;
 
 	searchmethod = NEGAMAX;
 
@@ -180,8 +184,8 @@ void ChessGame::Set(Piece p, Color c, short r, short f)
 void ChessGame::Clear( Square s)
 {
 
-	ASSERT( isSquare(s));
-	ASSERT( !isEmpty(s));
+	ASSERT( isSquare(s) && "Not a Square");
+	ASSERT( !isEmpty(s) && "Clear is not empty");
 	
 	/***************************/
 	Ox88Board[s]->color = NOCOLOR;
@@ -231,4 +235,21 @@ string ChessGame::MakeAlgebraicMove( ChessMove cm)
 	return chessmove;
 }
 
-
+Piece ChessGame::getCapture(Piece p)
+{
+	p = p & (KNIGHT_CAP | BISHOP_CAP | ROOK_CAP | QUEEN_CAP);
+	p = p << 1;
+	return p;
+}
+Piece ChessGame::getPromotion(Piece p)
+{
+	p = p & (KNIGHT_PRO | BISHOP_PRO | ROOK_PRO | QUEEN_PRO);
+	p = p >> 3;
+	return p;
+}
+Piece ChessGame::SetCapturePromotion(Piece cap, Piece pro)
+{
+	Piece c = (cap >> 1);
+	Piece p = (pro << 3);
+	return ( c | p);
+}

@@ -26,6 +26,21 @@ void ChessGame::UnmakeMove( ChessMove cm)
 		MovePiece(to, from);
 		Set(data,ctm,to);
 	}
+	if ( mt == MT_PROMOTION)
+	{
+		Clear(to);
+		Set(PAWN,opp,from);
+	}
+
+	if ( mt == (MT_CAPTURE | MT_PROMOTION))
+	{
+		//PrintBoard();		
+		Clear(to);
+
+		Set(getCapture(data), ctm, to);
+		Set(PAWN,opp,from);
+		//PrintBoard();
+	}
 	if( mt == MT_ENPASSANTPOSSIBLE )
 		MovePiece(to, from);
 
