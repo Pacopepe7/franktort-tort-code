@@ -72,7 +72,7 @@ ChessGame::ChessGame ( )
 		cout << "Initializing ChessGame\n";
 	Init();
 	InitAttackTables();
-
+	Fen(STARTPOS);
 }
 /**
 * Init ()
@@ -107,10 +107,10 @@ void ChessGame::Init ( void )
 
 #ifdef _DEBUG
 	debug = true;
-	depth = 4;
+	depth = 6;
 #else
 	debug = false;
-	depth = 8;
+	depth = 7;
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;

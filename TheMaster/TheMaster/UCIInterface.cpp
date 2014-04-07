@@ -26,8 +26,10 @@ void UCIInterface::Command(string command )
 	{
 		cout << "id name TheMaster\n";
 		cout << "id author Francisco Tort\n";
+		cout << "uciok\n";
 		return;
-	}	if ( command == "quit" )
+	}	
+	if ( command == "quit" )
 	{
 		cout << "ok\n";
 		return;
@@ -55,6 +57,8 @@ void UCIInterface::Command(string command )
 	if ( command == "ucinewgame" )
 	{
 		cg.Init();
+		cg.Fen(STARTPOS);
+		cg.Fen("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0");
 		cout << "ok\n";
 		return ;
 	}
@@ -86,12 +90,20 @@ void UCIInterface::Command(string command )
 		if ( tokens[1] == "fen")
 		{
 			cg.Fen(command.substr(13, 200));
+			for ( int c = 0; c < tokens.size(); c++)
+			{
+				if ( tokens[c] == "moves" )
+				{	
+					for ( int cc = c + 1; cc < tokens.size(); cc++)
+					cg.MakeMoveFromString(tokens[cc]);
+				}
+			}
 		}
 	}
 	if (tokens[0] == "go")
 	{
 		int value;
-		if ( cg.debug )	boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
+		boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
 		ClearSearchData();
 		switch (cg.searchmethod)
 		{

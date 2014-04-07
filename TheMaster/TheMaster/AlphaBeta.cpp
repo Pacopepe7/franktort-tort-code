@@ -37,6 +37,8 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	if ( searchdata.maxdepth < ply)
 		searchdata.maxdepth = ply + 1;
 
+	//if ( isAttacked(state[ply].king[opp], ctm))
+	//	depth ++;
 	ChessMove movebeingevaluated;
 	mstack[ply].DumpStack();
 	GenerateMoves();
@@ -63,12 +65,13 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 			UnmakeMove(movebeingevaluated);
 		}
 	}
-	if ( ! legalmoves)	{
+	//PrintBoard();
+	if ( legalmoves == 0)	{
 		//if in check, return mate, else (stalemate) return 0;
-		if ( isAttacked(state[ply].king[ctm], opp))
-			return -INFINITY;
+		if ( isAttacked(state[ply].king[opp], ctm))
+			alpha = -INFINITY;
 		else
-			return 0;
+			alpha = 0;
 	}
 	return alpha;
 } 
