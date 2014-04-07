@@ -107,7 +107,7 @@ void ChessGame::Init ( void )
 
 #ifdef _DEBUG
 	debug = true;
-	depth = 6;
+	depth = 4;
 #else
 	debug = false;
 	depth = 7;

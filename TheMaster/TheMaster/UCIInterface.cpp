@@ -58,7 +58,8 @@ void UCIInterface::Command(string command )
 	{
 		cg.Init();
 		cg.Fen(STARTPOS);
-		cg.Fen("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0");
+		cg.Fen("1k1r4/pp3R2/6pp/4p3/2B3b1/4Q3/PPP2B2/2K5 b - - 0 1");
+		//cg.Fen("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0");
 		cout << "ok\n";
 		return ;
 	}
@@ -112,6 +113,9 @@ void UCIInterface::Command(string command )
 			break;
 		case ALPHABETA:
 			value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
+			break;
+		default:
+			cout << "Search method Invalid!\n";
 			break;
 		}
 		PrintSearchData();

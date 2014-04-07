@@ -146,6 +146,7 @@ public:
 	bool isSquare(Square sq)						{ return ( (sq & 0x88))? 0:1; } ;
 	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
 	bool isAttacked(Square, Color c);
+	bool IsInCheck()								{ return isAttacked(state[ply].king[opp], ctm);};
 	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == opp));};
 	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 

@@ -29,7 +29,7 @@ int ChessGame::NegaMax( int depth )
 	if ( depth == 0 ) 
 		return Evaluate();
 		//return QuietNegaMax(depth - 1);
-
+	int legalmoves = 0;
 	int score, max;
 	if ( searchdata.maxdepth < ply)
 		searchdata.maxdepth = ply + 1;
@@ -62,6 +62,15 @@ int ChessGame::NegaMax( int depth )
 			UnmakeMove(movebeingevaluated);
 		}
 	}
+	if ( legalmoves == 0)	{
+		//if in check, return mate, else (stalemate) return 0;
+		if ( isAttacked(state[ply].king[ctm], opp))
+			max = -INFINITY;
+		else
+			max = 0;
+	}
+
+
 	return max;
 } 
 

@@ -22,7 +22,7 @@ int ChessGame::Evaluate(void)
 {
 	int result = 0;
 	searchdata.evaluates++;
-	Square sq, oppsq;
+	Square sq;
 	/*************************************
 	* Fast evaluate
 	*/
@@ -41,8 +41,11 @@ int ChessGame::Evaluate(void)
 		case ROOK:			result += ROOK_WEIGHT;  result += PSQT_R[get64Index(sq)];	break;
 		case QUEEN:			result += QUEEN_WEIGHT;	result += PSQT_Q[get64Index(sq)];	break;
 		}
-		oppsq = pieces[c][ctm].square;
-		if ( ctm != WHITE )
+	}
+	for ( int c = 0; c < maxpieces[opp]; c++)
+	{
+		sq = pieces[c][opp].square;
+		if ( opp != WHITE )
 			sq = blackOx88to64[sq];
 		switch (pieces[c][opp].piece){
 		case PAWN:			

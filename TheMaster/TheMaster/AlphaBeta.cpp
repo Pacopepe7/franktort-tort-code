@@ -27,19 +27,28 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 */
 int ChessGame::AlphaBeta( int depth , int alpha, int beta) 
 {
+	if ( state[ply].fiftymoverule >= 50 )
+		return 0;
+	/* if ( 3 move repetition)
+		return 0; */
+	
+	if ( IsInCheck())
+		depth ++;
 
 	if ( depth == 0 ) 
 		return Evaluate();
-		//return QuietAlphaBeta( depth - 1, -beta, -alpha );
+		//return QuietAlphaBeta( depth - 1, alpha, beta );
+
 	int legalmoves = 0;
 	int movestomate = 0;
 	int score;
+
 	if ( searchdata.maxdepth < ply)
 		searchdata.maxdepth = ply + 1;
 
-	//if ( isAttacked(state[ply].king[opp], ctm))
-	//	depth ++;
+
 	ChessMove movebeingevaluated;
+
 	mstack[ply].DumpStack();
 	GenerateMoves();
 
@@ -66,9 +75,10 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		}
 	}
 	//PrintBoard();
-	if ( legalmoves == 0)	{
+	if (! legalmoves )	{
+		ASSERT(ctm != opp);
 		//if in check, return mate, else (stalemate) return 0;
-		if ( isAttacked(state[ply].king[opp], ctm))
+		if ( IsInCheck())
 			alpha = -INFINITY;
 		else
 			alpha = 0;
@@ -88,6 +98,9 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 	mstack[ply].DumpStack();
 	GenerateMoves();
 
+	if ( searchdata.maxdepth < ply)
+		searchdata.maxdepth = ply + 1;
+
 	while ( ! mstack[ply].empty() )
 	{
 		movebeingevaluated =  mstack[ply].pop();
@@ -96,12 +109,13 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 			searchdata.nodes++;
 			if ( isPositionValid())
 			{
+				legalmoves++;
 				searchdata.legalnodes++;
 				searchdata.quietnodes++;
 				if ( isCapture(movebeingevaluated) )
-					score = -AlphaBeta(  depth - 1, -beta, -alpha);
+					score = -QuietAlphaBeta(  depth - 1, -beta, -alpha);
 				else
-					score = Evaluate();
+					score = -Evaluate();
 				if ( score >= beta )
 				{
 					UnmakeMove(movebeingevaluated);
@@ -116,6 +130,15 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 			}
 			UnmakeMove(movebeingevaluated);
 		}
+	}
+	//PrintBoard();
+	if (! legalmoves )	{
+		ASSERT(ctm != opp);
+		//if in check, return mate, else (stalemate) return 0;
+		if ( IsInCheck())
+			alpha = -INFINITY;
+		else
+			alpha = 0;
 	}
 	return alpha;
 } 
