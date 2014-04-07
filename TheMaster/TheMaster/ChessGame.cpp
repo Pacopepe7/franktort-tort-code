@@ -107,10 +107,10 @@ void ChessGame::Init ( void )
 
 #ifdef _DEBUG
 	debug = true;
-	depth = 4;
+	maxdepth = 4;
 #else
 	debug = false;
-	depth = 7;
+	maxdepth = 7;
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;

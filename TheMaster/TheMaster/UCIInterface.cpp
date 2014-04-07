@@ -112,7 +112,13 @@ void UCIInterface::Command(string command )
 			value = cg.NegaMax( cg.depth );
 			break;
 		case ALPHABETA:
+			for ( cg.depth = 1; cg.depth < cg.maxdepth; cg.depth++){
 			value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
+			PrintSearchData();
+			ClearSearchData();
+			if ( abs(value) == MATE)
+				break;
+			}
 			break;
 		default:
 			cout << "Search method Invalid!\n";
@@ -120,7 +126,7 @@ void UCIInterface::Command(string command )
 		}
 		PrintSearchData();
 		ChessMove cm = cg.chessresult[cg.ply].best;
-		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply + 1].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
+		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply ].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
 	if (tokens[0] == "debug")
 	{
@@ -158,23 +164,33 @@ void UCIInterface::Command(string command )
 }
 void UCIInterface::ClearSearchData(void)
 {
-	if ( cg.debug){
+	
 		cg.searchdata.maxdepth = 0;
 		cg.searchdata.nodes = 0;
 		cg.searchdata.legalnodes = 0;
 		cg.searchdata.evaluates = 0;
 		cg.searchdata.quietnodes = 0;
-		cg.searchdata.regularnodes = 0;}
+		cg.searchdata.regularnodes = 0;
 }
 void UCIInterface::PrintSearchData(void)
 {
+	cout << "info Depth " << cg.depth;
+	cout << " seldepth " << cg.searchdata.maxdepth;
+
+	cout << " score cp " << cg.chessresult[cg.ply ].value;
+	cout << " nodes " <<   cg.searchdata.legalnodes;
+	cout << " nps " << ( cg.searchdata.legalnodes / 1) ;
+	cout << " time x";
+	cout << " pv " <<  cg.MakeAlgebraicMove(cg.chessresult[cg.ply ].best) <<endl;
+		
+	/*	<< cg.MakeAlgebraicMove(cg.chessresult[cg.ply ].best) <<endl;
 	if (cg.debug){
 		cout << "info MaxDepth = " << cg.searchdata.maxdepth;
 		cout << " nodes = " << cg.searchdata.nodes << endl;
 		cout << "info legalnodes = " << cg.searchdata.legalnodes;
 		cout << " evaluates = " << cg.searchdata.evaluates << endl;
 		cout << "info regular nodes = " << cg.searchdata.regularnodes << endl;
-		cout << "info quietnodes = " << cg.searchdata.quietnodes << endl;}
+		cout << "info quietnodes = " << cg.searchdata.quietnodes << endl;}*/
 }
 /***********************************************************
 * http://chessprogramming.wikispaces.com/Perft+Results#cite_note-4

@@ -52,7 +52,7 @@ typedef __int8				File;
 #define MAXMOVES		250
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
-#undef NDEBUG
+//#undef NDEBUG
 #ifdef _DEBUG
 #define ASSERT assert
 #else

@@ -21,6 +21,7 @@ typedef unsigned __int8		MoveType;
 #define MT_ENPASSANT			 16			
 #define MT_CASTLE				 32
 #define MT_ENPASSANTPOSSIBLE	 64
+#define MT_PAWNPUSH				128
 
 // PROMOTION/CAPTURE encode/decode in a single byte
 #define KNIGHT_CAP					1
@@ -35,7 +36,9 @@ typedef unsigned __int8		MoveType;
 
 #define BYTE	 (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128)
 
-#define isCapture(cm)				(( getMoveType(cm) == MT_CAPTURE))
+#define isCapture(cm)				(( getMoveType(cm) == MT_PAWNPUSH))
+
+#define isPawnPush(cm)				(( getMoveType(cm) == MT_CAPTURE))
 #define getMoveType(cm )			( ( ( cm >> 16) & BYTE) )
 #define getDataSquare(cm)			(( ( cm >> 24) & BYTE))
 #define getFromSquare(cm)			( (cm & BYTE) )

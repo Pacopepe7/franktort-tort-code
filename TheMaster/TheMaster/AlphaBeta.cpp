@@ -31,13 +31,18 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		return 0;
 	/* if ( 3 move repetition)
 		return 0; */
-	
+	/*if ( alpha == -MATE)
+		return alpha;
+	if ( beta == -MATE)
+		return beta;*/
+
 	if ( IsInCheck())
 		depth ++;
 
 	if ( depth == 0 ) 
-		return Evaluate();
-		//return QuietAlphaBeta( depth - 1, alpha, beta );
+		return QuietAlphaBeta( depth - 1, alpha, beta );
+	
+		
 
 	int legalmoves = 0;
 	int movestomate = 0;
@@ -57,11 +62,12 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		if ( MakeMove( movebeingevaluated ) ){
 			searchdata.nodes++;
 			if ( isPositionValid())	{
-				PrintMove(movebeingevaluated);
+
 				legalmoves++;
 				searchdata.legalnodes++;
 				searchdata.regularnodes++;
 				score = -AlphaBeta(  depth - 1, -beta, -alpha);
+
 				if ( score >= beta )				{
 					UnmakeMove(movebeingevaluated);
 					return beta;				
@@ -80,7 +86,7 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		ASSERT(ctm != opp);
 		//if in check, return mate, else (stalemate) return 0;
 		if ( IsInCheck())
-			alpha = -INFINITY;
+			alpha = -MATE;
 		else
 			alpha = 0;
 	}
@@ -99,9 +105,6 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	if ( searchdata.maxdepth < ply)
-		searchdata.maxdepth = ply + 1;
-
 	while ( ! mstack[ply].empty() )
 	{
 		movebeingevaluated =  mstack[ply].pop();
@@ -113,7 +116,7 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 				legalmoves++;
 				searchdata.legalnodes++;
 				searchdata.quietnodes++;
-				if ( isCapture(movebeingevaluated) )
+				if ( isGoodCapture(movebeingevaluated)  )
 					score = -QuietAlphaBeta(  depth - 1, -beta, -alpha);
 				else
 					score = -Evaluate();
@@ -137,7 +140,7 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 		ASSERT(ctm != opp);
 		//if in check, return mate, else (stalemate) return 0;
 		if ( IsInCheck())
-			alpha = -INFINITY;
+			alpha = -MATE;
 		else
 			alpha = 0;
 	}
