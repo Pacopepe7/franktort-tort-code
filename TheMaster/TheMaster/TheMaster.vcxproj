@@ -102,9 +102,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessGame.h" />
+    <ClInclude Include="ChessMove.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="fixedLengthStack.h" />
+    <ClInclude Include="Piece.h" />
     <ClInclude Include="scores.h" />
+    <ClInclude Include="Square.h" />
     <ClInclude Include="UCIInterface.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

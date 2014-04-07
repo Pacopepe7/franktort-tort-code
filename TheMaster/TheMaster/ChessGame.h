@@ -6,6 +6,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "Color.h"
+#include "Piece.h"
+#include "ChessMove.h"
+#include "Square.h"
+
 #include "Definitions.h"
 #include <string>
 #include <iostream>
@@ -148,7 +153,6 @@ public:
 	bool isAttacked(Square, Color c);
 	bool IsInCheck()								{ return isAttacked(state[ply].king[opp], ctm);};
 	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == opp));};
-	Piece ExtractPieceCaptured( ChessMove cm)		{ return ( ( cm >> 30) & BYTE) ; } ;
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
@@ -162,14 +166,6 @@ public:
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-	Piece getCapture(Piece);
-	Piece getPromotion(Piece);
-	Piece SetCapturePromotion(Piece cap, Piece pro);
-	Square getFromSquare(ChessMove cm)				{ return (cm & BYTE) ; } ;
-	Square getToSquare(ChessMove cm)				{ return ( ( cm >> 8) & BYTE) ; } ;
-	Square getMoveType(ChessMove cm)				{ return ( ( cm >> 16) & BYTE) ; } ;
-	Square getDataSquare(ChessMove cm)				{ return ( ( cm >> 24) & BYTE) ; } ;
-	bool isCapture(ChessMove cm)					{ return ( getMoveType(cm) == MT_CAPTURE);};
 	Piece getPiece(Square sq)						{ return (  (Ox88Board[sq] == NULL)?1 : Ox88Board[sq]->piece );};
 	ChessMove CM( Square from, Square to, MoveType mt, Square data)
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }

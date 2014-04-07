@@ -188,7 +188,7 @@ void ChessGame::Clear( Square s)
 	ASSERT( !isEmpty(s) && "Clear is not empty");
 	
 	/***************************/
-	Ox88Board[s]->color = NOCOLOR;
+	Ox88Board[s]->color = COLORS;
 	Ox88Board[s]->index = 0;
 	Ox88Board[s]->piece = EMPTY;
 	Ox88Board[s]->square = 0;
@@ -231,21 +231,5 @@ string ChessGame::MakeAlgebraicMove( ChessMove cm)
 	return chessmove;
 }
 
-Piece ChessGame::getCapture(Piece p)
-{
-	p = p & (KNIGHT_CAP | BISHOP_CAP | ROOK_CAP | QUEEN_CAP);
-	p = p << 1;
-	return p;
-}
-Piece ChessGame::getPromotion(Piece p)
-{
-	p = p & (KNIGHT_PRO | BISHOP_PRO | ROOK_PRO | QUEEN_PRO);
-	p = p >> 3;
-	return p;
-}
-Piece ChessGame::SetCapturePromotion(Piece cap, Piece pro)
-{
-	Piece c = (cap >> 1);
-	Piece p = (pro << 3);
-	return ( c | p);
-}
+
+

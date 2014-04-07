@@ -1,68 +1,49 @@
 /***************************************************************
 * Francisco Tort
-* Dec 30, 2009
-* ChessMove class creates a move from a pair of coordinates in the board array
-* or a string in the form "e2e4[p]" where the first two characters are the 
-* coordinates of the square the piece if being moved from, the second two
-* characters are the coordinates of the square the piece is being moved to
-* and the optional last character is for promotions,   
-* */
+/************************************************
+* 0 - 8 : from (8)
+* 9- 16 : to (8)
+* 17-22 : move type (6)
+* 23-30 : data bits ( if ep move, ep square (is never a capture). if capture, captured piece.
+* ////25 - 30 : Piece captured (6 - for undoMove)
+* /////31-32: 4 options for piece promoted: Q=00,R=01,B=10,N=11
+*/
 
-/**********************************************************
-* 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 = short is 2 bytes, 16 bits
-* 00000000000000000000000000000000000000000000000000= 32 bit integer
-* 
-* XXXXXX         from is 0-63, 2^6, 6 bits to store from
-* to    XXXXXX   is 0-63, 2^6, 6 bits to store to
-* Is capture  X  one bit
-* Is promotion X one bit
-* is enpassant  X move? one bit
-* Is castle      X one bit
-* Is enpassant    X possible? one bit
-* Piece type       XXXX for promotion
-* Value of move         XXXXXXXXXXXXXXXX 16 bits (0-65536) or (-30000-30000)
-************************************************************/
+#pragma once;
 
-#include "definitions.h"
+typedef unsigned __int32	ChessMove; 
 
-#pragma once
-typedef bits unsigned int;
+typedef unsigned __int8		MoveType;
 
-const bits FROM_MASK = (1 | 2 | 4 | 8 | 16 | 32);
-const bits TO_MASK	= (FROM_MASK << 6);
-const bits CAPTURE_MASK	= (1 << 12);
-const bits PROMOTION_MASK = (CAPTURE_MASK << 1);
-const bits ENPASSANT_MASK = (PROMOTION_MASK << 1);
-const bits CASTLE_MASK = (ENPASSANT_MASK << 1);
-const bits ENPASSANTPOSSIBLE_MASK = (CASTLE_MASK << 1);
-const bits KNIGHT_MASK	= ( ENPASSANTPOSSIBLE_MASK >> 1);
-const bits BISHOP_MASK	= ( KNIGHT_MASK >> 1);
-const bits ROOK_MASK	= ( BISHOP_MASK >> 1);
-const bits QUEEN_MASK	= ( ROOK_MASK >> 1);
+#define MT_NORMAL				 1
+#define MT_PROMOTION			 2
+#define MT_CAPTURE				 4
+#define MT_ENPASSANT			 16			
+#define MT_CASTLE				 32
+#define MT_ENPASSANTPOSSIBLE	 64
 
-const bits VALUE_MASK = (65535 << 22);
+// PROMOTION/CAPTURE encode/decode in a single byte
+#define KNIGHT_CAP					1
+#define BISHOP_CAP					2
+#define ROOK_CAP					4
+#define QUEEN_CAP					8
 
-class ChessMove
-{ 
+#define KNIGHT_PRO					16
+#define BISHOP_PRO					32
+#define ROOK_PRO					64
+#define QUEEN_PRO					128
 
-private:
-	bits m_uiChessMove;
-	inline bits from ( void )  { return (m_uiChessMove & FROM_MASK); } ;
-	inline bits to   ( void )  { return ((m_uiChessMove & TO_MASK) >> 6 ); } ;
+#define BYTE	 (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128)
 
-public:
-	ChessMove ( );
-	ChessMove ( int from, int to );
-	ChessMove ( int from, int to , int flags);
-	bool isCapture(void) { return (m_uiChessMove & CAPTURE_MASK)? true:false;};
-	bool isPromotion(void) { return (m_uiChessMove & PROMOTION_MASK)? true:false;};
-	bool isEnPassant(void) { return (m_uiChessMove & ENPASSANT_MASK)? true:false;};
-	bool isCastle(void) { return (m_uiChessMove & CASTLE_MASK)? true:false;};
-	bool isEnPassantPossible(void) { return (m_uiChessMove & ENPASSANTPOSSIBLE_MASK)? true:false;};
-	bool isKnight(void) { return (m_uiChessMove & KNIGHT_MASK)? true:false;};
-	bool isBishop(void) { return (m_uiChessMove & BISHOP_MASK)? true:false;};
-	bool isRook(void) { return (m_uiChessMove & ROOK_MASK)? true:false;};
-	bool isQueen(void) { return (m_uiChessMove & QUEEN_MASK)? true:false;};
+#define isCapture(cm)				(( getMoveType(cm) == MT_CAPTURE))
+#define getMoveType(cm )			( ( ( cm >> 16) & BYTE) )
+#define getDataSquare(cm)			(( ( cm >> 24) & BYTE))
+#define getFromSquare(cm)			( (cm & BYTE) )
+#define getToSquare(cm)				( ( ( cm >> 8) & BYTE) )
+
+#define getCapture(p)			( (p & (KNIGHT_CAP | BISHOP_CAP | ROOK_CAP | QUEEN_CAP)) << 1)
+#define getPromotion(p)			( ( p & (KNIGHT_PRO | BISHOP_PRO | ROOK_PRO | QUEEN_PRO) ) >> 3)
+#define SetCapturePromotion(capture, promotion)	( ( capture >> 1) | ( promotion << 3) )
 	
-};// class ChessMove 
+
 
