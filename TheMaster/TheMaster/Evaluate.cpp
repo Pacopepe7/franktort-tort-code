@@ -23,6 +23,8 @@ int ChessGame::Evaluate(void)
 	int result = 0;
 	searchdata.evaluates++;
 	Square sq;
+	
+
 	/*************************************
 	* Fast evaluate
 	*/

@@ -1,25 +1,17 @@
 /**********************************************************************************
 * Francisco Tort
-* Dec 30, 2009
-* these are the values for the individual pieces ( plus the empty and Out value)
-* The numbers are just bits turned on on an int to make it easy for the program 
-* to tell if the piece is a KNIGHT ( and it with KNIGHT value) and color (and it with WHITE etc...)
+* Apr 7, 2014
 */
 
 
 #define TRUE	 1
 #define FALSE	 0
 
-
 #define FORWARD						 1
 #define BACK						(-1)
 
-
 #define MAXPIECES					 16
 #define INVALIDSQUARE				 64		
-
-
-
 
 /***********************************************/
 #define NONE					0
@@ -55,21 +47,16 @@ typedef __int8				File;
 /************************************************
 * MASKS
 */
-
-
-
-
-
 #define MAXBOARDARRAY	128
 #define INVALID			(-1)
 #define MAXMOVES		250
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
-//#undef NDEBUG
+#undef NDEBUG
 #ifdef _DEBUG
 #define ASSERT assert
 #else
 #define ASSERT //
 #endif
-
+//
 #define STARTPOS "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"

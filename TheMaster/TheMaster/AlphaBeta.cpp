@@ -57,6 +57,7 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		if ( MakeMove( movebeingevaluated ) ){
 			searchdata.nodes++;
 			if ( isPositionValid())	{
+				PrintMove(movebeingevaluated);
 				legalmoves++;
 				searchdata.legalnodes++;
 				searchdata.regularnodes++;

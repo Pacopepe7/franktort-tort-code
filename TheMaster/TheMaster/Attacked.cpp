@@ -7,23 +7,23 @@
 
 
 /*********************************************
-* Did last move left opponent on check?
+* Did last move left me in check?
 */
 
 bool ChessGame::isPositionValid(void)
 {
-	Square kingsq = state[ply].king[opp];
 
 	/**********************************************
 	* Did the opponent just left his king in check?
+	* I made the last move so its my king!!
 	*/
 	for ( int i = 0; i < maxpieces[ctm]; i++)
 	{
 		if ( pieces[i][ctm].piece)
-			if ( isAttackedbyPiece(pieces[i][ctm].square, kingsq, ctm, pieces[i][ctm].piece ))
+			if ( isAttackedbyPiece(pieces[i][ctm].square, state[ply].king[opp], ctm, pieces[i][ctm].piece ))
 				return false;
 	}
-
+		
 	return true;
 
 }
