@@ -7,7 +7,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "UCIInterface.h"
 #include "Evaluate.h"
-#include <boost/timer/timer.hpp>
+
 
 UCIInterface::UCIInterface(void)
 {
@@ -58,7 +58,9 @@ void UCIInterface::Command(string command )
 	{
 		cg.Init();
 		cg.Fen(STARTPOS);
-		cg.Fen("1k1r4/pp3R2/6pp/4p3/2B3b1/4Q3/PPP2B2/2K5 b - - 0 1");
+
+		Command("position fen b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - 0 1 moves g5g6 h7h6 h5h6 g7h6 g6g7 h8g8 g7f8q g8h7");
+		//cg.Fen("1k1r4/pp3R2/6pp/4p3/2B3b1/4Q3/PPP2B2/2K5 b - - 0 1");
 		//cg.Fen("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0");
 		cout << "ok\n";
 		return ;
@@ -96,13 +98,16 @@ void UCIInterface::Command(string command )
 				if ( tokens[c] == "moves" )
 				{	
 					for ( int cc = c + 1; cc < tokens.size(); cc++)
-					cg.MakeMoveFromString(tokens[cc]);
+						cg.MakeMoveFromString(tokens[cc]);
 				}
 			}
+			//cg.PrintBoard();
 		}
 	}
 	if (tokens[0] == "go")
 	{
+
+
 		int value;
 		boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
 		ClearSearchData();
@@ -113,18 +118,23 @@ void UCIInterface::Command(string command )
 			break;
 		case ALPHABETA:
 			for ( cg.depth = 1; cg.depth < cg.maxdepth; cg.depth++){
-			value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
-			PrintSearchData();
-			ClearSearchData();
-			if ( abs(value) == MATE)
-				break;
+				boost::timer::cpu_timer timer;
+
+
+				value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
+				sec seconds = boost::chrono::nanoseconds(timer.elapsed().user);
+
+				PrintSearchData(seconds);
+				ClearSearchData();
+				if ( abs(value) == MATE)
+					break;
 			}
 			break;
 		default:
 			cout << "Search method Invalid!\n";
 			break;
 		}
-		PrintSearchData();
+		
 		ChessMove cm = cg.chessresult[cg.ply].best;
 		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply ].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
@@ -164,39 +174,39 @@ void UCIInterface::Command(string command )
 }
 void UCIInterface::ClearSearchData(void)
 {
-	
-		cg.searchdata.maxdepth = 0;
-		cg.searchdata.nodes = 0;
-		cg.searchdata.legalnodes = 0;
-		cg.searchdata.evaluates = 0;
-		cg.searchdata.quietnodes = 0;
-		cg.searchdata.regularnodes = 0;
+
+	cg.searchdata.maxdepth = 0;
+	cg.searchdata.nodes = 0;
+	cg.searchdata.legalnodes = 0;
+	cg.searchdata.evaluates = 0;
+	cg.searchdata.quietnodes = 0;
+	cg.searchdata.regularnodes = 0;
 }
-void UCIInterface::PrintSearchData(void)
+void UCIInterface::PrintSearchData( sec d)
 {
 	cout << "info Depth " << cg.depth;
 	cout << " seldepth " << cg.searchdata.maxdepth;
 
 	cout << " score cp " << cg.chessresult[cg.ply ].value;
 	cout << " nodes " <<   cg.searchdata.legalnodes;
-	cout << " nps " << ( cg.searchdata.legalnodes / 1) ;
-	cout << " time x";
+	
+  std::cout.precision(4);
+	if ( d.count())
+		cout << " nps " <<  (int)(cg.searchdata.legalnodes / d.count()) ;
+	else 
+		cout << " nps " <<  (cg.searchdata.legalnodes ) ;
+	std::cout.unsetf ( std::ios::floatfield );                // floatfield not set
+	cout << " time " << d.count();
 	cout << " pv " <<  cg.MakeAlgebraicMove(cg.chessresult[cg.ply ].best) <<endl;
-		
-	/*	<< cg.MakeAlgebraicMove(cg.chessresult[cg.ply ].best) <<endl;
-	if (cg.debug){
-		cout << "info MaxDepth = " << cg.searchdata.maxdepth;
-		cout << " nodes = " << cg.searchdata.nodes << endl;
-		cout << "info legalnodes = " << cg.searchdata.legalnodes;
-		cout << " evaluates = " << cg.searchdata.evaluates << endl;
-		cout << "info regular nodes = " << cg.searchdata.regularnodes << endl;
-		cout << "info quietnodes = " << cg.searchdata.quietnodes << endl;}*/
+
+	ClearSearchData();
 }
 /***********************************************************
 * http://chessprogramming.wikispaces.com/Perft+Results#cite_note-4
 */
 void UCIInterface::bist(void)
 {
+	boost::timer::auto_cpu_timer tt(6, "Built in Self Test took %w seconds\n");
 	cout << "Checking Move Generator\n";
 	cg.Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
@@ -232,7 +242,7 @@ void UCIInterface::bist(void)
 	ASSERT (cg.perft(1) == 42);				cout << "Test pos 5 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 1352);			cout << "Test pos 5 perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 53392);			cout << "Test pos 5 perft(3) OK!\n";
-	
+
 	cg.Fen("r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10");
 	ASSERT (cg.perft(1) == 46);				cout << "Test pos 6 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 2079);			cout << "Test pos 6 perft(2) OK!\n";
@@ -240,7 +250,7 @@ void UCIInterface::bist(void)
 	ASSERT (cg.perft(1) == 3894594);		cout << "Test pos 6 perft(4) OK!\n";
 	ASSERT (cg.perft(2) == 164075551);		cout << "Test pos 6 perft(5) OK!\n";
 	ASSERT (cg.perft(3) == 6923051137);		cout << "Test pos 6 perft(6) OK!\n";
-	
+
 	cout << "Move Generator Checked fine\n";
 }
 //1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - 0 1

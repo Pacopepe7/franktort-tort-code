@@ -110,7 +110,7 @@ void ChessGame::Init ( void )
 	maxdepth = 4;
 #else
 	debug = false;
-	maxdepth = 7;
+	maxdepth = 6;
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
@@ -198,7 +198,7 @@ void ChessGame::Clear( Square s)
 
 bool ChessGame::MakeMoveFromString( string cm)
 {
-	//cout << "move = " << cm << endl;
+	//cout << "move to make = " << cm << endl;
 	mstack[ply].DumpStack();
 	GenerateMoves();
 		ChessMove _cm;
@@ -206,8 +206,10 @@ bool ChessGame::MakeMoveFromString( string cm)
 	{
 		_cm =  mstack[ply].inspect(c);
 		string move = MakeAlgebraicMove(_cm);
+		
 		if (cm == move )
 		{
+			//cout << " Found match!" << cm << " == " << move << endl;
 			MakeMove(_cm);//validate missing...
 			return true;
 		}
@@ -221,13 +223,37 @@ string ChessGame::MakeAlgebraicMove( ChessMove cm)
 
 	Square from = getFromSquare(cm);
 	Square to = getToSquare(cm);
+	Square data = getDataSquare(cm);
+	MoveType mt = getMoveType(cm);
+
 	ASSERT ( isSquare(from));
 	ASSERT ( isSquare(to));
 
 	chessmove = not(from);
 	chessmove += not(to);
 	//todo, promotion
-
+	if (  mt == ( MT_PROMOTION | MT_CAPTURE))
+	{
+		if ( getPromotion(data)  == KNIGHT)
+			chessmove += "n";
+		if ( getPromotion(data)  == BISHOP)
+			chessmove += "b";
+		if ( getPromotion(data)  == ROOK)
+			chessmove += "r";
+		if ( getPromotion(data)  == QUEEN)
+			chessmove += "q";
+	}
+	if ( isPromotion(cm))
+	{
+		if ( getPromotion(data)  == KNIGHT)
+			chessmove += "n";
+		if ( getDataSquare(cm)  == BISHOP)
+			chessmove += "b";
+		if ( getDataSquare(cm)  == ROOK)
+			chessmove += "r";
+		if ( getDataSquare(cm)  == QUEEN)
+			chessmove += "q";
+	}
 	return chessmove;
 }
 

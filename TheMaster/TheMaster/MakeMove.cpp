@@ -107,6 +107,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 		Clear(to);
 		Clear(from);
 		Set(getPromotion(data), ctm, to);
+		
 	}
 
 	/*************************************/

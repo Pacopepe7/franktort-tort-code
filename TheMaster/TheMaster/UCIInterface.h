@@ -8,15 +8,22 @@
 
 #include "ChessGame.h"
 #include <iostream>
+#include <boost/timer/timer.hpp>
+#include <boost/chrono/include.hpp>
+using namespace boost;
+
 #pragma once
+
+typedef boost::chrono::duration<double> sec;
 
 class UCIInterface
 {
 	ChessGame cg;
+	
 public:
 	UCIInterface(void);
 	void ClearSearchData(void);
-	void PrintSearchData(void);
+	void PrintSearchData( sec);
 	void bist(void);
 	void Command(string);
 	~UCIInterface(void);
