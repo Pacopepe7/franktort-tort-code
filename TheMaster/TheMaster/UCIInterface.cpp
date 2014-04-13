@@ -27,6 +27,8 @@ void UCIInterface::Command(string command )
 		cout << "id name TheMaster\n";
 		cout << "id author Francisco Tort\n";
 		cout << "uciok\n";
+		cg.Init();
+		cg.Fen(STARTPOS);
 		return;
 	}	
 	if ( command == "quit" )
@@ -82,6 +84,7 @@ void UCIInterface::Command(string command )
 		if ( tokens[1] == "startpos" )
 		{
 			cg.Init();
+			cg.Fen(STARTPOS);
 			if ( tokens.size() == 2 ){
 				cout << endl; return;}
 			// start making moves on the internal board until no more moves
@@ -117,7 +120,7 @@ void UCIInterface::Command(string command )
 			value = cg.NegaMax( cg.depth );
 			break;
 		case ALPHABETA:
-			for ( cg.depth = 1; cg.depth < cg.maxdepth; cg.depth++){
+			for ( cg.depth = 1; cg.depth <= cg.maxdepth; cg.depth += 2){
 				boost::timer::cpu_timer timer;
 
 
