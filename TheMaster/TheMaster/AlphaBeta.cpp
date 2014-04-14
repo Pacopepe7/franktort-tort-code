@@ -57,6 +57,9 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	mstack[ply].DumpStack();
 	GenerateMoves();
 
+	/*if ( mstack[ply].size() < 20 )
+		depth ++;*/
+
 	while ( ! mstack[ply].empty() )	{
 		movebeingevaluated =  mstack[ply].pop();
 		if ( MakeMove( movebeingevaluated ) ){

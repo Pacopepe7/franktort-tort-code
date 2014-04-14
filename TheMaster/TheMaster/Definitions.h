@@ -52,10 +52,13 @@ typedef __int8				File;
 #define MAXMOVES		250
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
+
+#undef NDEBUG
 #ifdef _DEBUG
 #define ASSERT assert
 #else
 #define ASSERT assert
 #endif
+#define ASSERTREL assert
 //
 #define STARTPOS "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
