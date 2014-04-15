@@ -154,6 +154,7 @@ public:
 	bool isAttacked(Square, Color c);
 	bool IsInCheck( )								{ return isAttacked(state[ply].king[ctm], opp);};
 	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == opp));};
+	bool isOurs ( Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == ctm));};
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
@@ -170,7 +171,7 @@ public:
 	bool isGoodCapture(ChessMove cm)				{ if ( isCapture(cm) && getPiece(getFromSquare(cm)) == PAWN) return true; return false;};
 														/*if (  getPiece(getFromSquare(cm)) < getCapture(cm)) return true;
 														return false;};*/
-	Piece getPiece(Square sq)						{ return (  (Ox88Board[sq] == NULL)?1 : Ox88Board[sq]->piece );};
+	Piece getPiece(Square sq)						{ return (  (Ox88Board[sq] == NULL)?EMPTY : Ox88Board[sq]->piece );};
 	ChessMove CM( Square from, Square to, MoveType mt, Square data)
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }
 	void PrintMove(ChessMove cm);

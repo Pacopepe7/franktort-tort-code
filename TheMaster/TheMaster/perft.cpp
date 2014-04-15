@@ -51,5 +51,6 @@ __int64 ChessGame::perft( int depth)
 		//there are no valid moves, mate?
 		//PrintBoard();
 	}
+	//cout << "Perft : " << legalmoves << endl;
 	return legalmoves;
 } 

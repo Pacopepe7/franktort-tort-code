@@ -12,17 +12,66 @@
 
 bool ChessGame::isPositionValid(void)
 {
+	
+	Square oppking = state[ply].king[opp];
+	Square sq; int c;
+	//check for pawns, kings and knights
+	//Pawns
+	if ( ctm == WHITE )
+	{
+		if ( isSquare( oppking + SOUTHWEST) && getPiece( oppking + SOUTHWEST) == PAWN && isOurs(oppking + SOUTHWEST))
+			return false;
+		if ( isSquare( oppking + SOUTHEAST) && getPiece( oppking + SOUTHEAST) == PAWN && isOurs(oppking + SOUTHEAST))
+			return false;
+	}
+	else
+	{
+		if ( isSquare( oppking + NORTHWEST) && getPiece( oppking + NORTHWEST) == PAWN && isOurs(oppking + NORTHWEST))
+			return false;
+		if ( isSquare( oppking + NORTHEAST) && getPiece( oppking + NORTHEAST) == PAWN && isOurs(oppking + NORTHEAST))
+			return false;
+	}
+	//King
+	for ( c = 0; c < 8; c++)
+	{
+		sq = oppking + kingvectors[c];
+		if ( isSquare(sq) && getPiece(sq) == KING && isOurs(sq))
+			return false;
+	}
+	//Knight
+	for ( c = 0; c < 8; c++)
+	{
+		sq = oppking + knightvectors[c];
+		if ( isSquare(sq) && getPiece(sq) == KNIGHT && isOurs(sq))
+			return false;
+	}
+	// check for sliding pieces.
+	for ( c = 0; c < 8; c++){
+
+		for ( sq = oppking + queenvectors[c]; isSquare(sq) && isEmpty(sq) ; sq += queenvectors[c]);
+		{
+			if ( isSquare(sq) && isOurs(sq) ) // we have a hit!
+			{
+				if ( getPiece(sq) == QUEEN)
+					return false;
+				if ( c % 2 == 0 && getPiece(sq) == ROOK)
+					return  false;
+				if ( c % 2 == 1 && getPiece(sq) == BISHOP)
+					return false ;
+			}
+		}
+	}
 
 	/**********************************************
 	* Did the opponent just left his king in check?
 	* I made the last move so its my king!!
 	*/
-	for ( int i = 0; i < maxpieces[ctm]; i++)
-	{
-		if ( pieces[i][ctm].piece)
-			if ( isAttackedbyPiece(pieces[i][ctm].square, state[ply].king[opp], ctm, pieces[i][ctm].piece ))
-				return false;
-	}
+	//for ( int i = 0; i < maxpieces[ctm]; i++)
+	//{
+	//	if ( pieces[i][ctm].piece)
+	//		if ( isAttackedbyPiece(pieces[i][ctm].square, state[ply].king[opp], ctm, pieces[i][ctm].piece ))
+	//			return false;
+	//}
 		
 	return true;
 

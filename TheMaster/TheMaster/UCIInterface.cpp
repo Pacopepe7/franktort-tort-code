@@ -132,7 +132,7 @@ void UCIInterface::Command(string command )
 				ClearSearchData();
 				if ( abs(value) == MATE)
 					break;
-			}while (seconds.count() < 1.4);
+			}while (seconds.count() < 1.1);
 			//}
 			break;
 		default:
@@ -254,7 +254,7 @@ void UCIInterface::bist(void)
 	ASSERTREL (cg.perft(3) == 89890);			cout << "Test pos 6 perft(3) OK!\n";
 	ASSERTREL (cg.perft(4) == 3894594);		cout << "Test pos 6 perft(4) OK!\n";
 	ASSERTREL (cg.perft(5) == 164075551);		cout << "Test pos 6 perft(5) OK!\n";
-	ASSERTREL (cg.perft(6) == 6923051137);		cout << "Test pos 6 perft(6) OK!\n";
+	//ASSERTREL (cg.perft(6) == 6923051137);		cout << "Test pos 6 perft(6) OK!\n";
 
 	cout << "Move Generator Checked fine\n";
 }
