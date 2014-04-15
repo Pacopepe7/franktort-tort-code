@@ -57,7 +57,7 @@ typedef __int8				File;
 #ifdef _DEBUG
 #define ASSERT assert
 #else
-#define ASSERT assert
+#define ASSERT //
 #endif
 #define ASSERTREL assert
 //
