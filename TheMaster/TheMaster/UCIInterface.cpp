@@ -60,7 +60,7 @@ void UCIInterface::Command(string command )
 	{
 		cg.Init();
 		cg.Fen(STARTPOS);
-		cg.Fen("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - 1 0");
+		cg.Fen("r2qkb1r/1ppb1ppp/p7/4p3/P1Q1P3/2P5/5PPP/R1B2KNR b kq - 1 0");
 		//Command("position fen b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - 0 1 moves g5g6 h7h6 h5h6 g7h6 g6g7 h8g8 g7f8q g8h7");
 		//cg.Fen("1k1r4/pp3R2/6pp/4p3/2B3b1/4Q3/PPP2B2/2K5 b - - 0 1");
 		//cg.Fen("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0");
@@ -133,7 +133,7 @@ void UCIInterface::Command(string command )
 				ClearSearchData();
 				if ( abs(value) == MATE)
 					break;
-			}while (seconds.count() < 1);
+			}while (seconds.count() < 2);
 			//}
 			break;
 		default:

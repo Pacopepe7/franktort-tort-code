@@ -177,7 +177,7 @@ public:
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
 	bool isGoodCapture(ChessMove cm)				
 	{ 
-		if ( (getPiece(getFromSquare(cm)) == PAWN)) 
+		if ( (getPiece(getToSquare(cm)) == PAWN)) 
 			return true;
 		return false;
 	};

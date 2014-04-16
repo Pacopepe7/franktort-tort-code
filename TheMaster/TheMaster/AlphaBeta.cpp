@@ -1,20 +1,7 @@
 /**********************************************
 /*
 TheMaster, a UCI chess playing engine 
-Copyright (C)2014 Francisco Tort
-
-*/
-/*int alphaBeta( int alpha, int beta, int depthleft ) {
-if( depthleft == 0 ) return quiesce( alpha, beta );
-for ( all moves)  {
-score = -alphaBeta( -beta, -alpha, depthleft - 1 );
-if( score >= beta )
-return beta;   //  fail hard beta-cutoff
-if( score > alpha )
-alpha = score; // alpha acts like max in MiniMax
-}
-return alpha;
-}
+Copyright (C)2014 Francisco Tort}
 http://chessprogramming.wikispaces.com/Alpha-Beta
 */
 #include "ChessGame.h"
@@ -32,7 +19,10 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	/* if ( 3 move repetition)
 	return 0; */
 
-	if ( depth < 1 && !IsInCheck() ) 
+	if ( IsInCheck() )
+		depth ++;
+
+	if ( depth == 0) 
 		return QuietAlphaBeta( depth - 1, alpha, beta );
 
 
@@ -113,7 +103,6 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 		movebeingevaluated =  mstack[ply].pop();
 		if ( MakeMove( movebeingevaluated ) )
 		{
-			
 			if ( isPositionValid(movebeingevaluated))
 			{
 				legalmoves++;

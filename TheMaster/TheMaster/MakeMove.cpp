@@ -30,11 +30,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	if ( getPiece(to) & KING)
 		return false;
 
-	//PrintBoard();
-	/*state[ply].currentMove = cm;
-	for ( int c = 0; c < ply; c++)
-		PrintMove(state[c].currentMove);
-	PrintMove(cm);*/
+
 	//set state corresponding to next ply
 	memcpy(&state[ply + 1], &state[ply], sizeof(boardstate_t));
 	state[ply + 1].m_LastMove = cm;
@@ -90,7 +86,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 		MovePiece(from, to);
 	}
 	// no capture
-	if ( mt & MT_NORMAL) 
+	if ( mt == MT_NORMAL) 
 		MovePiece(from, to);
 
 	//Capture

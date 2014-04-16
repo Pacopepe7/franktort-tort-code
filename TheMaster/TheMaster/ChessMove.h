@@ -36,7 +36,7 @@ typedef unsigned __int8		MoveType;
 
 #define BYTE	 (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128)
 
-#define isCapture(cm)				(( getMoveType(cm) == MT_PAWNPUSH))
+#define isCapture(cm)				(( getMoveType(cm) & MT_CAPTURE))
 #define isPromotion(cm)				(( getMoveType(cm) == MT_PROMOTION))
 #define isPawnPush(cm)				(( getMoveType(cm) == MT_PAWNPUSH))
 #define isPromotionCapture(cm)		(( getMoveType(cm) == ( MT_PROMOTION | MT_CAPTURE)))
