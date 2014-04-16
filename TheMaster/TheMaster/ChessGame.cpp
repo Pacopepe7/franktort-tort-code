@@ -12,6 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
 #include "ChessGame.h"
+#include "Scores.h"
 #include <iostream>
 
 using namespace std;
@@ -82,7 +83,8 @@ void ChessGame::Init ( void )
 {
 	if( debug )
 		cout << "Initializing ChessGame\n";
-	maxpieces[WHITE] = maxpieces[BLACK] = 0;
+	maxpieces[WHITE] = maxpieces[BLACK] = materialCount[WHITE] = materialCount[BLACK] = 0;
+
 	pawndirection[WHITE] = NORTH;
 	pawndirection[BLACK] = SOUTH;
 
@@ -141,8 +143,15 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	//update king position
 	if ( p & KING)
 		state[ply].king[c] = s;
+	//Update counter
 	if ( ! found)
 	maxpieces[c]++;
+	//Update material counter
+	if ( p & PAWN) materialCount[c] += PAWN_WEIGHT;
+	if ( p & KNIGHT) materialCount[c] += KNIGHT_WEIGHT;
+	if ( p & BISHOP) materialCount[c] += BISHOP_WEIGHT;
+	if ( p & ROOK) materialCount[c] += ROOK_WEIGHT;
+	if ( p & QUEEN) materialCount[c] += QUEEN_WEIGHT;
 }
 /***********************************************************
 *
@@ -186,7 +195,15 @@ void ChessGame::Clear( Square s)
 
 	ASSERT( isSquare(s) && "Not a Square");
 	ASSERT( !isEmpty(s) && "Clear is not empty");
-	
+	//Update material counter
+	Piece p = getPiece(s);
+	Color c = getColor(s);
+	if ( p & PAWN)	materialCount[c] -= PAWN_WEIGHT;
+	if ( p & KNIGHT)materialCount[c] -= KNIGHT_WEIGHT;
+	if ( p & BISHOP)materialCount[c] -= BISHOP_WEIGHT;
+	if ( p & ROOK)	materialCount[c] -= ROOK_WEIGHT;
+	if ( p & QUEEN)	materialCount[c] -= QUEEN_WEIGHT;
+
 	/***************************/
 	Ox88Board[s]->color = COLORS;
 	Ox88Board[s]->index = 0;

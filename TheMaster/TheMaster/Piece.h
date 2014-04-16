@@ -16,3 +16,4 @@ typedef unsigned __int8		Piece;
 #define ROOK						 8
 #define QUEEN						 16
 #define KING						 32
+

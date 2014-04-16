@@ -60,7 +60,7 @@ void UCIInterface::Command(string command )
 	{
 		cg.Init();
 		cg.Fen(STARTPOS);
-
+		cg.Fen("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - 1 0");
 		//Command("position fen b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - 0 1 moves g5g6 h7h6 h5h6 g7h6 g6g7 h8g8 g7f8q g8h7");
 		//cg.Fen("1k1r4/pp3R2/6pp/4p3/2B3b1/4Q3/PPP2B2/2K5 b - - 0 1");
 		//cg.Fen("1k1r4/pp1b1R2/3q2pp/4p3/2B5/4Q3/PPP2B2/2K5 b - - 0 0");
@@ -122,17 +122,18 @@ void UCIInterface::Command(string command )
 		case ALPHABETA:
 			
 			//for ( cg.depth = 1; cg.depth <= cg.maxdepth; cg.depth += 2){
-			cg.depth = 1;
+			cg.depth = -1;
 			do {
+				cg.depth += 2;
 				boost::timer::cpu_timer timer;
 				value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
 				seconds = boost::chrono::nanoseconds(timer.elapsed().user);
 				PrintSearchData(seconds);
-				cg.depth += 2;
+				
 				ClearSearchData();
 				if ( abs(value) == MATE)
 					break;
-			}while (seconds.count() < 3.0);
+			}while (seconds.count() < 1);
 			//}
 			break;
 		default:
@@ -203,7 +204,9 @@ void UCIInterface::PrintSearchData( sec d)
 	std::cout.unsetf ( std::ios::floatfield );                // floatfield not set
 	cout << " time " << d.count();
 	cout << " pv " <<  cg.MakeAlgebraicMove(cg.chessresult[cg.ply ].best) <<endl;
-
+	///////////////////////////////////////////////////////////////////////////
+	cout << "info QuietNodes " << cg.searchdata.quietnodes << " RegularNodes " 
+		<< cg.searchdata.regularnodes << " Evaluates " << cg.searchdata.evaluates << endl;
 	ClearSearchData();
 }
 /***********************************************************

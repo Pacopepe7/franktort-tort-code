@@ -28,38 +28,6 @@ int ChessGame::Evaluate(void)
 	/*************************************
 	* Fast evaluate
 	*/
-	for ( int c = 0; c < maxpieces[ctm]; c++)
-	{
-		sq = pieces[c][ctm].square;
-		if ( ctm != WHITE )
-			sq = blackOx88to64[sq];
-		switch (pieces[c][ctm].piece){
-		case PAWN:			
-			result += PAWN_WEIGHT;	
-			result += PSQT_WP[get64Index(sq)];	
-			break;
-		case KNIGHT:		result += KNIGHT_WEIGHT;result += PSQT_N[get64Index(sq)];	break;
-		case BISHOP:		result += BISHOP_WEIGHT;result += PSQT_B[get64Index(sq)];	break;
-		case ROOK:			result += ROOK_WEIGHT;  result += PSQT_R[get64Index(sq)];	break;
-		case QUEEN:			result += QUEEN_WEIGHT;	result += PSQT_Q[get64Index(sq)];	break;
-		}
-	}
-	for ( int c = 0; c < maxpieces[opp]; c++)
-	{
-		sq = pieces[c][opp].square;
-		if ( opp != WHITE )
-			sq = blackOx88to64[sq];
-		switch (pieces[c][opp].piece){
-		case PAWN:			
-			result -= PAWN_WEIGHT;	
-			result -= PSQT_WP[get64Index(sq)];	
-			break;
-		case KNIGHT:		result -= KNIGHT_WEIGHT;result -= PSQT_N[get64Index(sq)];	break;
-		case BISHOP:		result -= BISHOP_WEIGHT;result -= PSQT_B[get64Index(sq)];	break;
-		case ROOK:			result -= ROOK_WEIGHT;  result -= PSQT_R[get64Index(sq)];	break;
-		case QUEEN:			result -= QUEEN_WEIGHT;	result -= PSQT_Q[get64Index(sq)];	break;
-		}
-
-	}
+	result = materialCount[ctm] - materialCount[opp];
 	return ( result );
 }

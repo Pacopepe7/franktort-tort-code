@@ -40,7 +40,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	state[ply + 1].m_LastMove = cm;
 
 	//Ep possible
-	if ( mt == MT_ENPASSANTPOSSIBLE ) 
+	if ( mt & MT_ENPASSANTPOSSIBLE ) 
 	{
 		state[ply + 1].epsquare = data;
 		MovePiece(from, to);
@@ -56,7 +56,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	if ( from == H8 || to == H8)
 		state[ply + 1].castling[BLACK] = state[ply + 1].castling[BLACK] &  LONG;
 	//Castle
-	if ( mt == MT_CASTLE )
+	if ( mt & MT_CASTLE )
 	{
 		if ( to == G1){
 			Clear(H1);
@@ -84,13 +84,13 @@ bool ChessGame::MakeMove(ChessMove cm)
 		}
 	}
 	// EP
-	if ( mt == MT_ENPASSANT )
+	if ( mt & MT_ENPASSANT )
 	{
 		Clear(state[ply].epsquare - pawndirection[ctm] );
 		MovePiece(from, to);
 	}
 	// no capture
-	if ( mt == MT_NORMAL) 
+	if ( mt & MT_NORMAL) 
 		MovePiece(from, to);
 
 	//Capture

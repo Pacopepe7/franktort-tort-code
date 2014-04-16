@@ -6,15 +6,12 @@
 
 #include "Definitions.h"
 
-typedef  unsigned int score;
-
 //////////////////////////////////////////////////////
 //http://chessprogramming.wikispaces.com/Point+Value
 //////////////////////////////////////////////////////
 
-score PAWN_WEIGHT		= 100;
-score KNIGHT_WEIGHT		= 350;
-score BISHOP_WEIGHT		= 350;
-score ROOK_WEIGHT		= 525;
-score QUEEN_WEIGHT		= 1000;
-
+#define PAWN_WEIGHT				100
+#define KNIGHT_WEIGHT			350
+#define BISHOP_WEIGHT			350
+#define ROOK_WEIGHT				525
+#define QUEEN_WEIGHT			1000

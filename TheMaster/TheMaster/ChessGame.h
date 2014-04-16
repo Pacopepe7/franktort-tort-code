@@ -89,11 +89,12 @@ public:
 	Cstack <ChessMove> mstack[MAXMOVES];
 
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
+	int materialCount[2];
 	short maxpieces[2];
 
 	short ply;
 	Color ctm, opp;
-	boardstate_t state[300];
+	boardstate_t state[MAXMOVES];
 
 public:
 	/**************************************
@@ -152,6 +153,7 @@ public:
 	bool isSquare(Square sq)						{ return ( (sq & 0x88))? 0:1; } ;
 	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
 	bool isColor(Square sq, Color c)				{ return ( (Ox88Board[sq]->color == c));}
+	Color getColor(Square sq)						{ return ( (Ox88Board[sq]->color ));}
 	bool isAttacked(Square, Color c);
 	bool IsInCheck( )								{ return isAttacked(state[ply].king[ctm], opp);};
 	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == opp));};
@@ -169,8 +171,12 @@ public:
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-	bool isGoodCapture(ChessMove cm)				{ if ( isCapture(cm) && 
-														(getPiece(getFromSquare(cm)) == PAWN)) return true; return false;};
+	bool isGoodCapture(ChessMove cm)				
+	{ 
+		if ( (getPiece(getFromSquare(cm)) == PAWN)) 
+			return true;
+		return false;
+	};
 														//(getPiece(getFromSquare(cm)) < getCapture(cm))) return true; return false;};
 														/*if (  getPiece(getFromSquare(cm)) < getCapture(cm)) return true;
 														return false;};*/
