@@ -34,7 +34,7 @@ __int64 ChessGame::perft( int depth)
 
 		if ( MakeMove( movebeingevaluated )  )
 		{
-			if ( isPositionValid() ) 
+			if ( isPositionValid(movebeingevaluated) ) 
 			{
 				//if ( getMoveType(state[ply].m_LastMove) == MT_CAPTURE){
 					//PrintBoard();

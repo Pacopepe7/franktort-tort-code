@@ -10,9 +10,42 @@
 * Did last move left me in check?
 */
 
-bool ChessGame::isPositionValid(void)
+bool ChessGame::isPositionValid(ChessMove cm)
 {
-	return !isAttacked(state[ply].king[opp], ctm);
+	if ( state[ply].king[opp] == getToSquare(cm))
+		return !isAttacked(state[ply].king[opp], ctm);
+
+	
+	if (PiecesThatCanAttack( getFromSquare(cm),state[ply].king[opp]) | 
+		PiecesThatCanAttack( getToSquare(cm)  ,state[ply].king[opp]) |
+		PiecesThatCanAttack( getFromSquare(state[ply-1].m_LastMove),state[ply].king[opp]) |
+		PiecesThatCanAttack( getToSquare(state[ply-1].m_LastMove),state[ply].king[opp]))
+		return !isAttacked(state[ply].king[opp], ctm);
+	return true;
+
+	//bool canAttack = (PiecesThatCanAttack( getFromSquare(cm),state[ply].king[opp]) | PiecesThatCanAttack( getToSquare(cm),state[ply].king[opp])) |
+	//(PiecesThatCanAttack( getFromSquare(state[ply-1].m_LastMove),state[ply].king[opp]) | PiecesThatCanAttack( getToSquare(state[ply-1].m_LastMove),state[ply].king[opp]));
+	//if ( canAttack )
+	//	valid = !isAttacked(state[ply].king[opp], ctm);
+	//else 
+	//	valid = true;
+	//bool validold = !isAttacked(state[ply].king[opp], ctm);
+
+	//if (validold != valid  )
+	//{
+	//	cout << "Valid: " << (int) valid << endl;
+	//	cout << "validOld " << (int) validold << endl;
+	//	cout << (int) !isAttacked(state[ply].king[opp], ctm) << endl;
+	//	cout << (int) PiecesThatCanAttack( getFromSquare(cm),state[ply].king[ctm]) << endl;
+	//	cout << (int) PiecesThatCanAttack( getToSquare(cm),state[ply].king[ctm]) << endl;
+
+	//	PrintBoard();
+	//	PrintMove(cm);
+	//	PrintMove(state[ply-1].m_LastMove);
+	//	PrintBoard();
+	//}
+	//return !isAttacked(state[ply].king[opp], ctm);
+	
 }
 
 /***********************************************************
@@ -37,8 +70,6 @@ bool ChessGame::isAttackedbyPiece ( Square from, Square to, Color side, Piece p 
 	ASSERT ( !isEmpty( from )  && "isAttackedbyPiece: ");
 	ASSERT( p  && "isAttackedbyPiece: ");
 
-	//if ( from == G5 && to == F7)
-	//	PrintBoard();
 	Piece PiecesAbleToAttack = PiecesThatCanAttack(from, to);
 	if ( ! PiecesAbleToAttack )
 		return false;
@@ -93,30 +124,28 @@ bool ChessGame::isAttacked(Square target, Color co)
 	//Pawns
 	if ( co == WHITE )
 	{
-		if ( isSquare( target + SOUTHWEST) && getPiece( target + SOUTHWEST) == PAWN && isColor(target + SOUTHWEST, co))
+		if ( isPieceColor( target + SOUTHWEST, PAWN, co))
 			return true;
-		if ( isSquare( target + SOUTHEAST) && getPiece( target + SOUTHEAST) == PAWN && isColor(target + SOUTHEAST, co))
+		if ( isPieceColor( target + SOUTHEAST, PAWN, co))
 			return true;
 	}
 	else
 	{
-		if ( isSquare( target + NORTHWEST) && getPiece( target + NORTHWEST) == PAWN && isColor(target + NORTHWEST, co))
+		if ( isPieceColor( target + NORTHWEST, PAWN, co))
 			return true;
-		if ( isSquare( target + NORTHEAST) && getPiece( target + NORTHEAST) == PAWN && isColor(target + NORTHEAST, co))
+		if ( isPieceColor( target + NORTHEAST, PAWN, co))
 			return true;
 	}
 	//King
 	for ( c = 0; c < 8; c++)
 	{
-		sq = target + kingvectors[c];
-		if ( isSquare(sq) && getPiece(sq) == KING && isColor(sq, co))
+		if (isPieceColor( target + kingvectors[c], KING, co))
 			return true;
 	}
 	//Knight
 	for ( c = 0; c < 8; c++)
 	{
-		sq = target + knightvectors[c];
-		if ( isSquare(sq) && getPiece(sq) == KNIGHT && isColor(sq, co))
+		if ( isPieceColor( target + knightvectors[c], KNIGHT , co))
 			return true;
 	}
 	// check for sliding pieces.

@@ -70,8 +70,7 @@ string ChessGame::notation[128]		= {
 ChessGame::ChessGame ( ) 
 {
 	if( debug )
-		cout << "Initializing ChessGame\n";
-	Init();
+		cout << "Instantiating ChessGame\n";
 	InitAttackTables();
 	Fen(STARTPOS);
 }
@@ -98,7 +97,7 @@ void ChessGame::Init ( void )
 	pawn_promotion_rank[BLACK] = 6;
 
 	ply = 0;
-	
+	state[0].m_LastMove = CM(A1, A2, MT_NORMAL, 0);
 	ctm = WHITE;
 	opp = BLACK;
 

@@ -57,7 +57,7 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		movebeingevaluated =  mstack[ply].pop();
 		if ( MakeMove( movebeingevaluated ) ){
 			
-			if ( isPositionValid())	{
+			if ( isPositionValid(movebeingevaluated))	{
 				searchdata.nodes++;
 				legalmoves++;
 				searchdata.legalnodes++;
@@ -114,7 +114,7 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 		if ( MakeMove( movebeingevaluated ) )
 		{
 			
-			if ( isPositionValid())
+			if ( isPositionValid(movebeingevaluated))
 			{
 				legalmoves++;
 				searchdata.legalnodes++;

@@ -47,7 +47,7 @@ int ChessGame::NegaMax( int depth )
 		if ( MakeMove( movebeingevaluated ) )
 		{
 			searchdata.nodes++;
-			if ( isPositionValid())
+			if ( isPositionValid(movebeingevaluated))
 			{
 				searchdata.legalnodes++;
 				searchdata.regularnodes++;
@@ -94,7 +94,7 @@ int ChessGame::QuietNegaMax( int depth )
 		if ( MakeMove( movebeingevaluated ) )
 		{
 			searchdata.nodes++;
-			if ( isCapture(movebeingevaluated) && isPositionValid())
+			if ( isCapture(movebeingevaluated) && isPositionValid(movebeingevaluated))
 			{
 				searchdata.legalnodes++;
 				searchdata.quietnodes++;

@@ -223,7 +223,7 @@ void UCIInterface::bist(void)
 	ASSERTREL (cg.perft(3) == 8902);			cout << "Init perft(3) OK!\n";
 	ASSERTREL (cg.perft(4) == 197281);			cout << "Init perft(4) OK!\n";
 	ASSERTREL (cg.perft(5) == 4865609);		cout << "Init perft(5) OK!\n";
-	ASSERTREL (cg.perft(6) == 119060324);		cout << "Init perft(6) OK!\n";
+	//ASSERTREL (cg.perft(6) == 119060324);		cout << "Init perft(6) OK!\n";
 
 	cg.Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
 	ASSERTREL (cg.perft(1) == 48);				cout << "Test pos 2 perft(1) OK!\n";

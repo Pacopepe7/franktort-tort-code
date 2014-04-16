@@ -19,6 +19,9 @@ void ChessGame::PrintBoard ( void )
 	cout << "----------------------" << endl;
 	if ( ctm ) cout << "   BLACK to move   " << endl;
 	else cout << "   WHITE to move   " << endl;
+	cout << "White king at : " << not(state[ply].king[WHITE]) << endl;
+	cout << "Black king at : " << not(state[ply].king[BLACK]) << endl;
+
 	for ( int i = 0; i < 128; i++)
 	{
 		if ( ! isSquare(i) )
