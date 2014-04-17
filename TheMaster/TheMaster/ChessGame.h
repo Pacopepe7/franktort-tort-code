@@ -62,14 +62,13 @@ public:
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
 
-	static int PSQT_WP[64];
-	static int PSQT_BP[64];
-
+	static int PSQT_P[64];
 	static int PSQT_N[64];
 	static int PSQT_B[64];
 	static int PSQT_R[64];
 	static int PSQT_Q[64];
 	static int PSQT_K[64];
+
 	static int Ox88to64[128];
 	static int blackOx88to64[128];
 	static string  notation[MAXBOARDARRAY];	
@@ -90,6 +89,7 @@ public:
 
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
 	int materialCount[2];
+	int psqtCount[2];
 	short maxpieces[2];
 
 	short ply;
@@ -165,12 +165,15 @@ public:
 
 	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
 	File getFile(Square s)							{ return ( s & 7) ; } ;
-	int  get64Index(Square s)						{ 
+	int  getOx88to64Index(Color c, Square s)						{ 
 		if ( s > 128)
 			PrintBoard();
 		ASSERT((s > -1) && "get64Index: Square is less than -1");
 		ASSERT((s < 128) &&  "get64Index: Square is !< 128");
-		return ( Ox88to64[s]);
+		if ( c ) // c = 1 == BLACK
+			return ( 63 - Ox88to64[s]);
+		else
+			return ( Ox88to64[s]);
 	};
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;

@@ -19,8 +19,7 @@ void ChessGame::PrintBoard ( void )
 	cout << "----------------------" << endl;
 	if ( ctm ) cout << "   BLACK to move   " << endl;
 	else cout << "   WHITE to move   " << endl;
-	cout << "White king at : " << not(state[ply].king[WHITE]) << endl;
-	cout << "Black king at : " << not(state[ply].king[BLACK]) << endl;
+
 
 	for ( int i = 0; i < 128; i++)
 	{
@@ -80,7 +79,13 @@ void ChessGame::PrintBoard ( void )
 		}
 	}
 	cout << endl;
-
+	cout << "White king at : " << not(state[ply].king[WHITE]) << endl;
+	cout << "Black king at : " << not(state[ply].king[BLACK]) << endl;
+	cout << "Material for White: " << materialCount[WHITE] << endl;
+	cout << "Material for Black: " << materialCount[BLACK] << endl;
+	cout << "PSQT for White: " << psqtCount[WHITE] << endl;
+	cout << "PSQT for Black: " << psqtCount[BLACK] << endl;
+	cout << "Eval = " << Evaluate() << endl;
 	//print, to move pieces...
 	/*for ( int c = 0; c < maxpieces[ state.ctm]; c++)
 		cout << "c: " << c << ", P: " << (int)pieces[c][state.ctm].piece << " I: " <<  (int)pieces[c][state.ctm].square << endl;

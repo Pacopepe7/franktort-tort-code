@@ -29,5 +29,6 @@ int ChessGame::Evaluate(void)
 	* Fast evaluate
 	*/
 	result = materialCount[ctm] - materialCount[opp];
+	result += psqtCount[ctm] - psqtCount[opp];
 	return ( result );
 }
