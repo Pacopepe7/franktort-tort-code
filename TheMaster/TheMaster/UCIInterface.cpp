@@ -133,7 +133,7 @@ void UCIInterface::Command(string command )
 				ClearSearchData();
 				if ( abs(value) == MATE)
 					break;
-			}while (seconds.count() < 2);
+			}while (seconds.count() < 0.75);
 			//}
 			break;
 		default:
