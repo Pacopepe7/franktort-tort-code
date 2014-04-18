@@ -133,7 +133,8 @@ void UCIInterface::Command(string command )
 				ClearSearchData();
 				if ( abs(value) == MATE)
 					break;
-			}while (seconds.count() < 0.75);
+			}while (cg.depth < 5 || seconds.count() < 0.65);
+			//}while (seconds.count() < 0.75);
 			//}
 			break;
 		default:
@@ -207,6 +208,9 @@ void UCIInterface::PrintSearchData( sec d)
 	///////////////////////////////////////////////////////////////////////////
 	cout << "info QuietNodes " << cg.searchdata.quietnodes << " RegularNodes " 
 		<< cg.searchdata.regularnodes << " Evaluates " << cg.searchdata.evaluates << endl;
+	std::cout.precision(4);
+	cout << "info Quiet/Normal " << (float)((float)cg.searchdata.quietnodes/(float)cg.searchdata.regularnodes) << endl;
+	std::cout.unsetf ( std::ios::floatfield );
 	ClearSearchData();
 }
 /***********************************************************

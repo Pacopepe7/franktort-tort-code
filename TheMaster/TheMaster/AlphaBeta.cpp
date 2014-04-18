@@ -108,7 +108,7 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 				legalmoves++;
 				searchdata.legalnodes++;
 				
-				if ( isCapture(movebeingevaluated)  )
+				if ( isGoodCapture(movebeingevaluated)  )
 				{
 					searchdata.quietnodes++;
 					searchdata.nodes++;

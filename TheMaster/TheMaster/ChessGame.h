@@ -178,12 +178,17 @@ public:
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-	bool isGoodCapture(ChessMove cm)				
-	{ 
-		if ( (getPiece(getToSquare(cm)) == PAWN)) 
-			return true;
+	bool isGoodCapture(ChessMove cm)		
+	{
+		if ( !isCapture(cm)) return false;
+			if (getPiece(getToSquare(cm)) < getCapture(cm)) return true; 
 		return false;
 	};
+	//{ 
+	//	if ( (getPiece(getToSquare(cm)) == PAWN)) 
+	//		return true;
+	//	return false;
+	//};
 														//(getPiece(getFromSquare(cm)) < getCapture(cm))) return true; return false;};
 														/*if (  getPiece(getFromSquare(cm)) < getCapture(cm)) return true;
 														return false;};*/
