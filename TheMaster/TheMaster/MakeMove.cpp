@@ -114,5 +114,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	/************************************************/
 	//Update move info
 	SwitchSides(FORWARD);	
+	//PrintBoard();
+	//PrintMove(cm);
 	return true;
 }

@@ -110,7 +110,7 @@ void ChessGame::Init ( void )
 
 #ifdef _DEBUG
 	debug = true;
-	maxdepth = 4;
+	maxdepth = 3;
 #else
 	debug = false;
 	maxdepth = 5; // 7 works best (6 has bad odd-even effect)

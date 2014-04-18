@@ -17,6 +17,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "utils.h"
 #include <assert.h>
 #include "fixedLengthStack.h"
+#include <boost/timer/timer.hpp>
+#include <boost/chrono/include.hpp>
+
+using namespace boost;
+
+typedef boost::chrono::duration<double> sec;
 
 struct SearchResult
 {
@@ -113,6 +119,7 @@ public:
 	int Evaluate(void);
 	int NegaMax(int depth);
 	int QuietNegaMax(int depth);
+	int AlphaBetaDriver();
 	int AlphaBeta(int depth, int alpha, int beta);
 	int QuietAlphaBeta(int depth, int alpha, int beta);
 	SearchResult chessresult[MAXMOVES]; // public
@@ -181,7 +188,7 @@ public:
 	bool isGoodCapture(ChessMove cm)		
 	{
 		if ( !isCapture(cm)) return false;
-			if (getPiece(getToSquare(cm)) < getCapture(cm)) return true; 
+			if (getPiece(getToSquare(cm)) < (getCapture(cm) + 180)) return true; 
 		return false;
 	};
 	//{ 
@@ -212,6 +219,9 @@ public:
 	/****************************************
 	* Testing funcs
 	****************************************/
+	void ClearSearchData(void);
+	void PrintSearchData( sec);
+
 	void PrintBoard(void);
 	void PrintDebugMove(ChessMove cm);
 	__int64 perft(int depth);

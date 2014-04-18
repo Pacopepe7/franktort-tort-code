@@ -22,8 +22,6 @@ class UCIInterface
 	
 public:
 	UCIInterface(void);
-	void ClearSearchData(void);
-	void PrintSearchData( sec);
 	void bist(void);
 	void Command(string);
 	~UCIInterface(void);

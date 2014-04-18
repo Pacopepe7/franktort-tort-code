@@ -15,3 +15,7 @@
 #define BISHOP_WEIGHT			350
 #define ROOK_WEIGHT				525
 #define QUEEN_WEIGHT			1000
+
+#define BISHOPPAIR				50
+
+#define EXCHANGE				(ROOK_WEIGHT - BISHOP_WEIGHT)

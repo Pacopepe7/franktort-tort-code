@@ -12,6 +12,47 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 * Alpha Beta
 * 
 */
+int ChessGame::AlphaBetaDriver()
+{
+	int value, alpha, beta;
+	sec seconds;
+
+	depth = -1;
+	alpha = -INFINITY;
+	beta = INFINITY;
+	static int window = 50;
+	do {
+		depth += 2;
+		boost::timer::cpu_timer timer;
+		cout << "info alpha " << alpha << " beta " << beta << " window " << window << endl;
+		value = AlphaBeta( depth, alpha, beta);
+		seconds = boost::chrono::nanoseconds(timer.elapsed().user);
+		PrintSearchData(seconds);		ClearSearchData();
+
+		if ( abs(value) == MATE)
+			break;
+
+		if ((value <= alpha) || (value >= beta)) {
+			alpha = -INFINITY;
+			beta = INFINITY;
+			cout << "info Window too small " << window << " increasing by 10" << endl;
+			window += 10;
+		}else{
+			alpha = value - window;
+			beta = value + window;
+		}
+
+
+	}while (depth < 5 || seconds.count() < 0.65);
+	//}while (seconds.count() < 0.75);
+	//}
+	return value;
+
+}
+/**************************************************************
+* Alpha Beta
+* 
+*/
 int ChessGame::AlphaBeta( int depth , int alpha, int beta) 
 {
 	if ( state[ply].fiftymoverule >= 50 )

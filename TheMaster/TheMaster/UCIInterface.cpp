@@ -113,30 +113,15 @@ void UCIInterface::Command(string command )
 		sec seconds;
 		int value;
 		boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
-		ClearSearchData();
+		
 		switch (cg.searchmethod)
 		{
 		case NEGAMAX:
 			value = cg.NegaMax( cg.depth );
 			break;
 		case ALPHABETA:
-			
-			//for ( cg.depth = 1; cg.depth <= cg.maxdepth; cg.depth += 2){
-			cg.depth = -1;
-			do {
-				cg.depth += 2;
-				boost::timer::cpu_timer timer;
-				value = cg.AlphaBeta( cg.depth, -INFINITY, INFINITY);
-				seconds = boost::chrono::nanoseconds(timer.elapsed().user);
-				PrintSearchData(seconds);
-				
-				ClearSearchData();
-				if ( abs(value) == MATE)
-					break;
-			}while (cg.depth < 5 || seconds.count() < 0.65);
-			//}while (seconds.count() < 0.75);
-			//}
-			break;
+			value = cg.AlphaBetaDriver( );
+				break;
 		default:
 			cout << "Search method Invalid!\n";
 			break;
@@ -179,40 +164,8 @@ void UCIInterface::Command(string command )
 		return ;
 	}
 }
-void UCIInterface::ClearSearchData(void)
-{
 
-	cg.searchdata.maxdepth = 0;
-	cg.searchdata.nodes = 0;
-	cg.searchdata.legalnodes = 0;
-	cg.searchdata.evaluates = 0;
-	cg.searchdata.quietnodes = 0;
-	cg.searchdata.regularnodes = 0;
-}
-void UCIInterface::PrintSearchData( sec d)
-{
-	cout << "info Depth " << cg.depth;
-	cout << " seldepth " << cg.searchdata.maxdepth;
 
-	cout << " score cp " << cg.chessresult[cg.ply ].value;
-	cout << " nodes " <<   cg.searchdata.legalnodes;
-	
-  std::cout.precision(4);
-	if ( d.count())
-		cout << " nps " <<  (int)(cg.searchdata.legalnodes / d.count()) ;
-	else 
-		cout << " nps " <<  (cg.searchdata.legalnodes ) ;
-	std::cout.unsetf ( std::ios::floatfield );                // floatfield not set
-	cout << " time " << d.count();
-	cout << " pv " <<  cg.MakeAlgebraicMove(cg.chessresult[cg.ply ].best) <<endl;
-	///////////////////////////////////////////////////////////////////////////
-	cout << "info QuietNodes " << cg.searchdata.quietnodes << " RegularNodes " 
-		<< cg.searchdata.regularnodes << " Evaluates " << cg.searchdata.evaluates << endl;
-	std::cout.precision(4);
-	cout << "info Quiet/Normal " << (float)((float)cg.searchdata.quietnodes/(float)cg.searchdata.regularnodes) << endl;
-	std::cout.unsetf ( std::ios::floatfield );
-	ClearSearchData();
-}
 /***********************************************************
 * http://chessprogramming.wikispaces.com/Perft+Results#cite_note-4
 */

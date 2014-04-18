@@ -106,3 +106,39 @@ void  ChessGame::PrintDebugMove(ChessMove cm)
 	MoveType mt = getMoveType(cm);
 	cout << "DEBUG:" << (int) cm << "f: " << (int)from << " t: " << (int)to << " data: " << (int)data << " MT: " << (int) mt << endl;
 }
+
+void ChessGame::ClearSearchData(void)
+{
+
+	searchdata.maxdepth = 0;
+	searchdata.nodes = 0;
+	searchdata.legalnodes = 0;
+	searchdata.evaluates = 0;
+	searchdata.quietnodes = 0;
+	searchdata.regularnodes = 0;
+}
+
+void ChessGame::PrintSearchData( sec d)
+{
+	cout << "info Depth " << depth;
+	cout << " seldepth " << searchdata.maxdepth;
+
+	cout << " score cp " << chessresult[ply ].value;
+	cout << " nodes " <<   searchdata.legalnodes;
+	
+  std::cout.precision(4);
+	if ( d.count())
+		cout << " nps " <<  (int)(searchdata.legalnodes / d.count()) ;
+	else 
+		cout << " nps " <<  (searchdata.legalnodes ) ;
+	std::cout.unsetf ( std::ios::floatfield );                // floatfield not set
+	cout << " time " << d.count();
+	cout << " pv " <<  MakeAlgebraicMove(chessresult[ply ].best) <<endl;
+	///////////////////////////////////////////////////////////////////////////
+	cout << "info QuietNodes " << searchdata.quietnodes << " RegularNodes " 
+		<< searchdata.regularnodes << " Evaluates " << searchdata.evaluates << endl;
+	std::cout.precision(4);
+	cout << "info Quiet/Normal " << (float)((float)searchdata.quietnodes/(float)searchdata.regularnodes) << endl;
+	std::cout.unsetf ( std::ios::floatfield );
+	ClearSearchData();
+}
