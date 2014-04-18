@@ -32,6 +32,7 @@ struct SearchResult
 enum SearchMethod { NEGAMAX, ALPHABETA, MTDF, CUSTOM};
 struct Searchdata
 {
+
 	long long nodes;
 	long long legalnodes;
 	long long evaluates;
@@ -185,24 +186,11 @@ public:
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-	bool isGoodCapture(ChessMove cm)		
-	{
-		if ( !isCapture(cm)) return false;
-			if (getPiece(getToSquare(cm)) < (getCapture(cm) + 180)) return true; 
-		return false;
-	};
-	//{ 
-	//	if ( (getPiece(getToSquare(cm)) == PAWN)) 
-	//		return true;
-	//	return false;
-	//};
-														//(getPiece(getFromSquare(cm)) < getCapture(cm))) return true; return false;};
-														/*if (  getPiece(getFromSquare(cm)) < getCapture(cm)) return true;
-														return false;};*/
-	
+	bool isGoodCapture(ChessMove cm);			
 	ChessMove CM( Square from, Square to, MoveType mt, Square data)
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }
 	void PrintMove(ChessMove cm);
+	void PrintMovePlain(ChessMove cm);
 	string not(Square sq);
 	string MakeAlgebraicMove( ChessMove cm);
 	Square MakeSquare(short r, short c)				{ return 16 * r + c;};

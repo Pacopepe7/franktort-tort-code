@@ -89,6 +89,7 @@
     <ClCompile Include="Evaluate.cpp" />
     <ClCompile Include="fen.cpp" />
     <ClCompile Include="GenMoves.cpp" />
+    <ClCompile Include="GoodCapture.cpp" />
     <ClCompile Include="MakeMove.cpp" />
     <ClCompile Include="Negamax.cpp" />
     <ClCompile Include="perft.cpp" />

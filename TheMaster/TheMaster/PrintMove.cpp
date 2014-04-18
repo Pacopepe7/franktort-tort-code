@@ -26,3 +26,15 @@ void ChessGame::PrintMove(ChessMove cm)
 	cout << not(from) << "-" << not(to) << "   " <<  " data: " << (int)data << " Type: " << (int) mt << endl;
 
 }
+void ChessGame::PrintMovePlain(ChessMove cm)
+{
+	Square from = getFromSquare(cm);
+	Square to = getToSquare(cm);
+	Square data =  getDataSquare(cm);
+	MoveType mt = getMoveType(cm);
+
+	ASSERT( isSquare(from));
+	ASSERT( isSquare(to));
+	cout << not(from) << not(to) << " ";
+
+}

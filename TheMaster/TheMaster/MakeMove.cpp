@@ -113,7 +113,9 @@ bool ChessGame::MakeMove(ChessMove cm)
 		state[ply + 1].castling[ctm] = NONE;}
 	/************************************************/
 	//Update move info
+	
 	SwitchSides(FORWARD);	
+	state[ply].m_LastMove = cm;
 	//PrintBoard();
 	//PrintMove(cm);
 	return true;

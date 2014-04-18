@@ -20,9 +20,10 @@ int ChessGame::AlphaBetaDriver()
 	depth = -1;
 	alpha = -INFINITY;
 	beta = INFINITY;
-	static int window = 50;
+	int window = 100;
 	do {
 		depth += 2;
+		ClearSearchData();
 		boost::timer::cpu_timer timer;
 		cout << "info alpha " << alpha << " beta " << beta << " window " << window << endl;
 		value = AlphaBeta( depth, alpha, beta);
@@ -36,13 +37,11 @@ int ChessGame::AlphaBetaDriver()
 			alpha = -INFINITY;
 			beta = INFINITY;
 			cout << "info Window too small " << window << " increasing by 10" << endl;
-			window += 10;
+			window += 50;
 		}else{
 			alpha = value - window;
 			beta = value + window;
 		}
-
-
 	}while (depth < 5 || seconds.count() < 0.65);
 	//}while (seconds.count() < 0.75);
 	//}
@@ -75,14 +74,12 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	if ( searchdata.maxdepth < ply + 1)
 		searchdata.maxdepth = ply + 1;
 
-
 	ChessMove movebeingevaluated;
 
 	mstack[ply].DumpStack();
 	GenerateMoves();
 
-	/*if ( mstack[ply].size() < 20 )
-	depth ++;*/
+
 
 	while ( ! mstack[ply].empty() )	{
 		movebeingevaluated =  mstack[ply].pop();
@@ -135,6 +132,13 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 	if ( searchdata.maxdepth < ply + 1)
 		searchdata.maxdepth = ply + 1;
 
+	if ( ply  % 30 == 0) 
+	{
+		cout << "info ply = " << ply << endl;
+		PrintBoard();
+		for (int c = 1; c < ply; c++)
+			PrintMovePlain(state[c].m_LastMove);
+	}
 	ChessMove movebeingevaluated;
 	mstack[ply].DumpStack();
 	GenerateMoves();
