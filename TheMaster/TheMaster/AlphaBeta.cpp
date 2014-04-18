@@ -34,10 +34,12 @@ int ChessGame::AlphaBetaDriver()
 			break;
 
 		if ((value <= alpha) || (value >= beta)) {
-			alpha = -INFINITY;
-			beta = INFINITY;
-			cout << "info Window too small " << window << " increasing by 10" << endl;
-			window += 50;
+			if ( (value <= alpha) )
+				alpha = -INFINITY;
+			if (  (value >= beta))
+				beta = INFINITY;
+			depth -= 2;
+			cout << "info Researching!" << endl;
 		}else{
 			alpha = value - window;
 			beta = value + window;
@@ -132,13 +134,13 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 	if ( searchdata.maxdepth < ply + 1)
 		searchdata.maxdepth = ply + 1;
 
-	if ( ply  % 30 == 0) 
+	/*if ( ply  % 30 == 0) 
 	{
 		cout << "info ply = " << ply << endl;
 		PrintBoard();
 		for (int c = 1; c < ply; c++)
 			PrintMovePlain(state[c].m_LastMove);
-	}
+	}*/
 	ChessMove movebeingevaluated;
 	mstack[ply].DumpStack();
 	GenerateMoves();

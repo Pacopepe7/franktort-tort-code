@@ -60,8 +60,9 @@ void UCIInterface::Command(string command )
 	{
 		cg.Init();
 		cg.Fen(STARTPOS);
-		//rnbqkb1r/pppp1ppp/8/4P3/6n1/7P/PPPNPPP1/R1BQKBNR b KQkq 
-		cg.Fen("rnbqkb1r/pppp1ppp/8/4P3/6n1/7P/PPPNPPP1/R1BQKBNR b KQkq - 1 0");
+		//r1b2r1k/ppp1q2p/2nppp1Q/3n4/7B/2PB1N2/PPP2PPP/R4RK1 w - - 2 13 
+		cg.Fen("r1b2r1k/ppp1q2p/2nppp1Q/3n4/7B/2PB1N2/PPP2PPP/R4RK1 w - - 2 13");
+		//cg.Fen("rnbqkb1r/pppp1ppp/8/4P3/6n1/7P/PPPNPPP1/R1BQKBNR b KQkq - 1 0");
 		//cg.Fen("r2qkb1r/1ppb1ppp/p7/4p3/P1Q1P3/2P5/5PPP/R1B2KNR b kq - 1 0");
 		//Command("position fen b2b1r1k/3R1ppp/4qP2/4p1PQ/4P3/5B2/4N1K1/8 w - - 0 1 moves g5g6 h7h6 h5h6 g7h6 g6g7 h8g8 g7f8q g8h7");
 		//cg.Fen("1k1r4/pp3R2/6pp/4p3/2B3b1/4Q3/PPP2B2/2K5 b - - 0 1");
