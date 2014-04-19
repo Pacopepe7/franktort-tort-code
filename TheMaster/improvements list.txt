@@ -1,0 +1,29 @@
+Tablebases
+	Look over and evaluate Gaviota tablebase API
+	Implement if possible (much better than working on all those endings)
+(working on implementing tablebases from within Arena)
+
+Opening book?
+	Bah, use Arena
+(using Arena, Done)
+
+ID with seed from last iteration
+
+Break down move list on many chunks so we can use fractions of a time. Depth = 7 takes too long on some positions
+
+Sort move list from values from last iteration.
+
+
+
+Display full PV
+	Also esy fix
+
+Some redumentary eval enhancements
+(done)	Bishop pair
+	interpolate PSQT 
+	Penalty for moving same piece twice
+	Think about it as if teaching a 1900 player
+		move pieces once before moving one of them twice
+		see every move (kind of doesnt apply to the engine)
+		
+		

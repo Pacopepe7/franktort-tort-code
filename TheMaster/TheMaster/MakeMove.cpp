@@ -116,7 +116,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	
 	SwitchSides(FORWARD);	
 	state[ply].m_LastMove = cm;
-	//PrintBoard();
+	state[ply].fiftymoverule ++;
 	//PrintMove(cm);
 	return true;
 }

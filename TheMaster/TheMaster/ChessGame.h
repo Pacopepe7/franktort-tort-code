@@ -63,57 +63,76 @@ struct boardstate_t {
 class ChessGame 
 {
 public:
+	/****************************************************
+	* Move Gen and Attack helper offssets
+	*****************************************************/
 	static int  kingvectors[8]		;
 	static int  knightvectors[8]	;
 	static int  bishopvectors[8]	;
 	static int  rookvectors[8]		;
 	static int  queenvectors[8]		;
 
+	short pawndirection[COLORS];
+	short pawnsecondrank[COLORS];
+	short pawn_EP_rank[COLORS];
+	short pawn_promotion_rank[COLORS];
+	/*****************************************************
+	* Piece Square Tables
+	*****************************************************/
 	static int PSQT_P[64];
 	static int PSQT_N[64];
 	static int PSQT_B[64];
 	static int PSQT_R[64];
 	static int PSQT_Q[64];
 	static int PSQT_K[64];
-
+	static int PSQT_KEG[64];
+	/******************************************************
+	* Has board info
+	******************************************************/
+	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
+	Cstack <ChessMove> mstack[MAXMOVES];
+	short ply;
+	Color ctm, opp;
+	boardstate_t state[MAXMOVES];
+	Pieceinfo_t pieces[MAXPIECES][COLORS];
+	int materialCount[COLORS];
+	int psqtCount[COLORS];
+	short maxpieces[COLORS];
+	int numKnights[COLORS];
+	int numBishops[COLORS];
+	int numRooks[COLORS];
+	int numPawns[COLORS];
+	/******************************************************
+	* Helper for board info 
+	*******************************************************/
 	static int Ox88to64[128];
-	static int blackOx88to64[128];
+	static int blackOx88to64[128]; 
 	static string  notation[MAXBOARDARRAY];	
 	Piece Attacks0x88[ATTACKTABLEMAX];
-	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
-	short pawndirection[COLORS];
-	short pawnsecondrank[COLORS];
-	short pawn_EP_rank[COLORS];
-	short pawn_promotion_rank[COLORS];
-	
+
 	bool debug;
 	int depth;
 	int maxdepth;
 	SearchMethod searchmethod;
 	Searchdata searchdata;
 
-	Cstack <ChessMove> mstack[MAXMOVES];
+	
+	/*******************************************************
+	* 
+	*******************************************************/
 
-	Pieceinfo_t pieces[MAXPIECES][COLORS];
-	int materialCount[2];
-	int psqtCount[2];
-	short maxpieces[2];
-
-	short ply;
-	Color ctm, opp;
-	boardstate_t state[MAXMOVES];
 
 public:
 	/**************************************
 	* Constructor */
 	ChessGame ( ); 
 	/**************************************
-	* Game Functions
+	* Initializers Functions
 	*/
 	void Init(void);
 	void InitAttackTables(void);
-
 	void Fen(string fen);
+
 	/***************************************
 	* Main Search Functions
 	*/
@@ -134,20 +153,29 @@ public:
 
 	
 	void Command(string c);
+	/********************************************
+	* Game Functions
+	********************************************/
 	void SwitchSides(int dir)		{ 
 		opp = ctm;
 		ctm = (ctm == WHITE)? BLACK:WHITE;
 		ply += dir;
 		ASSERT((ply > -1) );
 	};
+	void Set(Piece p, Color c, Square s);
+	void Set(Piece p, Color c, short r, short f);
+	void CapturePiece( Square s1, Square s2);
+	void Clear(Square s);
+	void MovePiece( Square s1, Square s2);
+
+
+	/*********************************************
+	* Color related Functions
+	*********************************************/
 	Color ColorOnMove(void)		{ return ctm;};
 	Color ColorNotOnMove(void)	{ return opp;};
 
-	void Set(Piece p, Color c, Square s);
-	void Set(Piece p, Color c, short r, short f);
-	void MovePiece( Square s1, Square s2);
-	void CapturePiece( Square s1, Square s2);
-	void Clear(Square s);
+	
 
 	/****************************************
 	* Check legality of move/position
@@ -200,8 +228,8 @@ public:
 		short c = s[1] - 48;
 		return MakeSquare(r, c);
 	};
-	void PrintPV(void){
-		for ( int c = 0; c < ply; c++)
+	void PrintPV(int length){
+		for ( int c = 0; c < length; c++)
 			cout << " " << MakeAlgebraicMove(chessresult[c ].best) << " ";
 	}
 	/****************************************

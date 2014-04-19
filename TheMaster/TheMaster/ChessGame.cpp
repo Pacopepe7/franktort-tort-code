@@ -85,6 +85,10 @@ void ChessGame::Init ( void )
 	maxpieces[WHITE] = maxpieces[BLACK] = 0;
 	psqtCount[WHITE] = psqtCount[BLACK] = 0;
 	materialCount[WHITE] = materialCount[BLACK] = 0;
+	numBishops[WHITE] = numBishops[BLACK] = 0;
+	numPawns[WHITE] = numPawns[BLACK] = 0;
+	numRooks[WHITE] = numRooks[BLACK] = 0;
+	numKnights[WHITE] = numKnights[BLACK] = 0;
 
 	pawndirection[WHITE] = NORTH;
 	pawndirection[BLACK] = SOUTH;
@@ -102,7 +106,7 @@ void ChessGame::Init ( void )
 	state[0].m_LastMove = CM(A1, A2, MT_NORMAL, 0);
 	ctm = WHITE;
 	opp = BLACK;
-
+	state[ply].fiftymoverule = 0;
 	state[ply].king[WHITE] = state[ply].king[BLACK] = 0;
 	state[ply].castling[WHITE] = state[ply].castling[BLACK] = NONE;
 
@@ -148,13 +152,13 @@ void ChessGame::Set(Piece p, Color c, Square s)
 	if ( ! found)
 	maxpieces[c]++;
 	//Update material counter and PSQT
-	if ( p & PAWN)		{ materialCount[c] += PAWN_WEIGHT;	 psqtCount[c] += PSQT_P[getOx88to64Index(c, s)];}
-	if ( p & KNIGHT)	{ materialCount[c] += KNIGHT_WEIGHT; psqtCount[c] += PSQT_N[getOx88to64Index(c, s)];}
-	if ( p & BISHOP)	{ materialCount[c] += BISHOP_WEIGHT; psqtCount[c] += PSQT_B[getOx88to64Index(c, s)];}
-	if ( p & ROOK)		{ materialCount[c] += ROOK_WEIGHT;	 psqtCount[c] += PSQT_R[getOx88to64Index(c, s)];}
+	if ( p & PAWN)		{ materialCount[c] += PAWN_WEIGHT;	 psqtCount[c] += PSQT_P[getOx88to64Index(c, s)];numPawns[c]++;}
+	if ( p & KNIGHT)	{ materialCount[c] += KNIGHT_WEIGHT; psqtCount[c] += PSQT_N[getOx88to64Index(c, s)];numKnights[c]++;}
+	if ( p & BISHOP)	{ materialCount[c] += BISHOP_WEIGHT; psqtCount[c] += PSQT_B[getOx88to64Index(c, s)];numBishops[c]++;}
+	if ( p & ROOK)		{ materialCount[c] += ROOK_WEIGHT;	 psqtCount[c] += PSQT_R[getOx88to64Index(c, s)];numRooks[c]++;}
 	if ( p & QUEEN)		{ materialCount[c] += QUEEN_WEIGHT;	 psqtCount[c] += PSQT_Q[getOx88to64Index(c, s)];}
 	if ( p & KING)		{									 psqtCount[c] += PSQT_K[getOx88to64Index(c, s)];}
-	
+	state[ply + 1].fiftymoverule = 0;
 }
 /***********************************************************
 *
@@ -176,10 +180,10 @@ void ChessGame::MovePiece(Square from, Square to)
 	Ox88Board[to] = Ox88Board[from];
 	Ox88Board[from] = NULL;
 	//Update PSQT
-	if ( p & PAWN)		{ psqtCount[c] += -PSQT_P[getOx88to64Index(c, from)] + PSQT_P[getOx88to64Index(c, to)];}
-	if ( p & KNIGHT)	{ psqtCount[c] += -PSQT_N[getOx88to64Index(c, from)] + PSQT_N[getOx88to64Index(c, to)];}
-	if ( p & BISHOP)	{ psqtCount[c] += -PSQT_B[getOx88to64Index(c, from)] + PSQT_B[getOx88to64Index(c, to)];}
-	if ( p & ROOK)		{ psqtCount[c] += -PSQT_R[getOx88to64Index(c, from)] + PSQT_R[getOx88to64Index(c, to)];}
+	if ( p & PAWN)		{ psqtCount[c] += -PSQT_P[getOx88to64Index(c, from)] + PSQT_P[getOx88to64Index(c, to)];numPawns[c]--;state[ply + 1].fiftymoverule = 0;}
+	if ( p & KNIGHT)	{ psqtCount[c] += -PSQT_N[getOx88to64Index(c, from)] + PSQT_N[getOx88to64Index(c, to)];numKnights[c]--;}
+	if ( p & BISHOP)	{ psqtCount[c] += -PSQT_B[getOx88to64Index(c, from)] + PSQT_B[getOx88to64Index(c, to)];numBishops[c]--;}
+	if ( p & ROOK)		{ psqtCount[c] += -PSQT_R[getOx88to64Index(c, from)] + PSQT_R[getOx88to64Index(c, to)];numRooks[c]--;}
 	if ( p & QUEEN)		{ psqtCount[c] += -PSQT_Q[getOx88to64Index(c, from)] + PSQT_Q[getOx88to64Index(c, to)];}
 	if ( p & KING)		{ psqtCount[c] += -PSQT_K[getOx88to64Index(c, from)] + PSQT_K[getOx88to64Index(c, to)];}
 
@@ -224,7 +228,7 @@ void ChessGame::Clear( Square s)
 	Ox88Board[s]->piece = EMPTY;
 	Ox88Board[s]->square = 0;
 	Ox88Board[s] = NULL;
-	
+	state[ply + 1].fiftymoverule = 0;
 }
 
 bool ChessGame::MakeMoveFromString( string cm)

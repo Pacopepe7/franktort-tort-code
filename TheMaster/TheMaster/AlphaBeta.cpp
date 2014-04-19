@@ -38,14 +38,15 @@ int ChessGame::AlphaBetaDriver()
 				alpha = -INFINITY;
 			if (  (value >= beta))
 				beta = INFINITY;
-			depth -= 2;
 			cout << "info Researching!" << endl;
+			depth -= 2;
 		}else{
 			alpha = value - window;
 			beta = value + window;
 		}
-	}while (depth < 5 || seconds.count() < 0.65);
+	}while (depth < 9 && seconds.count() < 0.8);
 	//}while (seconds.count() < 0.75);
+	//}while ( depth < 5);
 	//}
 	return value;
 
@@ -117,6 +118,8 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		else
 			alpha = 0;
 	}
+	/*if ( legalmoves == 1 )
+		depth ++;*/
 	return alpha;
 } 
 

@@ -126,7 +126,7 @@ void ChessGame::PrintSearchData( sec d)
 	cout << " score cp " << chessresult[ply ].value;
 	cout << " nodes " <<   searchdata.legalnodes;
 	
-  std::cout.precision(4);
+  std::cout.precision(3);
 	if ( d.count())
 		cout << " nps " <<  (int)(searchdata.legalnodes / d.count()) ;
 	else 
@@ -137,8 +137,8 @@ void ChessGame::PrintSearchData( sec d)
 	///////////////////////////////////////////////////////////////////////////
 	cout << "info QuietNodes " << searchdata.quietnodes << " RegularNodes " 
 		<< searchdata.regularnodes << " Evaluates " << searchdata.evaluates << endl;
-	std::cout.precision(4);
-	cout << "info Quiet/Normal " << (float)((float)searchdata.quietnodes/(float)searchdata.regularnodes) << endl;
+	std::cout.precision(3);
+	cout << "info Quiet/Normal " << (float)(((float)searchdata.quietnodes/(float)searchdata.regularnodes)* 100) << "%" << endl;
 	std::cout.unsetf ( std::ios::floatfield );
 	ClearSearchData();
 }
