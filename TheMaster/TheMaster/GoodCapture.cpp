@@ -9,6 +9,7 @@ bool ChessGame::isGoodCapture(ChessMove cm)
 
 		if ( getPiece(getToSquare(cm)) == PAWN ) return true;
 
-			//if (getPiece(getToSquare(cm)) < (getCapture(cm) + 180)) return true; 
+		if (getPiece(getToSquare(cm)) <= (getCapture(cm) )) return true; 
+		
 		return false;
 	};

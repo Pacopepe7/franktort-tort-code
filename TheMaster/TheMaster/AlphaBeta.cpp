@@ -16,7 +16,7 @@ int ChessGame::AlphaBetaDriver()
 {
 	int value, alpha, beta;
 	sec seconds;
-
+	bool timeleft = true;
 	depth = -1;
 	alpha = -INFINITY;
 	beta = INFINITY;
@@ -44,10 +44,14 @@ int ChessGame::AlphaBetaDriver()
 			alpha = value - window;
 			beta = value + window;
 		}
-	}while (depth < 9 && seconds.count() < 0.8);
-	//}while (seconds.count() < 0.75);
-	//}while ( depth < 5);
-	//}
+		/*if ( depth == 5 && seconds.count() > 0.4)
+			timeleft = false;
+		if ( depth == 7 && seconds.count() > 0.30)
+			timeleft = false;
+		if ( seconds.count() > 2)
+			timeleft = false;*/
+	}while (seconds.count() < 2);
+	
 	return value;
 
 }
