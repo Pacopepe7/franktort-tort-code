@@ -183,3 +183,22 @@ bool ChessGame::isAttacked(Square target, Color co)
 	}
 	return false;
 }
+
+bool ChessGame::PawnsAttackingLargePieces(void)
+{
+	Square sq;
+	int c;
+	for ( c = 0; c < maxpieces[ctm]; c++)
+	{
+		if ( pieces[c][ctm].piece == PAWN )
+		{
+			sq = pieces[c][ctm].square + pawndirection[ctm] + EAST ;
+			if ( isSquare(sq) && !isEmpty(sq) && isOpponent(sq))
+			{
+				if ( getPiece(sq) >= ROOK )
+					return true;
+			}
+		}
+	}
+	return false;
+}

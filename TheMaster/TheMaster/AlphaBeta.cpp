@@ -68,7 +68,9 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 
 	if ( IsInCheck() )
 		depth ++;
-
+	/*if (PawnsAttackingLargePieces() )
+		depth++;
+*/
 	if ( depth == 0) 
 		return QuietAlphaBeta( depth - 1, alpha, beta );
 
