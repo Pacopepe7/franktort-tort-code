@@ -16,11 +16,14 @@ int ChessGame::AlphaBetaDriver()
 {
 	int value, alpha, beta;
 	sec seconds;
+	
 	bool timeleft = true;
+	bool researching = false;
+	bool targetdepthreached = false;
 	depth = -1;
 	alpha = -INFINITY;
 	beta = INFINITY;
-	int window = 100;
+	int window = 25;
 	do {
 		depth += 2;
 		ClearSearchData();
@@ -32,6 +35,8 @@ int ChessGame::AlphaBetaDriver()
 
 		if ( abs(value) == MATE)
 			break;
+		if ( chessresult[ply].onlymove )
+			break;
 
 		if ((value <= alpha) || (value >= beta)) {
 			if ( (value <= alpha) )
@@ -40,17 +45,18 @@ int ChessGame::AlphaBetaDriver()
 				beta = INFINITY;
 			cout << "info Researching!" << endl;
 			depth -= 2;
+			researching = true;
 		}else{
 			alpha = value - window;
 			beta = value + window;
+			researching = false;
 		}
-		/*if ( depth == 5 && seconds.count() > 0.4)
-			timeleft = false;
-		if ( depth == 7 && seconds.count() > 0.30)
-			timeleft = false;
+
+		if ( depth > 6 && ! researching)
+			targetdepthreached = true;
 		if ( seconds.count() > 2)
-			timeleft = false;*/
-	}while (seconds.count() < 2);
+			timeleft = false;
+	}while (! targetdepthreached );
 	
 	return value;
 
@@ -66,11 +72,12 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 	/* if ( 3 move repetition)
 	return 0; */
 
+	/***************************************************
+	* Extensions
+	***************************************************/
 	if ( IsInCheck() )
 		depth ++;
-	/*if (PawnsAttackingLargePieces() )
-		depth++;
-*/
+
 	if ( depth == 0) 
 		return QuietAlphaBeta( depth - 1, alpha, beta );
 
@@ -84,10 +91,10 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		searchdata.maxdepth = ply + 1;
 
 	ChessMove movebeingevaluated;
-
+	SearchResult firstValidMove;
 	mstack[ply].DumpStack();
 	GenerateMoves();
-
+	SortMoves();
 
 
 	while ( ! mstack[ply].empty() )	{
@@ -96,12 +103,18 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 			
 			if ( isPositionValid(movebeingevaluated))	{
 				searchdata.nodes++;
-				legalmoves++;
+
 				searchdata.legalnodes++;
 				searchdata.regularnodes++;
 
 				score = -AlphaBeta(  depth - 1, -beta, -alpha);
-
+				if ( ! legalmoves)
+				{
+				firstValidMove.best = movebeingevaluated;
+				firstValidMove.value = score;
+				}
+				legalmoves++;
+			
 				if ( score >= beta )				{
 					UnmakeMove(movebeingevaluated);
 					return beta;				
@@ -109,7 +122,9 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 				if ( score > alpha )				{
 					alpha = score;
 					chessresult[ply-1].best = movebeingevaluated;
-					chessresult[ply-1].value = score;				
+					chessresult[ply-1].value = score;	
+					chessresult[ply-1].onlymove = false;
+
 				}
 			}
 			UnmakeMove(movebeingevaluated);
@@ -124,13 +139,20 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta)
 		else
 			alpha = 0;
 	}
-	/*if ( legalmoves == 1 )
-		depth ++;*/
+	if ( legalmoves == 1 )
+	{
+		chessresult[ply].best = firstValidMove.best;
+		chessresult[ply].value = firstValidMove.value;
+		chessresult[ply].onlymove = true;
+	}
 	return alpha;
 } 
 
 int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta) 
 {
+
+	if ( state[ply].fiftymoverule >= 50 )
+		return 0;
 	int legalmoves = 0;
 	int movestomate = 0;
 	int captures = 0;
@@ -143,16 +165,10 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 	if ( searchdata.maxdepth < ply + 1)
 		searchdata.maxdepth = ply + 1;
 
-	/*if ( ply  % 30 == 0) 
-	{
-		cout << "info ply = " << ply << endl;
-		PrintBoard();
-		for (int c = 1; c < ply; c++)
-			PrintMovePlain(state[c].m_LastMove);
-	}*/
 	ChessMove movebeingevaluated;
 	mstack[ply].DumpStack();
 	GenerateMoves();
+	SortMoves();
 
 	while ( ! mstack[ply].empty() )
 	{

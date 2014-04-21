@@ -96,6 +96,9 @@ void ChessGame::Init ( void )
 	pawnsecondrank[WHITE] = 6;
 	pawnsecondrank[BLACK] = 1;
 
+	pawnthirdrank[WHITE] = 5;
+	pawnthirdrank[BLACK] = 2;
+
 	pawn_EP_rank[WHITE] = 3;
 	pawn_EP_rank[BLACK] = 4;
 

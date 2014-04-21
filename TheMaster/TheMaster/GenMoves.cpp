@@ -10,7 +10,7 @@
 
 
 /********************************************
-* Generates LEGAL moves for side to move
+* Generates pseudo-legal moves for side to move
 */
 void ChessGame::GenerateMoves( void )
 {
@@ -231,3 +231,11 @@ void ChessGame::GenerateMoves( void )
 	}
 }
 
+/****************************************************
+* Sort Moves using everything known
+****************************************************/
+void ChessGame::SortMoves( void )
+{
+
+
+}

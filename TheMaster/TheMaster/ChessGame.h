@@ -28,6 +28,8 @@ struct SearchResult
 {
 	ChessMove best;
 	int value;
+	bool onlymove;
+
 };
 enum SearchMethod { NEGAMAX, ALPHABETA, MTDF, CUSTOM};
 struct Searchdata
@@ -74,6 +76,7 @@ public:
 
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
+	short pawnthirdrank[COLORS];
 	short pawn_EP_rank[COLORS];
 	short pawn_promotion_rank[COLORS];
 	/*****************************************************
@@ -147,6 +150,7 @@ public:
 	* Move Functions
 	*/
 	void GenerateMoves(void);
+	void SortMoves(void);
 	bool MakeMove(ChessMove cm);
 	bool MakeMoveFromString( string cm);
 	void UnmakeMove( ChessMove cm);
@@ -214,8 +218,13 @@ public:
 
 	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
 	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
-	bool isGoodCapture(ChessMove cm);			
-	bool PawnsAttackingLargePieces(void);
+	/*****************************************************************
+	* Extensions
+	*****************************************************************/
+	bool isGoodCapture(ChessMove cm);
+	bool PawnsAttackingLargePieces(ChessMove cm);
+
+
 	ChessMove CM( Square from, Square to, MoveType mt, Square data)
 	{ return ( ( from ) | ( to << 8) | ( mt << 16) | (data << 24) ) ; }
 	void PrintMove(ChessMove cm);
@@ -230,8 +239,12 @@ public:
 		return MakeSquare(r, c);
 	};
 	void PrintPV(int length){
-		for ( int c = 0; c < length; c++)
-			cout << " " << MakeAlgebraicMove(chessresult[c ].best) << " ";
+		for ( int c = ply; c < length; c++)
+			cout << " " << MakeAlgebraicMove(chessresult[c].best);
+	}
+	void PrintLine(void){
+		for ( int c = 1; c < ply; c++)
+			cout << " " << MakeAlgebraicMove(state[c].m_LastMove);
 	}
 	/****************************************
 	* Testing funcs

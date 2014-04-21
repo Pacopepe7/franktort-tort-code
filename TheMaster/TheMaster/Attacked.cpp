@@ -184,21 +184,28 @@ bool ChessGame::isAttacked(Square target, Color co)
 	return false;
 }
 
-bool ChessGame::PawnsAttackingLargePieces(void)
+bool ChessGame::PawnsAttackingLargePieces(ChessMove cm)
 {
+	Square pawnsq = getToSquare(cm);
 	Square sq;
-	int c;
-	for ( c = 0; c < maxpieces[ctm]; c++)
+	Piece p = getPiece(pawnsq);
+	if ( p != PAWN)
+		return false;
+	Rank r = getRank(pawnsq);
+	if ( r != pawnsecondrank[ctm] && r !=  pawnthirdrank[ctm] )
+		return false;
+
+	sq = pawnsq + pawndirection[opp] + EAST ;
+	if ( isSquare(sq) && !isEmpty(sq) && isOurs(sq))
 	{
-		if ( pieces[c][ctm].piece == PAWN )
-		{
-			sq = pieces[c][ctm].square + pawndirection[ctm] + EAST ;
-			if ( isSquare(sq) && !isEmpty(sq) && isOpponent(sq))
-			{
-				if ( getPiece(sq) >= ROOK )
-					return true;
-			}
-		}
+		if (  getPiece(sq) & ( ROOK | QUEEN | BISHOP | KNIGHT ) )
+			return true;
+	}
+	sq = pawnsq + pawndirection[opp] + WEST ;
+	if ( isSquare(sq) && !isEmpty(sq) && isOurs(sq))
+	{
+		if ( getPiece(sq) & ( ROOK | QUEEN | BISHOP | KNIGHT ) )
+			return true;
 	}
 	return false;
 }

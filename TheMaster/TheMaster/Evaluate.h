@@ -10,8 +10,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "utils.h"
 
 
-#define INFINITY 20000
-#define MATE	15000
+#define INFINITY				20000
+#define MATE					15000
+#define ONLYMOVE				25000
+
 #define PAWN_WEIGHT				100
 #define KNIGHT_WEIGHT			320
 #define BISHOP_WEIGHT			330
