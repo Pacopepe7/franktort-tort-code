@@ -71,7 +71,7 @@ void ChessGame::Fen(string fen)
 	if ( tokens[3] == "-" )
 		state[ply].epsquare = INVALID;
 	else
-		state[ply].epsquare = MakeSquare(tokens[4]);
+		state[ply].epsquare = MakeSquareFromString(tokens[4]);
 
 	// 50 move rule counter
 	if ( tokens[4] == "-" )

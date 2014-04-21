@@ -190,21 +190,11 @@ public:
 	/****************************************
 	* ChessMove helper Funcs
 	*/
-	bool isSquare(Square sq)						{ return ( (sq & 0x88))? false: true; } ;
-	bool isEmpty(Square sq)							{ return ( Ox88Board[sq] == NULL);};
-	bool isColor(Square sq, Color c)				{ return ( (Ox88Board[sq]->color == c));}
-	Color getColor(Square sq)						{ return ( (Ox88Board[sq] == NULL )? NOCOLOR :(Ox88Board[sq]->color ));}
-	Piece getPiece(Square sq)						{ return ( (Ox88Board[sq] == NULL) ? EMPTY : Ox88Board[sq]->piece );};
 	bool isPieceColor(Square sq, Piece p, Color c)	{ return ( !isSquare(sq)  ? (false) :
 													(          (isEmpty(sq) ? (false): 
 																((Ox88Board[sq]->piece & p) && (Ox88Board[sq]->color == c )))));};
 	bool isAttacked(Square, Color c);
-	bool IsInCheck( )								{ return isAttacked(state[ply].king[ctm], opp);};
-	bool isOpponent(Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == opp));};
-	bool isOurs ( Square sq)						{ return (  (isEmpty(sq) )? 0 : (Ox88Board[sq]->color == ctm));};
 
-	Rank getRank(Square s)							{ return ( s >> 4) ; } ;
-	File getFile(Square s)							{ return ( s & 7) ; } ;
 	int  getOx88to64Index(Color c, Square s)						{ 
 		if ( s > 128)
 			PrintBoard();
@@ -216,8 +206,6 @@ public:
 			return ( Ox88to64[s]);
 	};
 
-	bool sameFile( Square sq1, Square sq2)			{ return ( getFile(sq1) == getFile(sq2))? 0:1; } ;
-	bool sameRank( Square sq1, Square sq2)			{ return ( getRank(sq1) == getRank(sq2))? 0:1; } ;
 	/*****************************************************************
 	* Extensions
 	*****************************************************************/
@@ -231,8 +219,7 @@ public:
 	void PrintMovePlain(ChessMove cm);
 	string not(Square sq);
 	string MakeAlgebraicMove( ChessMove cm);
-	Square MakeSquare(short r, short c)				{ return 16 * r + c;};
-	Square MakeSquare(string s)						{ 
+	Square MakeSquareFromString(string s)						{ 
 		string sq;
 		short r = s[0] - 65;
 		short c = s[1] - 48;

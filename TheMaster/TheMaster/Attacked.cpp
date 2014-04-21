@@ -12,57 +12,8 @@
 
 bool ChessGame::isPositionValid(ChessMove cm)
 {
-	return !isAttacked(state[ply].king[opp], ctm);
-
-	if ( state[ply].king[opp] == getToSquare(cm))
-		return !isAttacked(state[ply].king[opp], ctm);
-
-	//Castling can also put the opp king in check!!
-	if ( getMoveType(state[ply-1].m_LastMove) == MT_CASTLE)
-	{
-		Square rook;
-		if ( getToSquare(state[ply-1].m_LastMove) == C1 )
-			rook = D1;
-		if ( getToSquare(state[ply-1].m_LastMove) == G1 )
-			rook = F1;
-		if ( getToSquare(state[ply-1].m_LastMove) == C8 )
-			rook = D8;
-		if ( getToSquare(state[ply-1].m_LastMove) == G8 )
-			rook = F8;
-		if (PiecesThatCanAttack( rook,state[ply].king[ctm]) )
-			return !isAttacked(state[ply].king[ctm], opp);
-	}
-	//pinned pieces... I am starting to think this is not good....
-	if (PiecesThatCanAttack( getFromSquare(cm),state[ply].king[opp]) | 
-		PiecesThatCanAttack( getToSquare(cm)  ,state[ply].king[opp]) |
-		PiecesThatCanAttack( getFromSquare(state[ply-1].m_LastMove),state[ply].king[opp]) |
-		PiecesThatCanAttack( getToSquare(state[ply-1].m_LastMove),state[ply].king[opp]))
-		return !isAttacked(state[ply].king[opp], ctm);
-	return true;
-
-	//bool canAttack = (PiecesThatCanAttack( getFromSquare(cm),state[ply].king[opp]) | PiecesThatCanAttack( getToSquare(cm),state[ply].king[opp])) |
-	//(PiecesThatCanAttack( getFromSquare(state[ply-1].m_LastMove),state[ply].king[opp]) | PiecesThatCanAttack( getToSquare(state[ply-1].m_LastMove),state[ply].king[opp]));
-	//if ( canAttack )
-	//	valid = !isAttacked(state[ply].king[opp], ctm);
-	//else 
-	//	valid = true;
-	//bool validold = !isAttacked(state[ply].king[opp], ctm);
-
-	//if (validold != valid  )
-	//{
-	//	cout << "Valid: " << (int) valid << endl;
-	//	cout << "validOld " << (int) validold << endl;
-	//	cout << (int) !isAttacked(state[ply].king[opp], ctm) << endl;
-	//	cout << (int) PiecesThatCanAttack( getFromSquare(cm),state[ply].king[ctm]) << endl;
-	//	cout << (int) PiecesThatCanAttack( getToSquare(cm),state[ply].king[ctm]) << endl;
-
-	//	PrintBoard();
-	//	PrintMove(cm);
-	//	PrintMove(state[ply-1].m_LastMove);
-	//	PrintBoard();
-	//}
-	//return !isAttacked(state[ply].king[opp], ctm);
-	
+	//{ return isAttacked(state[ply].king[ctm], opp);};
+	return !isAttacked(KingPos(opp), ctm);
 }
 
 /***********************************************************
