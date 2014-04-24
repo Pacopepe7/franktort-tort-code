@@ -74,9 +74,8 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta, LINE * pline)
 	LINE line;
 	ChessMove movebeingevaluated;
 	SearchResult firstValidMove;
+	line.cmove = 0;
 
-	if ( state[ply].fiftymoverule >= 50 )
-		return 0;
 	/* if ( 3 move repetition)
 	return 0; */
 
@@ -94,7 +93,10 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta, LINE * pline)
 		pline->cmove = 0;
 		return QuietAlphaBeta( depth - 1, alpha, beta );
 	}
-
+	if ( state[ply].fiftymoverule >= 50 )
+	{
+		return 0;
+	}
 	if ( searchdata.maxdepth < ply + 1)
 		searchdata.maxdepth = ply + 1;
 
@@ -188,7 +190,6 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 				if ( isGoodCapture(movebeingevaluated)  ){
 
 					score = -QuietAlphaBeta(  depth - 1, -beta, -alpha);
-
 					searchdata.quietnodes++;
 					searchdata.nodes++;
 					captures ++;
