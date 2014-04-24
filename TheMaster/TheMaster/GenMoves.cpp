@@ -23,6 +23,64 @@ void ChessGame::GenerateMoves( void )
 		if ( ! pieces[i][ctm].piece)
 			continue;
 		curr = pieces[i][ctm].square;
+		if ( pieces[i][ctm].piece & QUEEN)
+		{
+			for ( int c = 0; c < 8; c++)
+			{
+				for ( sq = curr + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c])
+					mstack[ply].push(
+					CM(curr,
+					sq,
+					MT_NORMAL,
+					0));
+
+				if ( isSquare(sq) && isOpponent(sq) )
+					mstack[ply].push(
+					CM(curr,
+					sq,
+					MT_CAPTURE,
+					getPiece(sq)));
+			}
+		}
+		if ( pieces[i][ctm].piece & BISHOP)
+		{
+			for ( int c = 0; c < 4; c++)
+			{
+				for ( sq = curr + bishopvectors[c]; isSquare(sq) && isEmpty(sq); sq += bishopvectors[c])
+					mstack[ply].push(
+					CM(curr,
+					sq,
+					MT_NORMAL,
+					0));
+
+				if ( isSquare(sq) && isOpponent(sq) )
+					mstack[ply].push(
+					CM(curr,
+					sq,
+					MT_CAPTURE,
+					getPiece(sq)));
+			}
+		}
+		if ( pieces[i][ctm].piece & ROOK)
+		{
+			for ( int c = 0; c < 4; c++)
+			{
+				for ( sq = curr + rookvectors[c]; isSquare(sq) && isEmpty(sq); sq += rookvectors[c])
+					mstack[ply].push(
+					CM(curr,
+					sq,
+					MT_NORMAL,
+					0));
+
+				if ( isSquare(sq) && isOpponent(sq) )
+					mstack[ply].push(
+					CM(curr,
+					sq,
+					MT_CAPTURE,
+					getPiece(sq)));
+			}
+		}
+
 		if ( pieces[i][ctm].piece & KNIGHT)
 		{
 			for ( int c = 0; c < 8; c++)
@@ -97,63 +155,6 @@ void ChessGame::GenerateMoves( void )
 						MT_CAPTURE,
 						getPiece(sq)));
 				}
-			}
-		}
-		if ( pieces[i][ctm].piece & BISHOP)
-		{
-			for ( int c = 0; c < 4; c++)
-			{
-				for ( sq = curr + bishopvectors[c]; isSquare(sq) && isEmpty(sq); sq += bishopvectors[c])
-					mstack[ply].push(
-					CM(curr,
-					sq,
-					MT_NORMAL,
-					0));
-
-				if ( isSquare(sq) && isOpponent(sq) )
-					mstack[ply].push(
-					CM(curr,
-					sq,
-					MT_CAPTURE,
-					getPiece(sq)));
-			}
-		}
-		if ( pieces[i][ctm].piece & QUEEN)
-		{
-			for ( int c = 0; c < 8; c++)
-			{
-				for ( sq = curr + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c])
-					mstack[ply].push(
-					CM(curr,
-					sq,
-					MT_NORMAL,
-					0));
-
-				if ( isSquare(sq) && isOpponent(sq) )
-					mstack[ply].push(
-					CM(curr,
-					sq,
-					MT_CAPTURE,
-					getPiece(sq)));
-			}
-		}
-		if ( pieces[i][ctm].piece & ROOK)
-		{
-			for ( int c = 0; c < 4; c++)
-			{
-				for ( sq = curr + rookvectors[c]; isSquare(sq) && isEmpty(sq); sq += rookvectors[c])
-					mstack[ply].push(
-					CM(curr,
-					sq,
-					MT_NORMAL,
-					0));
-
-				if ( isSquare(sq) && isOpponent(sq) )
-					mstack[ply].push(
-					CM(curr,
-					sq,
-					MT_CAPTURE,
-					getPiece(sq)));
 			}
 		}
 		if ( pieces[i][ctm].piece & PAWN)
@@ -236,6 +237,27 @@ void ChessGame::GenerateMoves( void )
 ****************************************************/
 void ChessGame::SortMoves( void )
 {
+	ASSERT(! mstack[ply].empty());
+	if ( ! pv.cmove ) // no info to act upon
+		return;
+	for ( int c = 0; c < mstack[ply].size() ; c++)
+		if ( isCapture(mstack[ply].inspect(c)))
+			mstack[ply].push(mstack[ply].Remove(c));
 
+	
+	ChessMove pvmove;
+	
+	if ( pv.cmove >= depthply )
+	{
+		pvmove = pv.argmove[depthply];
+
+		for ( int c = 0; c < mstack[ply].size(); c++){
+			if ( pvmove == mstack[ply].inspect(c) ){
+				mstack[ply].push(mstack[ply].Remove(c));
+				break;
+			}
+		}
+
+	}
 
 }

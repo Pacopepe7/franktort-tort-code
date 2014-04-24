@@ -42,6 +42,14 @@ struct Searchdata
 	long long quietnodes;
 	int maxdepth;
 };
+/***********************************************
+*
+* Thanks http://chessprogramming.wikispaces.com/Bruce+Moreland
+***********************************************/
+typedef struct LINE {
+    int cmove;              // Number of moves in the line.
+    ChessMove argmove[50];  // The line.
+}   LINE;
 /************************************************/
 struct Pieceinfo_t
 {
@@ -95,6 +103,7 @@ public:
 	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
 	Cstack <ChessMove> mstack[MAXMOVES];
 	short ply;
+	short depthply;
 	Color ctm, opp;
 	boardstate_t state[MAXMOVES];
 	Pieceinfo_t pieces[MAXPIECES][COLORS];
@@ -118,11 +127,7 @@ public:
 	int maxdepth;
 	SearchMethod searchmethod;
 	Searchdata searchdata;
-
-	
-	/*******************************************************
-	* 
-	*******************************************************/
+	LINE pv;
 
 
 public:
@@ -143,18 +148,19 @@ public:
 	int NegaMax(int depth);
 	int QuietNegaMax(int depth);
 	int AlphaBetaDriver();
-	int AlphaBeta(int depth, int alpha, int beta);
+	int AlphaBeta(int depth, int alpha, int beta, LINE *);
 	int QuietAlphaBeta(int depth, int alpha, int beta);
 	SearchResult chessresult[MAXMOVES]; // public
+
 	/*****************************************
 	* Move Functions
-	*/
+	******************************************/
 	void GenerateMoves(void);
 	void SortMoves(void);
 	bool MakeMove(ChessMove cm);
 	bool MakeMoveFromString( string cm);
 	void UnmakeMove( ChessMove cm);
-
+	ChessMove RetrieveOrderedMove(void);
 	
 	void Command(string c);
 	/********************************************
@@ -164,6 +170,7 @@ public:
 		opp = ctm;
 		ctm = (ctm == WHITE)? BLACK:WHITE;
 		ply += dir;
+		depthply += dir;
 		ASSERT((ply > -1) );
 	};
 	void Set(Piece p, Color c, Square s);
@@ -173,23 +180,19 @@ public:
 	void MovePiece( Square s1, Square s2);
 
 
-	/*********************************************
-	* Color related Functions
-	*********************************************/
-	Color ColorOnMove(void)		{ return ctm;};
-	Color ColorNotOnMove(void)	{ return opp;};
+
 
 	
 
-	/****************************************
+	/******************************************
 	* Check legality of move/position
-	*/
+	******************************************/
 	bool isPositionValid(ChessMove cm);
 	Piece PiecesThatCanAttack(/* From */ Square s1,/* to */ Square s2); 
 	bool isAttackedbyPiece ( Square from, Square to, Color side, Piece p );
-	/****************************************
+	/******************************************
 	* ChessMove helper Funcs
-	*/
+	*****************************************/
 	bool isPieceColor(Square sq, Piece p, Color c)	{ return ( !isSquare(sq)  ? (false) :
 													(          (isEmpty(sq) ? (false): 
 																((Ox88Board[sq]->piece & p) && (Ox88Board[sq]->color == c )))));};
@@ -233,6 +236,7 @@ public:
 		for ( int c = 1; c < ply; c++)
 			cout << " " << MakeAlgebraicMove(state[c].m_LastMove);
 	}
+	
 	/****************************************
 	* Testing funcs
 	****************************************/

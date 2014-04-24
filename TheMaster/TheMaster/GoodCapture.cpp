@@ -13,3 +13,8 @@ bool ChessGame::isGoodCapture(ChessMove cm)
 		
 		return false;
 	};
+
+ChessMove ChessGame::RetrieveOrderedMove(void)
+{
+	return mstack[ply].pop();
+}

@@ -60,7 +60,7 @@ void UCIInterface::Command(string command )
 	{
 		cg.Init();
 		cg.Fen(STARTPOS);
-		cg.Fen("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - 0 1");
+		cg.Fen("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - 0 0");
 		//r1b2r1k/ppp1q2p/2nppp1Q/3n4/7B/2PB1N2/PPP2PPP/R4RK1 w - - 2 13 
 		//cg.Fen("r1b2r1k/ppp1q2p/2nppp1Q/3n4/7B/2PB1N2/PPP2PPP/R4RK1 w - - 2 13");
 		//cg.Fen("rnbqkb1r/pppp1ppp/8/4P3/6n1/7P/PPPNPPP1/R1BQKBNR b KQkq - 1 0");
@@ -132,7 +132,6 @@ void UCIInterface::Command(string command )
 		}
 		
 		ChessMove cm = cg.chessresult[cg.ply].best;
-		cout << "info pv";	cg.PrintPV(cg.depth);	cout << endl;
 		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply ].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
 	}
 	if (tokens[0] == "debug")

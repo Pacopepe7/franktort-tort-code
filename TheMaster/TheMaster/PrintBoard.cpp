@@ -133,7 +133,10 @@ void ChessGame::PrintSearchData( sec d)
 		cout << " nps " <<  (searchdata.legalnodes ) ;
 	std::cout.unsetf ( std::ios::floatfield );                // floatfield not set
 	cout << " time " << d.count();
-	cout << " pv"; PrintPV(depth); cout << endl;
+	cout << " pv ";
+	for ( int c = 0; c < pv.cmove; c++)
+		PrintMovePlain(pv.argmove[c]);
+	cout << " "  << endl;
 	///////////////////////////////////////////////////////////////////////////
 	cout << "info QuietNodes " << searchdata.quietnodes << " RegularNodes " 
 		<< searchdata.regularnodes << " Evaluates " << searchdata.evaluates << endl;

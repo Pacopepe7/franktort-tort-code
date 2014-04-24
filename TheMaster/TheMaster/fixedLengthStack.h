@@ -38,6 +38,12 @@ public:
 	{
 		return arr[i];
 	}
+	T Remove ( short i)
+	{
+		T temp = arr[i];
+		arr[i] = pop();
+		return temp; 
+	}
 	int size(void){
 		return index + 1;}
 	void DumpStack(void)
