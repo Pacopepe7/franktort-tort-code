@@ -120,7 +120,7 @@ void ChessGame::Init ( void )
 	maxdepth = 3;
 #else
 	debug = false;
-	maxdepth = 5; // 7 works best (6 has bad odd-even effect)
+	maxdepth = 7; // 7 works best (6 has bad odd-even effect)
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;

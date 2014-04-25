@@ -54,7 +54,7 @@ int ChessGame::AlphaBetaDriver()
 			researching = false;
 		}
 
-		if ( depth > 6 && ! researching)
+		if ( depth > maxdepth && ! researching)
 			targetdepthreached = true;
 		if ( seconds.count() > 15)
 			timeleft = false;
@@ -152,6 +152,7 @@ if ( legalmoves == 1 )
 	chessresult[ply].best = firstValidMove.best;
 	chessresult[ply].value = firstValidMove.value;
 	chessresult[ply].onlymove = true;
+	//depth++;
 }
 return alpha;
 } 
