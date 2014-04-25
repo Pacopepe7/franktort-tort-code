@@ -22,6 +22,7 @@ int ChessGame::AlphaBetaDriver()
 	bool researching = false;
 	bool targetdepthreached = false;
 	depth = 1;
+	int depthdelta = 1;
 	alpha = -INFINITY;
 	beta = INFINITY;
 	int window = 25;
@@ -47,18 +48,18 @@ int ChessGame::AlphaBetaDriver()
 			cout << "info Researching!" << endl;
 			researching = true;
 		}else{
-			depth += 2;
+			depth += depthdelta;
 			alpha = value - window;
 			beta = value + window;
 			researching = false;
 		}
 
-		if ( depth > 8 && ! researching)
+		if ( depth > 6 && ! researching)
 			targetdepthreached = true;
 		if ( seconds.count() > 15)
 			timeleft = false;
 	}while (!targetdepthreached );
-	depth -= 2;
+	depth -= depthdelta;
 	return value;
 
 }
