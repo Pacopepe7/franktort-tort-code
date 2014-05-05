@@ -120,7 +120,7 @@ void ChessGame::Init ( void )
 	maxdepth = 3;
 #else
 	debug = false;
-	maxdepth = 7; // 7 works best (6 has bad odd-even effect)
+	maxdepth = 6; // 7 works best 
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
@@ -280,7 +280,7 @@ string ChessGame::MakeAlgebraicMove( ChessMove cm)
 			chessmove += "r";
 		if ( getPromotion(data)  == QUEEN)
 			chessmove += "q";
-	}
+	}else
 	if ( isPromotion(cm))
 	{
 		if ( getPromotion(data)  == KNIGHT)

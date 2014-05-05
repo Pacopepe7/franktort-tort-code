@@ -8,6 +8,7 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 #include "Evaluate.h"
 #include <iostream>
 
+#include "zobrist.h"
 /**************************************************************
 * Alpha Beta
 * 

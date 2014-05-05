@@ -179,54 +179,66 @@ void UCIInterface::bist(void)
 	boost::timer::auto_cpu_timer tt(6, "Built in Self Test took %w seconds\n");
 	cout << "Checking Move Generator\n";
 	cg.Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 20);				cout << "Init perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 400);			cout << "Init perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 8902);			cout << "Init perft(3) OK!\n";
 	ASSERT (cg.perft(4) == 197281);			cout << "Init perft(4) OK!\n";
 	ASSERT (cg.perft(5) == 4865609);		cout << "Init perft(5) OK!\n";
 	//ASSERT (cg.perft(6) == 119060324);		cout << "Init perft(6) OK!\n";
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	cg.Fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1");
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 48);				cout << "Test pos 2 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 2039);			cout << "Test pos 2 perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 97862);			cout << "Test pos 2 perft(3) OK!\n";
 	ASSERT (cg.perft(4) == 4085603);		cout << "Test pos 2 perft(4) OK!\n";
 	ASSERT (cg.perft(5) == 193690690);		cout << "Test pos 2 perft(5) OK!\n";
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	cg.Fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 14);				cout << "Test pos 3 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 191);			cout << "Test pos 3 perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 2812);			cout << "Test pos 3 perft(3) OK!\n";
 	ASSERT (cg.perft(4) == 43238);			cout << "Test pos 3 perft(4) OK!\n";
 	ASSERT (cg.perft(5) == 674624);			cout << "Test pos 3 perft(5) OK!\n";
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	cg.Fen("r3k2r/Pppp1ppp/1b3nbN/nP6/BBP1P3/q4N2/Pp1P2PP/R2Q1RK1 w kq - 0 1");
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 6);				cout << "Test pos 4 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 264);			cout << "Test pos 4 perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 9467);			cout << "Test pos 4 perft(3) OK!\n";
 	ASSERT (cg.perft(4) == 422333);			cout << "Test pos 4 perft(4) OK!\n";
 	ASSERT (cg.perft(5) == 15833292);		cout << "Test pos 4 perft(5) OK!\n";
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	cg.Fen("rnbqkb1r/pp1p1ppp/2p5/4P3/2B5/8/PPP1NnPP/RNBQK2R w KQkq - 0 6");
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 42);				cout << "Test pos 5 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 1352);			cout << "Test pos 5 perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 53392);			cout << "Test pos 5 perft(3) OK!\n";
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	cg.Fen("r4rk1/1pp1qppp/p1np1n2/2b1p1B1/2B1P1b1/P1NP1N2/1PP1QPPP/R4RK1 w - - 0 10");
-	cg.PrintBoard();
+	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 46);				cout << "Test pos 6 perft(1) OK!\n";
 	ASSERT (cg.perft(2) == 2079);			cout << "Test pos 6 perft(2) OK!\n";
 	ASSERT (cg.perft(3) == 89890);			cout << "Test pos 6 perft(3) OK!\n";
 	ASSERT (cg.perft(4) == 3894594);		cout << "Test pos 6 perft(4) OK!\n";
 	ASSERT (cg.perft(5) == 164075551);		cout << "Test pos 6 perft(5) OK!\n";
-	cg.PrintBoard();
-	//ASSERT (cg.perft(6) == 6923051137);		cout << "Test pos 6 perft(6) OK!\n";
-
+	//cg.PrintBoard();
+	cg.Fen("8/3K4/2p5/p2b2r1/5k2/8/8/1q6 b - - 1 67");
+	ASSERT (cg.perft(1) == 50);				cout << "Test pos 7 perft(1) OK!\n";
+	ASSERT (cg.perft(2) == 279);			cout << "Test pos 7 perft(2) OK!\n";
+	
+	cg.Fen("8/7p/p5pb/4k3/P1pPn3/8/P5PP/1rB2RK1 b - d3 0 28");
+	ASSERT (cg.perft(6) == 38633283);				cout << "Test pos 8 perft(6) OK!\n";
+	
+	cg.Fen("rnbqkb1r/ppppp1pp/7n/4Pp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3");
+	ASSERT (cg.perft(5) == 11139762);				cout << "Test pos 9 perft(5) OK!\n";
+	
+	cg.Fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
+	ASSERT (cg.perft(6) == 11030083);				cout << "Test pos 10 perft(6) OK!\n";
+	ASSERT (cg.perft(7) == 178633661);				cout << "Test pos 10 perft(7) OK!\n";
+	
 	cout << "Move Generator Checked fine\n";
 }
 //1rbq1rk1/p1b1nppp/1p2p3/8/1B1pN3/P2B4/1P3PPP/2RQ1R1K w - - 0 1

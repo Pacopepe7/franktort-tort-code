@@ -11,6 +11,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "ChessMove.h"
 #include "Square.h"
 
+
 #include "Definitions.h"
 #include <string>
 #include <iostream>

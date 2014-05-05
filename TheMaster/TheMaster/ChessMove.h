@@ -11,7 +11,7 @@
 
 #pragma once;
 
-typedef unsigned __int32	ChessMove; 
+typedef unsigned __int64	ChessMove; 
 
 typedef unsigned __int8		MoveType;
 
