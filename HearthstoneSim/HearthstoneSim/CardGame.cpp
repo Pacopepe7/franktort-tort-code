@@ -50,7 +50,7 @@ void CardGame::ReadAllCards(void)
 	FTDEBUG("Reading cards", DEBUGALL);
 	maxcards = 0;
 	string line;
-	ifstream myfile ("C:\\temp\\Hearthstone Sortable List.csv");
+	ifstream myfile ("C:\\Users\\Paquito\\Google Drive\\programming\\temp\\Hearthstone Sortable List.csv");
 	if (myfile.is_open())
 	{
 		getline (myfile,line);				//Throw away first column, should be column name	
@@ -61,6 +61,9 @@ void CardGame::ReadAllCards(void)
 		}
 	}
 	FTDEBUG("Done reading Cards", DEBUGALL);
+	FTDEBUG("Cards read ", DEBUGALL);
+	FTDEBUGi(maxcards, DEBUGALL);
+
 	myfile.close();
 }
 /****************************************
@@ -127,7 +130,7 @@ Card CardGame::FindCard(string name)
 {
 	for ( int i = 0; i < maxcards; i++)
 	{
-		if ( name == allcards[i].sName )
+		if ( name == allcards[i].GetName() )
 			return allcards[i];
 	}
 	FTDEBUG( "Card " + name  + " not found!", DEBUGALL);
@@ -163,7 +166,9 @@ void CardGame::LoadDeck(string path, int pl)
 		myfile.close();
 	}
 	FTDEBUG("Read deck " + path, DEBUGALL);
-	//bPopulated = true;
+	FTDEBUG("Deck contains " , DEBUGALL);
+	FTDEBUGi( deck[pl].size() + 1 , DEBUGALL);
+	deck[pl].Shuffle();
 }
 void CardGame::PrintBoard(void)
 {
@@ -171,13 +176,13 @@ void CardGame::PrintBoard(void)
 	cout << "Opponent: <" << player[opponent()].GetHealth() << ">  " + player[opponent()].GetClass() <<
 		" <" << player[opponent()].GetArmor() << "> " << endl;
 	cout << "Attack XXXXXXXXXXXXXXXXXXXXXXXXXXXX Health" << endl;
-	for (int i = 0; i < minions[opponent()].size(); i++)
+	for (int i = 0; i < (int)minions[opponent()].size(); i++)
 		minions[opponent()][i].Print(); 
 	if ( ! minions[opponent()].size() )
 		cout << "XXX           EMPTY BOARD              XXX" << endl;
 	cout << "Attack XXXXXXXXXXXXXXXXXXXXXXXXXXXX Health" << endl;
 
-	for (int i = 0; i < minions[turn].size(); i++)
+	for (int i = 0; i < (int)minions[turn].size(); i++)
 		minions[turn][i].Print(); 
 	if ( ! minions[turn].size() )
 		cout << "XXX           EMPTY BOARD              XXX" << endl;
@@ -185,10 +190,13 @@ void CardGame::PrintBoard(void)
 	cout << "Player on Turn: <" << player[turn].GetHealth() << ">  " + player[turn].GetClass() <<
 		" <" << player[turn].GetArmor() << "> " << endl;
 	cout << "Atk Cost  XXXXXXXXXXXXXXXXXXXXXXXXXXX   H " << endl;
-	for (int i = 0; i < hand[turn].size(); i++)
+	for (int i = 0; i < (int)hand[turn].size(); i++)
 		hand[turn][i].Print(); 
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << "XXX         " ;
+	/********************************************************************
+	* Print Mana left
+	********************************************************************/
+		cout << "XXX         " ;
 	for(int i = 0; i < manaleft; i++)
 		cout << " O";
 	for(int i = 0; i <(mana -  manaleft); i++)
@@ -202,12 +210,20 @@ void CardGame::PrintBoard(void)
 
 void CardGame::Play(string move)
 {
+	int indexOfActor;
+	int indexOfVictim;
+	int indexOfCard;
+	std::vector<Card>::iterator it;
+
+	/*************************************************************
+	* End Turn
+	*************************************************************/
 	if ( move == "END" || move == "End" || move == "end" )
 	{
 		manaused = 0;
 		turn = opponent();
 		//Activate all current minions (they can still be frozen)
-		for ( int i = 0; i < minions[turn].size(); i++)
+		for ( int i = 0; i < (int)minions[turn].size(); i++)
 			minions[turn][i].bActive = true;
 
 		if ( turn == 0 )
@@ -215,19 +231,54 @@ void CardGame::Play(string move)
 			mana ++;
 			if ( mana == 11) 
 				mana = 10;
-			manaleft = mana;
-			manaused = 0;
 		}
+		manaleft = mana;
+		manaused = 0;
 		return;
 	}
 	vector<string> tokens;
 	tokens.clear();Tokenize(move, tokens, " ");
-	if ( tokens.size() < 3)
+	/******************************************************
+	* One argument means that this card is being played from the hand
+	* and does not need a victim or target
+	*******************************************************/
+	if ( tokens.size() == 1 ) //deploy a minion from our hand
+	{
+		indexOfCard = FTATOI(tokens[0].c_str()) -1;
+		if ( hand[turn].size() == 0 ) {
+			cout << "No cards left\n";
+			return;
+		}
+		if ( indexOfCard >= hand[turn].size()){
+			cout << "No card on that spot!\n";
+			return;
+		}
+		if ( indexOfCard >= hand[turn].size()){
+			cout << "No card on that spot!\n";
+			return;
+		}
+		if ( manaleft < hand[turn][indexOfCard].GetManaCost() ){
+			cout << "Card costs more than mana available!\n";
+			return;
+		}
+		manaleft -= hand[turn][indexOfCard].GetManaCost();
+		manaused += hand[turn][indexOfCard].GetManaCost();
+		minions[turn].push_back(minion(
+			hand[turn][indexOfCard].GetName(), 
+			hand[turn][indexOfCard].GetDamage(),
+			hand[turn][indexOfCard].GetHealth(), false, false));
+		it = hand[turn].begin();
+		it += (indexOfCard );
+		hand[turn].erase(it);
+		
+		return;
+	}
+	if ( tokens.size() == 2)
 	{cout << "Invalid move" << endl; return;}
 	//the first index is the minions attacking (hero for hero)
-	int indexOfActor = FTATOI(tokens[0].c_str()) -1;
-	//thge second token is the "act upon" symbol : >
-	int indexOfVictim = FTATOI(tokens[2].c_str()) -1;
+	indexOfActor = FTATOI(tokens[0].c_str()) -1;
+	//the second token is the "act upon" symbol : >
+	indexOfVictim = FTATOI(tokens[2].c_str()) -1;
 	int turnminions = minions[turn].size() - 1;
 	int opponentminions = minions[opponent()].size() - 1;
 	if ( indexOfActor > turnminions ||
@@ -235,6 +286,17 @@ void CardGame::Play(string move)
 	{	cout << "Invalid index" << endl; return;}
 	//Interact!
 	Interact( indexOfActor , indexOfVictim);
+}
+void CardGame::LoadHands(void)
+{
+	hand[PLAYER1].push_back(  deck[PLAYER1].draw());
+	hand[PLAYER1].push_back(  deck[PLAYER1].draw());
+	hand[PLAYER1].push_back(  deck[PLAYER1].draw());
+
+	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
+	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
+	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
+	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
 }
 CardGame::~CardGame(void)
 {

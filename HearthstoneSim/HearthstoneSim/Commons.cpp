@@ -11,6 +11,11 @@ void FTDEBUG(string line, debuglevel level )
 	if ( level > NODEBUGALL )
 	cout << line << endl;
 }
+void FTDEBUGi(int i, debuglevel level )
+{
+	if ( level > NODEBUGALL )
+	cout << i << endl;
+}
 
 int FTATOI(string input)
 {

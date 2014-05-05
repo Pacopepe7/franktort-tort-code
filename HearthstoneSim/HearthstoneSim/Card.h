@@ -4,22 +4,21 @@
 // hearthstone card header file
 //
 //
+#ifndef CARDS_H
+#define CARDS_H
 
 #include <string>
 #include <stdio.h>
-
 #include "Commons.h"
-
-#pragma once
 
 using namespace std;
 
+
+
 class Card
 {
-	//Name,Class,Rarity,Type,Race,
-	//Cost,Attack,Health,Description
-public:
-	//Card * next;
+
+private:
 	string sName;
 	string hcclass;
 	string rarRarity;
@@ -43,23 +42,9 @@ public:
 
 	Card(void);
 	Card(string);
-	Card ( int health, int attack, int manacost, string name, string desc)
-		{ 
-			iHealth = health;
-			iAttack = attack;
-			iManaCost = manacost;
-			sName = name;
-			sDesc = desc;
-	};
-	Card::Card ( string name,
-			string hc,
-			string rar,
-			string t,
-			string rac,
-			int cost, 
-			int attack,
-			int health,
-			string desc);
+	Card ( int health, int attack, int manacost, string name, string desc);
+		Card::Card ( string name,string hc,	string rar,	string t, string rac, int cost, int attack,	int health,	string desc);
 	~Card(void);
 };
 
+#endif

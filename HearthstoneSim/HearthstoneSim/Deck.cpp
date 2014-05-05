@@ -4,10 +4,9 @@
 //
 //
 
+#include "utilities.h"
 #include "Deck.h"
-#include <iostream>
-#include <fstream>
-#include <string>
+
 
 using namespace std;
 
@@ -15,6 +14,9 @@ Deck::Deck(void)
 {
 	iCount = 0;
 	bPopulated = false;
+}
+Deck::~Deck(void)
+{
 }
 //Deck::Deck(HeroClasses heroclass)
 //{
@@ -24,25 +26,24 @@ Deck::Deck(void)
 //}
 void Deck::Add(Card c)
 {
-	if ( iCount == 30)
-		return;
+	ASSERT(! isFull());
 	card[iCount++] = c;
-	if ( iCount == 30)
+	if ( isFull())
 		bPopulated = true;
 }
 Card Deck::draw( void )
 {
-	if ( iCount > -1 )
+	ASSERT(! isEmpty() );
 	return card[--iCount];
 }
-void Deck::Randomize(void)
+void Deck::Shuffle(void)
 {
-	if (!bPopulated )
-		return;
+	ASSERT( isFull());
+	
 	Card temp;
 	int from, to;
 
-	for (int c = 0; c < 200; c++)
+	for (int c = 0; c < rand() % 500; c++)
 	{
 		from = rand() % (iCount -1);
 		to = rand() % (iCount-1);
@@ -57,9 +58,7 @@ void Deck::Randomize(void)
 
 void Deck::PrintDeck(void)
 {
-	//if ( 
+	//
 
 }
-Deck::~Deck(void)
-{
-}
+

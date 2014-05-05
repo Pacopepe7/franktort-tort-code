@@ -13,21 +13,11 @@ void main ( void )
 	CardGame cardgame;
 
 	//cardgame.LoadPosition("C:\\temp\\testboard1.hsb");
-	cardgame.Init();
-	cardgame.LoadDeck("C:\\temp\\Warrior.hsd", 0);
-	cardgame.LoadDeck("C:\\temp\\Warrior.hsd", 1);
-	cardgame.deck[0].Randomize();
-	cardgame.deck[1].Randomize();
+	
+	cardgame.LoadDeck("C:\\Users\\Paquito\\Google Drive\\programming\\temp\\Warrior.hsd", PLAYER1);
+	cardgame.LoadDeck("C:\\Users\\Paquito\\Google Drive\\programming\\temp\\Warrior.hsd", PLAYER2);
 
-	cardgame.hand[0].push_back(  cardgame.deck[0].draw());
-	cardgame.hand[0].push_back(  cardgame.deck[0].draw());
-	cardgame.hand[0].push_back(  cardgame.deck[0].draw());
-
-	cardgame.hand[1].push_back(  cardgame.deck[1].draw());
-	cardgame.hand[1].push_back(  cardgame.deck[1].draw());
-	cardgame.hand[1].push_back(  cardgame.deck[1].draw());
-	cardgame.hand[1].push_back(  cardgame.deck[1].draw());
-
+	cardgame.LoadHands();
 	cardgame.PrintBoard();
 	while ( ! cardgame.GameOver() )
 		{

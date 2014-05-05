@@ -10,7 +10,7 @@ using namespace std;
 
 class CardGame
 {
-public:
+private:
 	//Changes very seldom
 	//TODO: Game rules
 	//TODO: Card Rules
@@ -45,6 +45,8 @@ public:
 	int opponent(void) { return turn == 1? 0:1;};
 	void LoadPosition(string );
 	void LoadDeck(string , int);
+	void LoadHands(void);
+
 	Card FindCard(string);
 	void Play(string move);
 	void PrintBoard(void);

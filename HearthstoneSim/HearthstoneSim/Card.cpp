@@ -17,15 +17,23 @@ Card::Card(void)
 	sName = "RandomCard";
 	sDesc = "Random!!!";
 }
+Card::Card ( int health, int attack, int manacost, string name, string desc)
+{ 
+	iHealth = health;
+	iAttack = attack;
+	iManaCost = manacost;
+	sName = name;
+	sDesc = desc;
+};
 Card::Card ( string name,
-			string hc,
-			string rar,
-			string t,
-			string rac,
-			int cost, 
-			int attack,
-			int health,
-			string desc)
+	string hc,
+	string rar,
+	string t,
+	string rac,
+	int cost, 
+	int attack,
+	int health,
+	string desc)
 { 
 	sName = name;
 	hcclass = hc;
@@ -48,8 +56,10 @@ Card::Card(string line)
 	int length = line.length();
 	int iterator = 0;
 	Tokenize(line, tokens,  ",");
-	if (tokens.size() == 8 )
-		FTDEBUG("ERROR", DEBUGALL);;
+	if (tokens.size() == 8 ){
+		FTDEBUG("ERROR", DEBUGALL);
+		FTDEBUG(line, DEBUGALL);
+	}
 	sName = tokens[0];
 	hcclass = tokens[1];
 	rarRarity = tokens[2];
@@ -72,12 +82,12 @@ int Card::delimitedRand(int floor, int ceiling)
 }
 void Card::Print(void)
 {
-		int l = sName.length();
-		int r = 28 - l;
-		cout << "<" << iAttack << "> <" << iManaCost << ">   " << sName;
-		for ( l = 0; l < r; l++)
-			cout << " ";
-		cout <<  " <" << iHealth << ">" << endl;
+	int l = sName.length();
+	int r = 28 - l;
+	cout << "<" << iAttack << "> <" << iManaCost << ">   " << sName;
+	for ( l = 0; l < r; l++)
+		cout << " ";
+	cout <<  " <" << iHealth << ">" << endl;
 }
 Card::~Card(void)
 {
