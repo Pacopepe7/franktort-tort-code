@@ -16,7 +16,7 @@ Sort move list from values from last iteration.
 
 
 Display full PV
-	Also esy fix
+	Also easy fix (actual: not as easy but DONE!)
 
 Some redumentary eval enhancements
 (done)	Bishop pair
@@ -27,3 +27,10 @@ Some redumentary eval enhancements
 		see every move (kind of doesnt apply to the engine)
 		
 		
+CLOP 
+Move Ordering
+3-move-repetition. 
+50 move rule.
+How many times do I get a hit on move ordering (first move was actually used.)
+64 bit ChessMove
+Move from class to struct for board.

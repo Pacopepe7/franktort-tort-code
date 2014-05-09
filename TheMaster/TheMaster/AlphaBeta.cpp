@@ -57,9 +57,11 @@ int ChessGame::AlphaBetaDriver()
 
 		if ( depth > maxdepth && ! researching)
 			targetdepthreached = true;
-		if ( seconds.count() > 15)
+		if ( seconds.count() > 5 && researching)
 			timeleft = false;
-	}while (!targetdepthreached );
+		if ( seconds.count() > 10 &&! researching)
+			timeleft = false;
+	}while (!targetdepthreached && timeleft );
 	depth -= depthdelta;
 	return value;
 
@@ -177,9 +179,9 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 		searchdata.maxdepth = ply + 1;
 
 	ChessMove movebeingevaluated;
-	SearchResult firstValidMove;
+	//SearchResult firstValidMove;
 	mstack[ply].DumpStack();
-	GenerateMoves();
+	GenCaptures();
 	SortMoves();
 
 	while ( ! mstack[ply].empty() )

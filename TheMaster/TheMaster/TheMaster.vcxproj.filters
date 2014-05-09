@@ -75,12 +75,12 @@
     <ClCompile Include="zobrist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GenCaptures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChessGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Definitions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
