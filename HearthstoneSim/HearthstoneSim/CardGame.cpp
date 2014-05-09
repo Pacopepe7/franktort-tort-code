@@ -21,7 +21,7 @@ CardGame::CardGame(void)
 void CardGame::Init(void)
 {
 	FTDEBUG("Initializing CardGame", DEBUGALL);
-	turn = 0;
+	stm = PLAYER1;
 	mana = 1;
 	manaused = 0;
 	manaleft = mana;
@@ -85,7 +85,7 @@ void CardGame::LoadPosition(string path)
 		//Minions P1, Minions p2
 		player[0].SetClass(tokens[0].c_str());
 		player[1].SetClass(tokens[1].c_str());
-		turn = FTATOI(tokens[2].c_str());
+		stm = (Turn)FTATOI(tokens[2].c_str());
 		player[0].SetHealth(FTATOI(tokens[3].c_str()));
 		player[1].SetHealth(FTATOI(tokens[4].c_str()));
 		player[0].SetMinions(FTATOI(tokens[5].c_str()));
@@ -97,22 +97,22 @@ void CardGame::LoadPosition(string path)
 			getline (myfile,line);
 			tokens.clear();Tokenize(line, tokens, ",");
 
-			minions[0].push_back(minion( tokens[0], 
-				FTATOI(tokens[1].c_str()),
-				FTATOI(tokens[2].c_str()),
-				FTATOB(tokens[3].c_str()),
-				FTATOB(tokens[4].c_str())));
+			//minions[0].push_back(minion( tokens[0], 
+			//	FTATOI(tokens[1].c_str()),
+			//	FTATOI(tokens[2].c_str()),
+			//	FTATOB(tokens[3].c_str()),
+			//	FTATOB(tokens[4].c_str())));
 		}
 		FTDEBUG("Reading P2 minions", DEBUGALL);
 		for ( int i = 0; i < player[1].GetMinions(); i++){
 			getline (myfile,line);
 			tokens.clear();Tokenize(line, tokens, ",");
 
-			minions[1].push_back(minion( tokens[0], 
-				FTATOI(tokens[1].c_str()),
-				FTATOI(tokens[2].c_str()),
-				FTATOB(tokens[3].c_str()),
-				FTATOB(tokens[4].c_str())));
+			//minions[1].push_back(minion( tokens[0], 
+			//	FTATOI(tokens[1].c_str()),
+			//	FTATOI(tokens[2].c_str()),
+			//	FTATOB(tokens[3].c_str()),
+			//	FTATOB(tokens[4].c_str())));
 		}
 
 
@@ -167,31 +167,23 @@ void CardGame::LoadDeck(string path, int pl)
 	}
 	FTDEBUG("Read deck " + path, DEBUGALL);
 	FTDEBUG("Deck contains " , DEBUGALL);
-	FTDEBUGi( deck[pl].size() + 1 , DEBUGALL);
+	FTDEBUGi( deck[pl].size()  , DEBUGALL);
 	deck[pl].Shuffle();
 }
 void CardGame::PrintBoard(void)
 {
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
-	cout << "Opponent: <" << player[opponent()].GetHealth() << ">  " + player[opponent()].GetClass() <<
-		" <" << player[opponent()].GetArmor() << "> " << endl;
-	cout << "Attack XXXXXXXXXXXXXXXXXXXXXXXXXXXX Health" << endl;
-	for (int i = 0; i < (int)minions[opponent()].size(); i++)
-		minions[opponent()][i].Print(); 
-	if ( ! minions[opponent()].size() )
-		cout << "XXX           EMPTY BOARD              XXX" << endl;
-	cout << "Attack XXXXXXXXXXXXXXXXXXXXXXXXXXXX Health" << endl;
-
-	for (int i = 0; i < (int)minions[turn].size(); i++)
-		minions[turn][i].Print(); 
-	if ( ! minions[turn].size() )
-		cout << "XXX           EMPTY BOARD              XXX" << endl;
-	cout << "Attack XXXXXXXXXXXXXXXXXXXXXXXXXXXX Health" << endl;
-	cout << "Player on Turn: <" << player[turn].GetHealth() << ">  " + player[turn].GetClass() <<
-		" <" << player[turn].GetArmor() << "> " << endl;
-	cout << "Atk Cost  XXXXXXXXXXXXXXXXXXXXXXXXXXX   H " << endl;
-	for (int i = 0; i < (int)hand[turn].size(); i++)
-		hand[turn][i].Print(); 
+	player[opponent()].Print();
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	player[opponent()].PrintHand();
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	board.Print(opponent());
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	board.Print(stm);
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	player[stm].PrintHand();
+	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	player[stm].Print();
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
 	/********************************************************************
 	* Print Mana left
@@ -213,7 +205,7 @@ void CardGame::Play(string move)
 	int indexOfActor;
 	int indexOfVictim;
 	int indexOfCard;
-	std::vector<Card>::iterator it;
+	
 
 	/*************************************************************
 	* End Turn
@@ -221,12 +213,11 @@ void CardGame::Play(string move)
 	if ( move == "END" || move == "End" || move == "end" )
 	{
 		manaused = 0;
-		turn = opponent();
+		stm = opponent();
 		//Activate all current minions (they can still be frozen)
-		for ( int i = 0; i < (int)minions[turn].size(); i++)
-			minions[turn][i].bActive = true;
+		board.UnFreeze(stm);
 
-		if ( turn == 0 )
+		if ( stm == PLAYER1 )
 		{
 			mana ++;
 			if ( mana == 11) 
@@ -234,6 +225,7 @@ void CardGame::Play(string move)
 		}
 		manaleft = mana;
 		manaused = 0;
+		player[stm].ReceiveCard(  deck[stm].draw());
 		return;
 	}
 	vector<string> tokens;
@@ -244,32 +236,23 @@ void CardGame::Play(string move)
 	*******************************************************/
 	if ( tokens.size() == 1 ) //deploy a minion from our hand
 	{
-		indexOfCard = FTATOI(tokens[0].c_str()) -1;
-		if ( hand[turn].size() == 0 ) {
+		indexOfCard = FTATOI(tokens[0].c_str()) -1 ;
+		if ( !player[stm].bHasCards() ) {
 			cout << "No cards left\n";
 			return;
 		}
-		if ( indexOfCard >= hand[turn].size()){
+		if ( indexOfCard >= player[stm].iCardCount()){
 			cout << "No card on that spot!\n";
 			return;
 		}
-		if ( indexOfCard >= hand[turn].size()){
-			cout << "No card on that spot!\n";
-			return;
-		}
-		if ( manaleft < hand[turn][indexOfCard].GetManaCost() ){
+		
+		if ( manaleft < player[stm].iGetManaCost(indexOfCard) ){
 			cout << "Card costs more than mana available!\n";
 			return;
 		}
-		manaleft -= hand[turn][indexOfCard].GetManaCost();
-		manaused += hand[turn][indexOfCard].GetManaCost();
-		minions[turn].push_back(minion(
-			hand[turn][indexOfCard].GetName(), 
-			hand[turn][indexOfCard].GetDamage(),
-			hand[turn][indexOfCard].GetHealth(), false, false));
-		it = hand[turn].begin();
-		it += (indexOfCard );
-		hand[turn].erase(it);
+		manaleft -= player[stm].iGetManaCost(indexOfCard);
+		manaused += player[stm].iGetManaCost(indexOfCard);
+		board.play(player[stm].RemoveCard(indexOfCard), stm);
 		
 		return;
 	}
@@ -279,8 +262,8 @@ void CardGame::Play(string move)
 	indexOfActor = FTATOI(tokens[0].c_str()) -1;
 	//the second token is the "act upon" symbol : >
 	indexOfVictim = FTATOI(tokens[2].c_str()) -1;
-	int turnminions = minions[turn].size() - 1;
-	int opponentminions = minions[opponent()].size() - 1;
+	int turnminions = board.GetMinionCount(stm) - 1;
+	int opponentminions = board.GetMinionCount(opponent()) - 1;
 	if ( indexOfActor > turnminions ||
 		indexOfVictim > opponentminions)
 	{	cout << "Invalid index" << endl; return;}
@@ -289,14 +272,15 @@ void CardGame::Play(string move)
 }
 void CardGame::LoadHands(void)
 {
-	hand[PLAYER1].push_back(  deck[PLAYER1].draw());
-	hand[PLAYER1].push_back(  deck[PLAYER1].draw());
-	hand[PLAYER1].push_back(  deck[PLAYER1].draw());
+	player[PLAYER1].ReceiveCard(  deck[PLAYER1].draw());
+	player[PLAYER1].ReceiveCard(  deck[PLAYER1].draw());
+	player[PLAYER1].ReceiveCard(  deck[PLAYER1].draw());	
+	player[PLAYER1].ReceiveCard(  deck[PLAYER1].draw());
 
-	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
-	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
-	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
-	hand[PLAYER2].push_back(  deck[PLAYER2].draw());
+	player[PLAYER2].ReceiveCard(  deck[PLAYER2].draw());
+	player[PLAYER2].ReceiveCard(  deck[PLAYER2].draw());
+	player[PLAYER2].ReceiveCard(  deck[PLAYER2].draw());
+	player[PLAYER2].ReceiveCard(  deck[PLAYER2].draw());
 }
 CardGame::~CardGame(void)
 {

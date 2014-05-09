@@ -24,7 +24,7 @@ public:
 	~Deck(void);
 
 
-	int size(void)				{ return iCount + 1; } ;
+	int size(void)				{ return iCount ; } ;
 	bool isEmpty(void)			{ return iCount == 0;} ;
 	bool isFull(void)			{ return iCount == FULLDECK;};
 	void Add(Card c);

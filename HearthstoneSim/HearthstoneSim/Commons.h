@@ -19,6 +19,8 @@ using namespace std;
 #pragma once 
 
 typedef enum { PLAYER1, PLAYER2, MAXPLAYERS } Turn;
+typedef int Target;
+typedef int Attacker;
 typedef enum { NOCLASS, ALLCLASSES, DRUID, MAGE, PALADIN, PRIEST, ROGUE, SHAMAN, WARLOCK, WARRIOR, MAXCLASSES } HeroClasses;
 typedef enum { NORARITY, BASIC, COMMON, RARE, EPIC, LEGENDARY, MAXRARITY } Rarity;
 typedef enum { NOTYPE, MINION, SPELL, WEAPON, MAXTYPES } Type;
@@ -28,6 +30,7 @@ void FTDEBUG(string , debuglevel level );
 void FTDEBUGi(int , debuglevel level );
 int FTATOI(string);
 bool FTATOB(string);
+
 #define MAXCARDSONHAND		10 
 #define MAXMINIONSONBOARD	8
 #define MAXCARDSONDECK		30

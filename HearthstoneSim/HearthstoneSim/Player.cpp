@@ -11,7 +11,22 @@
 Player::Player(void)
 {
 }
-
+void Player::Print(void)
+{
+	cout << "Player: " << turn << endl;
+	cout << "Health: " << iHealth << endl;
+	cout << "Class: " << GetClass() << endl;
+	cout << "Armor: " << GetArmor() << endl;
+}
+void Player::PrintHand(void)
+{
+	if ( !hand.size() )
+		return;
+	cout << "Atk Cost  XXXXXXXXXXXXXXXXXXXXXXXXXXX   H " << endl;
+	for ( int c = 0; c < hand.size(); c++)
+		hand[c].Print();
+	return;
+}
 Player::Player(Turn _turn, HeroClasses _heroclass)
 {
 	turn = _turn;
@@ -37,6 +52,16 @@ void Player::ReceiveAttack(int a)
 {
 	//todo, armor, secrets....etc...
 	iHealth -=a;
+}
+Card Player::RemoveCard(int i)
+{
+	Card temp;
+	std::vector<Card>::iterator it;
+	it = hand.begin();
+	it += (i );
+	temp = hand[i];
+	hand.erase(it);
+	return temp;
 }
 
 Player::~Player(void)

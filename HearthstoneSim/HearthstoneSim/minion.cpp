@@ -4,6 +4,17 @@
 minion::minion(void)
 {
 }
+minion::minion(Card card)
+{
+	sName = card.GetName();
+	iHealth = card.GetHealth();
+	iAttack = card.GetDamage();
+	bStealth = false;
+	bFrozen = false;
+	bHasAbility = false;
+	bTaunt = false;
+	bDamaged = false;
+}
 
 minion::minion(string n, int a, int h, bool s, bool f)
 { 

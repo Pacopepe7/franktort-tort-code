@@ -1,3 +1,6 @@
+
+
+
 #pragma once
 
 #include "Card.h"
@@ -18,20 +21,16 @@ private:
 	int maxcards;
 
 	//Data changes every game
-	Player player[2];
-	Deck deck[2];
-	vector <Card> hand[2];
+	Player player[MAXPLAYERS];
+	Deck deck[MAXPLAYERS];
 	Board board;
 	
 	//Data changes every turn
-	int turn;
+	Turn stm;
 	int mana;
 	int manaused;
 	int manaleft;
-	int Manapool;
-	vector<minion> minions[2];
-
-
+	
 	//TODO: list of legal actions/moves if you will
 
 
@@ -42,7 +41,7 @@ private:
 public:
 
 	CardGame(void);
-	int opponent(void) { return turn == 1? 0:1;};
+	Turn opponent(void) { return (stm == PLAYER1)? PLAYER2:PLAYER1;};
 	void LoadPosition(string );
 	void LoadDeck(string , int);
 	void LoadHands(void);
