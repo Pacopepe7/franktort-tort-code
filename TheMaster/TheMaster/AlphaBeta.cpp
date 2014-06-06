@@ -155,7 +155,7 @@ if ( legalmoves == 1 )
 	chessresult[ply].best = firstValidMove.best;
 	chessresult[ply].value = firstValidMove.value;
 	chessresult[ply].onlymove = true;
-	//depth++;
+	//depth++;//need to fix 3 move repetition before this..
 }
 return alpha;
 } 

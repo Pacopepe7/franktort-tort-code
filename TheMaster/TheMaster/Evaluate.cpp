@@ -60,9 +60,38 @@ int ChessGame::Evaluate(void)
 	if ( numPawns[ctm] == 0 && materialCount[ctm] > 700 && numKnights[ctm] && result > 0) // two bishops can mate, no numknights >0
 		return 0;
 
+	/***************************************************************
+	* Ending evaluation
+	***************************************************************/
+	if ( (materialCount[ctm] + materialCount[opp]) < (8500 / 3) )
+	{
+		//2 connected passers are very strong. 
+		// add bonuses to advaced pawns
+		for ( int c = 0; c < maxpieces[ctm]; c++)
+		{
+			if ( pieces[c][ctm].piece == PAWN)
+			{
+				if (  getRank(pieces[c][ctm].square) == pawnsixthrank[ctm])
+					result += 25;
+				if (  getRank(pieces[c][ctm].square) == pawnseventhrank[ctm])
+					result += 50;
+			}
+
+		}
+		for ( int c = 0; c < maxpieces[opp]; c++)
+		{
+			if ( pieces[c][opp].piece == PAWN)
+			{
+				if (  getRank(pieces[c][opp].square) == pawnsixthrank[opp])
+					result += 25;
+				if (  getRank(pieces[c][opp].square) == pawnseventhrank[opp])
+					result += 50;
+			}
+
+		}
 
 
-
+	}
 
 	return ( result );
 }

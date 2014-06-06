@@ -160,6 +160,9 @@ public:
 	short pawndirection[COLORS];
 	short pawnsecondrank[COLORS];
 	short pawnthirdrank[COLORS];
+	short pawnsixthrank[COLORS];
+	short pawnseventhrank[COLORS];
+
 	short pawn_EP_rank[COLORS];
 	short pawn_promotion_rank[COLORS];
 	/*****************************************************

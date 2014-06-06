@@ -174,17 +174,17 @@ void CardGame::PrintBoard(void)
 {
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
 	player[opponent()].Print();
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "X----------------------------------------X" << endl;
 	player[opponent()].PrintHand();
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "X----------------------------------------X" << endl;
 	board.Print(opponent());
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "X----------------------------------------X" << endl;
 	board.Print(stm);
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "X----------------------------------------X" << endl;
 	player[stm].PrintHand();
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "X----------------------------------------X" << endl;
 	player[stm].Print();
-	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
+	cout << "X----------------------------------------X" << endl;
 	/********************************************************************
 	* Print Mana left
 	********************************************************************/
@@ -196,6 +196,7 @@ void CardGame::PrintBoard(void)
 	for ( int i = 20; i > (mana * 2); i--)
 		cout << " ";
 	cout << "       XXX" << endl;
+	         
 	cout << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" << endl;
 
 }
@@ -256,9 +257,15 @@ void CardGame::Play(string move)
 		
 		return;
 	}
+
 	if ( tokens.size() == 2)
 	{cout << "Invalid move" << endl; return;}
-	//the first index is the minions attacking (hero for hero)
+
+	/******************************************************
+	* two argument means that this card is being played
+	* from the board and needs a victim or target
+	*******************************************************/
+	//the first index is the minions attacking (0 for hero)
 	indexOfActor = FTATOI(tokens[0].c_str()) -1;
 	//the second token is the "act upon" symbol : >
 	indexOfVictim = FTATOI(tokens[2].c_str()) -1;

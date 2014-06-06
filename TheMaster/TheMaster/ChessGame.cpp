@@ -105,6 +105,13 @@ void ChessGame::Init ( void )
 	pawn_promotion_rank[WHITE] = 1;
 	pawn_promotion_rank[BLACK] = 6;
 
+	pawnsixthrank[WHITE] = 3;
+	pawnsixthrank[BLACK] = 4;
+
+	pawnseventhrank[WHITE] = 2;
+	pawnseventhrank[BLACK] = 5;
+
+
 	ply = 0;
 	state[0].m_LastMove = CM(A1, A2, MT_NORMAL, 0);
 	ctm = WHITE;
@@ -120,7 +127,7 @@ void ChessGame::Init ( void )
 	maxdepth = 3;
 #else
 	debug = false;
-	maxdepth = 8; // 7 works best 
+	maxdepth = 10; // 7 works best 
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
