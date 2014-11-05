@@ -86,8 +86,8 @@ bool ChessGame::isAttackedbyPiece ( Square from, Square to, Color side, Piece p 
 bool ChessGame::isAttacked(Square target, Color co)
 {
 	//PrintBoard();
-	Square sq;
-	int c;
+	static Square sq;
+	static int c;
 	//check for pawns, kings and knights
 	//Pawns
 	if ( co == WHITE )

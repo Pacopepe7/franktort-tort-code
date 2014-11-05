@@ -97,7 +97,7 @@
     <LinkIncremental>
     </LinkIncremental>
     <IncludePath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental />
@@ -112,7 +112,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\libx86;$(LibraryPath)</LibraryPath>
     <TargetName>TheMasterX64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -197,6 +197,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

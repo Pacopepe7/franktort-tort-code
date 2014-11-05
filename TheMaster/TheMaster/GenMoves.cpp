@@ -18,7 +18,8 @@ void ChessGame::GenerateMoves( void )
 
 	Square curr;
 	Square sq;
-	for ( short i = 0; i < maxpieces[ctm]; i++)
+	short i;
+	for ( i = 0; i < maxpieces[ctm]; i++)
 	{
 		if ( ! pieces[i][ctm].piece)
 			continue;

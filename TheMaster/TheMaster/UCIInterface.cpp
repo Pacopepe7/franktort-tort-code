@@ -156,9 +156,9 @@ void UCIInterface::Command(string command )
 	if (tokens[0] == "perft")
 	{
 #ifdef _DEBUG
-		for ( int i = 1; i < 4; i++)
+		for ( int i = 1; i < 7; i++)
 #else
-		for ( int i = 1; i < 5; i++)
+		for ( int i = 1; i < 7; i++)
 #endif
 		{
 			cg.Init();

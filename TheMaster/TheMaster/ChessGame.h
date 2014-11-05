@@ -15,7 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef _DEBUG
 #define ASSERT assert
 #else
-#define ASSERT /********/
+#define ASSERT /****/
 #endif
 
 #include "Definitions.h"
