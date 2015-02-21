@@ -274,14 +274,14 @@ public:
 	*****************************************/
 	bool isPieceColor(Square sq, Piece p, Color c)	{ return ( !isSquare(sq)  ? (false) :
 													(          (isEmpty(sq) ? (false): 
-																((Ox88Board[sq]->piece & p) && (Ox88Board[sq]->color == c )))));};
+																((Ox88Board[sq]->piece == p) && (Ox88Board[sq]->color == c )))));};
 	bool isAttacked(Square, Color c);
 
 	int  getOx88to64Index(Color c, Square s)						{ 
-		if ( s > 128)
-			PrintBoard();
-		ASSERT((s > -1) && "get64Index: Square is less than -1");
-		ASSERT((s < 128) &&  "get64Index: Square is !< 128");
+		//if ( s > 128)
+		//	PrintBoard();
+		//ASSERT((s > -1) && "get64Index: Square is less than -1");
+		//ASSERT((s < 128) &&  "get64Index: Square is !< 128");
 		if ( c ) // c = 1 == BLACK
 			return ( 63 - Ox88to64[s]);
 		else

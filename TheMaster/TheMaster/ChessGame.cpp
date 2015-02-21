@@ -127,7 +127,7 @@ void ChessGame::Init ( void )
 	maxdepth = 3;
 #else
 	debug = false;
-	maxdepth = 9; // 7 works best 
+	maxdepth = 11; // 7 works best 
 #endif
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
@@ -138,7 +138,7 @@ void ChessGame::Init ( void )
 */
 void ChessGame::Set(Piece p, Color c, Square s)
 {
-	ASSERT ( isSquare(s)) ;
+	//ASSERT ( isSquare(s)) ;
 	
 	short pieceindex;
 	bool found = false;
@@ -175,10 +175,10 @@ void ChessGame::Set(Piece p, Color c, Square s)
 */
 void ChessGame::MovePiece(Square from, Square to)
 {
-	ASSERT ( isSquare(from)) ;
-	ASSERT ( isSquare(to)) ;
-	ASSERT ( !isEmpty(from));
-	ASSERT ( isEmpty(to));
+	//ASSERT ( isSquare(from)) ;
+	//ASSERT ( isSquare(to)) ;
+	//ASSERT ( !isEmpty(from));
+	//ASSERT ( isEmpty(to));
 		
 	Color c = Ox88Board[from]->color;
 	int index = Ox88Board[from]->index;
@@ -219,8 +219,8 @@ void ChessGame::Set(Piece p, Color c, short r, short f)
 void ChessGame::Clear( Square s)
 {
 
-	ASSERT( isSquare(s) && "Not a Square");
-	ASSERT( !isEmpty(s) && "Clear is not empty");
+	//ASSERT( isSquare(s) && "Not a Square");
+	//ASSERT( !isEmpty(s) && "Clear is not empty");
 	//Get piece info
 	Piece p = getPiece(s);
 	Color c = getColor(s);
@@ -271,8 +271,8 @@ string ChessGame::MakeAlgebraicMove( ChessMove cm)
 	Square data = getDataSquare(cm);
 	MoveType mt = getMoveType(cm);
 
-	ASSERT ( isSquare(from));
-	ASSERT ( isSquare(to));
+	//ASSERT ( isSquare(from));
+	//ASSERT ( isSquare(to));
 
 	chessmove = not(from);
 	chessmove += not(to);
@@ -288,15 +288,16 @@ string ChessGame::MakeAlgebraicMove( ChessMove cm)
 		if ( getPromotion(data)  == QUEEN)
 			chessmove += "q";
 	}else
-	if ( isPromotion(cm))
+	//if ( isPromotion(cm))
+	if (mt == MT_PROMOTION)
 	{
-		if ( getPromotion(data)  == KNIGHT)
+		if ( (data)  == KNIGHT)
 			chessmove += "n";
-		if ( getDataSquare(cm)  == BISHOP)
+		if ((data) == BISHOP)
 			chessmove += "b";
-		if ( getDataSquare(cm)  == ROOK)
+		if ((data) == ROOK)
 			chessmove += "r";
-		if ( getDataSquare(cm)  == QUEEN)
+		if ((data) == QUEEN)
 			chessmove += "q";
 	}
 	return chessmove;

@@ -87,7 +87,24 @@ bool ChessGame::isAttacked(Square target, Color co)
 {
 	//PrintBoard();
 	static Square sq;
-	static int c;
+	static int c, i;
+	bool found = false;
+	//Piece PiecesAbleToAttack;
+	
+	//for (i = 0; i < maxpieces[co]; i++)
+	//{
+	//	if (!pieces[i][co].piece)
+	//		continue;
+	//	if (PiecesThatCanAttack(pieces[i][co].square, target))
+	//		found = true;
+	//}
+	//	
+	//if (!found){
+	//	//cout << "no checks needed for: " << not(target) << endl;
+	//	return false;
+	//}
+	
+
 	//check for pawns, kings and knights
 	//Pawns
 	if ( co == WHITE )

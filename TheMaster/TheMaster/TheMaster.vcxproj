@@ -102,7 +102,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental />
     <IncludePath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage;C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage;C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Itanium'">
     <LinkIncremental />
@@ -111,14 +111,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_55_0\boost_1_55_0\stage\libx86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib;$(LibraryPath)</LibraryPath>
     <TargetName>TheMasterX64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib64;$(LibraryPath)</LibraryPath>
     <TargetName>TheMasterX64</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Itanium'">

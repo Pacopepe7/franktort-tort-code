@@ -12,5 +12,5 @@ const Color BLACK		= 1;
 const Color COLORS		= 2;
 const Color NOCOLOR		= 3;
 
-#define isWhite(c)		( c == WHITE)
-#define isBlack(c)		( c == BLACK)
+#define isWhite(c)		( !c)
+#define isBlack(c)		( c )

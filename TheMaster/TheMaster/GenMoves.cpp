@@ -112,14 +112,12 @@ void ChessGame::GenerateMoves( void )
 			{
 				if ( state[ply].castling[ctm] & SHORT )
 				{
-					if ( !isAttacked(E1, opp) &&  !isAttacked(F1, opp) &&  !isAttacked(G1, opp) &&
-						isEmpty(F1) && isEmpty(G1))
+					if (isEmpty(F1) && isEmpty(G1) && !isAttacked(E1, opp) && !isAttacked(F1, opp) && !isAttacked(G1, opp) )
 						mstack[ply].push(CM(E1,	G1, MT_CASTLE,0));
 				}
 				if ( state[ply].castling[ctm] & LONG)
 				{
-					if ( !isAttacked(E1, opp) &&  !isAttacked(D1, opp) &&  !isAttacked(C1, opp) &&
-						isEmpty(D1) && isEmpty(C1) && isEmpty(B1))
+					if (isEmpty(D1) && isEmpty(C1) && isEmpty(B1) && !isAttacked(E1, opp) && !isAttacked(D1, opp) && !isAttacked(C1, opp) )
 						mstack[ply].push(CM(E1,	C1, MT_CASTLE,0));
 				}
 			}
@@ -127,14 +125,12 @@ void ChessGame::GenerateMoves( void )
 			{
 				if ( state[ply].castling[ctm] & SHORT)
 				{
-					if ( !isAttacked(E8, opp) &&  !isAttacked(F8, opp) &&  !isAttacked(G8, opp) &&
-						isEmpty(F8) && isEmpty(G8))
+					if (isEmpty(F8) && isEmpty(G8) && !isAttacked(E8, opp) && !isAttacked(F8, opp) && !isAttacked(G8, opp) )
 						mstack[ply].push(CM(E8,	G8, MT_CASTLE,0));
 				}
 				if ( state[ply].castling[ctm] & LONG)
 				{
-					if ( !isAttacked(E8, opp) &&  !isAttacked(D8, opp) &&  !isAttacked(C8, opp) &&
-						isEmpty(D8) && isEmpty(C8) && isEmpty(B8))
+					if (isEmpty(D8) && isEmpty(C8) && isEmpty(B8) && !isAttacked(E8, opp) && !isAttacked(D8, opp) && !isAttacked(C8, opp) )
 						mstack[ply].push(CM(E8,	C8, MT_CASTLE,0));
 				}
 			}
@@ -238,7 +234,7 @@ void ChessGame::GenerateMoves( void )
 ****************************************************/
 void ChessGame::SortMoves( void )
 {
-	ASSERT(! mstack[ply].empty());
+	//ASSERT(! mstack[ply].empty());
 	if ( ! pv.cmove ) // no info to act upon
 		return;
 	for ( int c = 0; c < mstack[ply].size() ; c++)

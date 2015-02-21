@@ -146,6 +146,8 @@ void UCIInterface::Command(string command )
 	{
 		cg.depth = atoi(tokens[1].c_str());
 	}
+	if (tokens[0] == "test")
+		cg.Fen("8/7p/3k4/8/p4P2/P3PK2/2Rp3P/8 b - - 0 12 ");
 	if (tokens[0] == "search")
 	{
 		if (tokens[1] == "n")
@@ -158,7 +160,7 @@ void UCIInterface::Command(string command )
 #ifdef _DEBUG
 		for ( int i = 1; i < 7; i++)
 #else
-		for ( int i = 1; i < 7; i++)
+		for ( int i = 1; i <= 6; i++)
 #endif
 		{
 			cg.Init();
@@ -178,6 +180,8 @@ void UCIInterface::bist(void)
 {
 	boost::timer::auto_cpu_timer tt(6, "Built in Self Test took %w seconds\n");
 	cout << "Checking Move Generator\n";
+	
+
 	cg.Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 	//cg.PrintBoard();
 	ASSERT (cg.perft(1) == 20);				cout << "Init perft(1) OK!\n";

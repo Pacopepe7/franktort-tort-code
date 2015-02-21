@@ -35,6 +35,7 @@ typedef unsigned __int8		MoveType;
 #define QUEEN_PRO					128
 
 #define BYTE	 (1 | 2 | 4 | 8 | 16 | 32 | 64 | 128)
+#define PIECEMASK (2 | 4 | 8 | 16 )
 
 #define isCapture(cm)				(( getMoveType(cm) & MT_CAPTURE))
 #define isPromotion(cm)				(( getMoveType(cm) == MT_PROMOTION))
@@ -45,9 +46,9 @@ typedef unsigned __int8		MoveType;
 #define getFromSquare(cm)			( (cm & BYTE) )
 #define getToSquare(cm)				( ( ( cm >> 8) & BYTE) )
 
-#define getCapture(p)			( ((p) & (KNIGHT_CAP | BISHOP_CAP | ROOK_CAP | QUEEN_CAP) ) << 1)
-#define getPromotion(p)			( ((p) & (KNIGHT_PRO | BISHOP_PRO | ROOK_PRO | QUEEN_PRO) ) >> 3)
-#define SetCapturePromotion(capture, promotion)	( ( capture >> 1) | ( promotion << 3) )
+#define getCapture(p)			( (p >> 3) & PIECEMASK)
+#define getPromotion(p)			( (p << 1) & PIECEMASK)
+#define SetCapturePromotion(capture, promotion)	( ( capture << 3) | ( promotion >> 1) )
 	
 
 
