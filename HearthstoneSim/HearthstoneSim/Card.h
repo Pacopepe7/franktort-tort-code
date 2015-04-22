@@ -13,11 +13,26 @@
 
 using namespace std;
 
+enum Trigger { NO_TRIGGER,
+	ON_SPAWN, 
+	ON_SUMMON, 
+	ON_DEATH } ;
+enum Effect { NO_EFFECT,
+	Summon_Minion, 
+	Draw_Card, 
+	Hit_Self, 
+	Hit_Hero, 
+	Hit_Enemy_hero };
+
 
 
 class Card
 {
-
+	struct EFFECTS
+	{
+		Trigger trigger;
+		Effect effect;
+	}Effects;
 private:
 	string sName;
 	string hcclass;
@@ -28,6 +43,7 @@ private:
 	int iAttack;
 	int iHealth;
 	string sDesc;
+	EFFECTS eff;
 
 	int delimitedRand(int, int);
 
