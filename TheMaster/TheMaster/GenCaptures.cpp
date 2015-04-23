@@ -16,15 +16,17 @@ void ChessGame::GenCaptures( void )
 {
 	mstack[ply].DumpStack();
 
-	Square curr;
-	Square sq;
-	for ( short i = 0; i < maxpieces[ctm]; i++)
+	Square curr, sq;
+	short i;
+
+	for (  i = 0; i < maxpieces[ctm]; i++)
 	{
 		if ( ! pieces[i][ctm].piece)
 			continue;
 		curr = pieces[i][ctm].square;
-		if ( pieces[i][ctm].piece & QUEEN)
+		switch ( pieces[i][ctm].piece)
 		{
+		case QUEEN:
 			for ( int c = 0; c < 8; c++)
 			{
 				for ( sq = curr + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c]);
@@ -41,9 +43,8 @@ void ChessGame::GenCaptures( void )
 					MT_CAPTURE,
 					getPiece(sq)));
 			}
-		}
-		if ( pieces[i][ctm].piece & BISHOP)
-		{
+			break;
+		case BISHOP:
 			for ( int c = 0; c < 4; c++)
 			{
 				for ( sq = curr + bishopvectors[c]; isSquare(sq) && isEmpty(sq); sq += bishopvectors[c]);
@@ -60,9 +61,8 @@ void ChessGame::GenCaptures( void )
 					MT_CAPTURE,
 					getPiece(sq)));
 			}
-		}
-		if ( pieces[i][ctm].piece & ROOK)
-		{
+			break;
+		case ROOK:
 			for ( int c = 0; c < 4; c++)
 			{
 				for ( sq = curr + rookvectors[c]; isSquare(sq) && isEmpty(sq); sq += rookvectors[c]);
@@ -79,10 +79,8 @@ void ChessGame::GenCaptures( void )
 					MT_CAPTURE,
 					getPiece(sq)));
 			}
-		}
-
-		if ( pieces[i][ctm].piece & KNIGHT)
-		{
+			break;
+		case KNIGHT:
 			for ( int c = 0; c < 8; c++)
 			{
 				sq = curr + knightvectors[c];
@@ -102,41 +100,10 @@ void ChessGame::GenCaptures( void )
 						getPiece(sq)));
 				}
 			}
-		}
-
-		if ( pieces[i][ctm].piece & KING)
-		{
+			break;
+		case KING:
 			//Castling Moves
-		/*	if ( ctm == WHITE)
-			{
-				if ( state[ply].castling[ctm] & SHORT )
-				{
-					if ( !isAttacked(E1, opp) &&  !isAttacked(F1, opp) &&  !isAttacked(G1, opp) &&
-						isEmpty(F1) && isEmpty(G1))
-						mstack[ply].push(CM(E1,	G1, MT_CASTLE,0));
-				}
-				if ( state[ply].castling[ctm] & LONG)
-				{
-					if ( !isAttacked(E1, opp) &&  !isAttacked(D1, opp) &&  !isAttacked(C1, opp) &&
-						isEmpty(D1) && isEmpty(C1) && isEmpty(B1))
-						mstack[ply].push(CM(E1,	C1, MT_CASTLE,0));
-				}
-			}
-			else
-			{
-				if ( state[ply].castling[ctm] & SHORT)
-				{
-					if ( !isAttacked(E8, opp) &&  !isAttacked(F8, opp) &&  !isAttacked(G8, opp) &&
-						isEmpty(F8) && isEmpty(G8))
-						mstack[ply].push(CM(E8,	G8, MT_CASTLE,0));
-				}
-				if ( state[ply].castling[ctm] & LONG)
-				{
-					if ( !isAttacked(E8, opp) &&  !isAttacked(D8, opp) &&  !isAttacked(C8, opp) &&
-						isEmpty(D8) && isEmpty(C8) && isEmpty(B8))
-						mstack[ply].push(CM(E8,	C8, MT_CASTLE,0));
-				}
-			}*/
+		
 			for ( int c = 0; c < 8; c++)
 			{
 				sq = curr + kingvectors[c];
@@ -156,9 +123,8 @@ void ChessGame::GenCaptures( void )
 						getPiece(sq)));
 				}
 			}
-		}
-		if ( pieces[i][ctm].piece & PAWN)
-		{
+			break;
+		case PAWN:
 			sq = curr + pawndirection[ctm];
 			//second/seventh rank special jump
 			if ( getRank(pieces[i][ctm].square) == pawnsecondrank[ctm] )
@@ -228,6 +194,7 @@ void ChessGame::GenCaptures( void )
 					MT_CAPTURE,
 					getPiece(sq + WEST)));
 			}
+			break;
 		}
 	}
 }

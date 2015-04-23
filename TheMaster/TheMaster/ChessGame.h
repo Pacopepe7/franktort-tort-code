@@ -15,7 +15,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef _DEBUG
 #define ASSERT assert
 #else
-#define ASSERT /****/
+#define ASSERT /******/
 #endif
 
 #include "Definitions.h"
@@ -101,7 +101,7 @@ typedef __int8				File;
 */
 #define MAXBOARDARRAY	128
 #define INVALID			(-1)
-#define MAXMOVES		250
+#define MAXMOVES		256
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
 
@@ -175,6 +175,7 @@ public:
 	static int PSQT_Q[64];
 	static int PSQT_K[64];
 	static int PSQT_KEG[64];
+	bool AttackMap[2][MAXBOARDARRAY];
 	/******************************************************
 	* Has board info
 	******************************************************/
@@ -234,6 +235,7 @@ public:
 	* Move Functions
 	******************************************/
 	void GenerateMoves(void);
+	void GenerateOutOfCheckMoves(void);
 	void GenCaptures(void);
 	void SortMoves(void);
 	bool MakeMove(ChessMove cm);
@@ -269,13 +271,23 @@ public:
 	bool isPositionValid(ChessMove cm);
 	Piece PiecesThatCanAttack(/* From */ Square s1,/* to */ Square s2); 
 	bool isAttackedbyPiece ( Square from, Square to, Color side, Piece p );
+	bool NeedToRunIsAttacked(Square target, Color co);
 	/******************************************
 	* ChessMove helper Funcs
 	*****************************************/
-	bool isPieceColor(Square sq, Piece p, Color c)	{ return ( !isSquare(sq)  ? (false) :
-													(          (isEmpty(sq) ? (false): 
-																((Ox88Board[sq]->piece == p) && (Ox88Board[sq]->color == c )))));};
+	
+	/*inline bool isPieceColor(Square sq, Piece p, Color c)	{
+		return (!isSquare(sq) ? (false) :
+			((isEmpty(sq) ? (false) :
+			((Ox88Board[sq]->piece == p) && (Ox88Board[sq]->color == c)))));
+	};*/
+	#define isPieceColor( sq,  p,  c)	 (!isSquare(sq) ? (false) :\
+			((isEmpty(sq) ? (false) :\
+			((Ox88Board[sq]->piece == p) && (Ox88Board[sq]->color == c)))))
+
 	bool isAttacked(Square, Color c);
+	void BuildAttackMap(void);
+	void PrintAttackMap(Color);
 
 	int  getOx88to64Index(Color c, Square s)						{ 
 		//if ( s > 128)
@@ -301,19 +313,20 @@ public:
 	void PrintMovePlain(ChessMove cm);
 	string not(Square sq);
 	string MakeAlgebraicMove( ChessMove cm);
-	Square MakeSquareFromString(string s)						{ 
-		string sq;
-		short r = s[0] - 65;
-		short c = s[1] - 48;
-		return MakeSquare(r, c);
+
+	Square MakeSquareFromString(string s)						{
+		for (int i = 0; i < 128; i++)
+			if (isSquare(i) && not(i) == s)
+				return i;
+		return -1;
 	};
 	void PrintPV(int length){
 		for ( int c = ply; c < length; c++)
 			cout << " " << MakeAlgebraicMove(chessresult[c].best);
 	}
 	void PrintLine(void){
-		for ( int c = 1; c < ply; c++)
-			cout << " " << MakeAlgebraicMove(state[c].m_LastMove);
+		for ( int c = 1; c < ply + 1; c++)
+			cout << " " << MakeAlgebraicMove(state[c].m_LastMove) << " ";
 	}
 	
 	/****************************************

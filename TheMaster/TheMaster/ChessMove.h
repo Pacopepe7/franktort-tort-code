@@ -41,6 +41,7 @@ typedef unsigned __int8		MoveType;
 #define isPromotion(cm)				(( getMoveType(cm) == MT_PROMOTION))
 #define isPawnPush(cm)				(( getMoveType(cm) == MT_PAWNPUSH))
 #define isPromotionCapture(cm)		(( getMoveType(cm) == ( MT_PROMOTION | MT_CAPTURE)))
+#define isEnPassant(cm)				(( getMoveType(cm) == MT_ENPASSANT))
 #define getMoveType(cm )			( ( ( cm >> 16) & BYTE) )
 #define getDataSquare(cm)			(( ( cm >> 24) & BYTE))
 #define getFromSquare(cm)			( (cm & BYTE) )

@@ -20,4 +20,9 @@
 #define KNIGHTPAIR				25
 #define ROOKPAIR				25
 
+#define PAWNON6TH				75
+#define PAWNON7TH				150
+
+#define PAWNSON6TH				500
+
 #define EXCHANGE				(ROOK_WEIGHT - BISHOP_WEIGHT)

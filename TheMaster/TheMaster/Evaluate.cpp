@@ -71,10 +71,17 @@ int ChessGame::Evaluate(void)
 		{
 			if ( pieces[c][ctm].piece == PAWN)
 			{
-				if (  getRank(pieces[c][ctm].square) == pawnsixthrank[ctm])
-					result += 25;
+				if (getRank(pieces[c][ctm].square) == pawnsixthrank[ctm])
+				{
+					result += PAWNON6TH;
+					if (isPieceColor(pieces[c][ctm].square + WEST, PAWN, ctm))
+						result += PAWNSON6TH;
+					if (isPieceColor(pieces[c][ctm].square + EAST, PAWN, ctm))
+						result += PAWNSON6TH;
+
+				}
 				if (  getRank(pieces[c][ctm].square) == pawnseventhrank[ctm])
-					result += 50;
+					result += PAWNON7TH;
 			}
 
 		}
@@ -82,10 +89,16 @@ int ChessGame::Evaluate(void)
 		{
 			if ( pieces[c][opp].piece == PAWN)
 			{
-				if (  getRank(pieces[c][opp].square) == pawnsixthrank[opp])
-					result += 25;
+				if (getRank(pieces[c][opp].square) == pawnsixthrank[opp])
+				{
+					result += PAWNON6TH;
+					if (isPieceColor(pieces[c][opp].square + WEST, PAWN, opp))
+						result += PAWNSON6TH;
+					if (isPieceColor(pieces[c][opp].square + EAST, PAWN, opp))
+						result += PAWNSON6TH;
+				}
 				if (  getRank(pieces[c][opp].square) == pawnseventhrank[opp])
-					result += 50;
+					result += PAWNON7TH;
 			}
 
 		}

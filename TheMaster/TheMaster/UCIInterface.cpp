@@ -134,6 +134,8 @@ void UCIInterface::Command(string command )
 		
 		ChessMove cm = cg.chessresult[cg.ply].best;
 		cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply ].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
+		cg.mstack[0].DumpStack();
+		
 	}
 	if (tokens[0] == "debug")
 	{
@@ -146,8 +148,10 @@ void UCIInterface::Command(string command )
 	{
 		cg.depth = atoi(tokens[1].c_str());
 	}
-	if (tokens[0] == "test")
-		cg.Fen("8/7p/3k4/8/p4P2/P3PK2/2Rp3P/8 b - - 0 12 ");
+	if (tokens[0] == "test"){
+		//cg.Fen("8/7p/3k4/8/p4P2/P3PK2/2Rp3P/8 b - - 0 12 ");
+		cg.Fen("r1bq4/1p4kp/3p1n2/p4pB1/2pQ4/8/1P4PP/4RRK1 w - - 0 1 ");
+	}
 	if (tokens[0] == "search")
 	{
 		if (tokens[1] == "n")
@@ -158,9 +162,9 @@ void UCIInterface::Command(string command )
 	if (tokens[0] == "perft")
 	{
 #ifdef _DEBUG
-		for ( int i = 1; i < 7; i++)
+		for ( int i = 1; i < 6; i++)
 #else
-		for ( int i = 1; i <= 6; i++)
+		for ( int i = 1; i <= 8; i++)
 #endif
 		{
 			cg.Init();

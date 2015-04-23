@@ -111,6 +111,11 @@ void ChessGame::Init ( void )
 	pawnseventhrank[WHITE] = 2;
 	pawnseventhrank[BLACK] = 5;
 
+	for (short pieceindex = 0; pieceindex < MAXPIECES; pieceindex++)
+		pieces[pieceindex][WHITE].piece = EMPTY;
+
+	for (short pieceindex = 0; pieceindex < MAXPIECES ; pieceindex++)
+		pieces[pieceindex][WHITE].piece = EMPTY;
 
 	ply = 0;
 	state[0].m_LastMove = CM(A1, A2, MT_NORMAL, 0);
@@ -121,16 +126,25 @@ void ChessGame::Init ( void )
 	state[ply].castling[WHITE] = state[ply].castling[BLACK] = NONE;
 
 	searchmethod = ALPHABETA;
+	//searchmethod = NEGAMAX;
+
+
 
 #ifdef _DEBUG
 	debug = true;
 	maxdepth = 3;
 #else
 	debug = false;
-	maxdepth = 11; // 7 works best 
+	maxdepth = 9; // 7 works best 
 #endif
+
 	for (int i = 0; i < 128; i++)
 		Ox88Board[i] = NULL;
+	for (int i = 0; i < 64; i++)
+		AttackMap[WHITE][i] = false;
+	for (int i = 0; i < 64; i++)
+		AttackMap[BLACK][i] = false;
+
 }
 /***************************************************
 * Analogy: Imagine you are taking pieces out of a box and "set"ing them
@@ -139,7 +153,9 @@ void ChessGame::Init ( void )
 void ChessGame::Set(Piece p, Color c, Square s)
 {
 	//ASSERT ( isSquare(s)) ;
-	
+	if (Ox88Board[s] != NULL)
+		cout << "ERROR!!";
+
 	short pieceindex;
 	bool found = false;
 	
@@ -180,6 +196,9 @@ void ChessGame::MovePiece(Square from, Square to)
 	//ASSERT ( !isEmpty(from));
 	//ASSERT ( isEmpty(to));
 		
+	if (Ox88Board[to] != NULL)
+		cout << "ERROR!!";
+
 	Color c = Ox88Board[from]->color;
 	int index = Ox88Board[from]->index;
 	Piece p = Ox88Board[from]->piece;
@@ -190,10 +209,10 @@ void ChessGame::MovePiece(Square from, Square to)
 	Ox88Board[to] = Ox88Board[from];
 	Ox88Board[from] = NULL;
 	//Update PSQT
-	if ( p & PAWN)		{ psqtCount[c] += -PSQT_P[getOx88to64Index(c, from)] + PSQT_P[getOx88to64Index(c, to)];numPawns[c]--;state[ply + 1].fiftymoverule = 0;}
-	if ( p & KNIGHT)	{ psqtCount[c] += -PSQT_N[getOx88to64Index(c, from)] + PSQT_N[getOx88to64Index(c, to)];numKnights[c]--;}
-	if ( p & BISHOP)	{ psqtCount[c] += -PSQT_B[getOx88to64Index(c, from)] + PSQT_B[getOx88to64Index(c, to)];numBishops[c]--;}
-	if ( p & ROOK)		{ psqtCount[c] += -PSQT_R[getOx88to64Index(c, from)] + PSQT_R[getOx88to64Index(c, to)];numRooks[c]--;}
+	if ( p & PAWN)		{ psqtCount[c] += -PSQT_P[getOx88to64Index(c, from)] + PSQT_P[getOx88to64Index(c, to)];state[ply + 1].fiftymoverule = 0;}
+	if ( p & KNIGHT)	{ psqtCount[c] += -PSQT_N[getOx88to64Index(c, from)] + PSQT_N[getOx88to64Index(c, to)];}
+	if ( p & BISHOP)	{ psqtCount[c] += -PSQT_B[getOx88to64Index(c, from)] + PSQT_B[getOx88to64Index(c, to)];}
+	if ( p & ROOK)		{ psqtCount[c] += -PSQT_R[getOx88to64Index(c, from)] + PSQT_R[getOx88to64Index(c, to)];}
 	if ( p & QUEEN)		{ psqtCount[c] += -PSQT_Q[getOx88to64Index(c, from)] + PSQT_Q[getOx88to64Index(c, to)];}
 	if ( p & KING)		{ psqtCount[c] += -PSQT_K[getOx88to64Index(c, from)] + PSQT_K[getOx88to64Index(c, to)];}
 
@@ -221,14 +240,18 @@ void ChessGame::Clear( Square s)
 
 	//ASSERT( isSquare(s) && "Not a Square");
 	//ASSERT( !isEmpty(s) && "Clear is not empty");
+
+	if (Ox88Board[s] == NULL)
+		cout << "ERROR!!";
+
 	//Get piece info
 	Piece p = getPiece(s);
 	Color c = getColor(s);
 	//Update material counter and PSQT
-	if ( p & PAWN)		{ materialCount[c] -= PAWN_WEIGHT;	 psqtCount[c] -= PSQT_P[getOx88to64Index(c, s)];}
-	if ( p & KNIGHT)	{ materialCount[c] -= KNIGHT_WEIGHT; psqtCount[c] -= PSQT_N[getOx88to64Index(c, s)];}
-	if ( p & BISHOP)	{ materialCount[c] -= BISHOP_WEIGHT; psqtCount[c] -= PSQT_B[getOx88to64Index(c, s)];}
-	if ( p & ROOK)		{ materialCount[c] -= ROOK_WEIGHT;	 psqtCount[c] -= PSQT_R[getOx88to64Index(c, s)];}
+	if (p & PAWN)		{ materialCount[c] -= PAWN_WEIGHT;	 psqtCount[c] -= PSQT_P[getOx88to64Index(c, s)]; numPawns[c]--; }
+	if (p & KNIGHT)		{ materialCount[c] -= KNIGHT_WEIGHT; psqtCount[c] -= PSQT_N[getOx88to64Index(c, s)]; numKnights[c]--; }
+	if (p & BISHOP)		{ materialCount[c] -= BISHOP_WEIGHT; psqtCount[c] -= PSQT_B[getOx88to64Index(c, s)]; numBishops[c]--; }
+	if (p & ROOK)		{ materialCount[c] -= ROOK_WEIGHT;	 psqtCount[c] -= PSQT_R[getOx88to64Index(c, s)]; numRooks[c]--; }
 	if ( p & QUEEN)		{ materialCount[c] -= QUEEN_WEIGHT;	 psqtCount[c] -= PSQT_Q[getOx88to64Index(c, s)];}
 	if ( p & KING)		{									 psqtCount[c] -= PSQT_K[getOx88to64Index(c, s)];}
 

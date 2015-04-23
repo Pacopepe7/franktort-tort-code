@@ -85,6 +85,9 @@ void ChessGame::PrintBoard ( void )
 	cout << "Material for Black: " << materialCount[BLACK] << endl;
 	cout << "PSQT for White: " << psqtCount[WHITE] << endl;
 	cout << "PSQT for Black: " << psqtCount[BLACK] << endl;
+	cout << "MaxPieces WHITE: " << maxpieces[WHITE] << endl;
+	cout << "MaxPieces BLACK: " << maxpieces[BLACK] << endl;
+
 	cout << "Eval = " << Evaluate() << endl;
 	//print, to move pieces...
 	/*for ( int c = 0; c < maxpieces[ state.ctm]; c++)
@@ -121,7 +124,7 @@ void ChessGame::ClearSearchData(void)
 void ChessGame::PrintSearchData( sec d)
 {
 	cout << "info Depth " << depth;
-	cout << " seldepth " << searchdata.maxdepth;
+	cout << " maxdepth " << searchdata.maxdepth;
 
 	cout << " score cp " << chessresult[ply ].value;
 	cout << " nodes " <<   searchdata.legalnodes;

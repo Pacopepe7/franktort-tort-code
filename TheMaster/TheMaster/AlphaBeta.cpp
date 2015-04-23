@@ -9,6 +9,10 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 #include <iostream>
 
 #include "zobrist.h"
+
+
+#define MAXEXTENSONSBYCHECK	3
+#define MAXDEPTH			15
 /**************************************************************
 * Alpha Beta
 * 
@@ -16,6 +20,7 @@ http://chessprogramming.wikispaces.com/Alpha-Beta
 int ChessGame::AlphaBetaDriver()
 {
 	int value, alpha, beta;
+
 	sec seconds;
 	pv.cmove = 0;
 	depthply = 0;
@@ -57,9 +62,9 @@ int ChessGame::AlphaBetaDriver()
 
 		if ( depth > maxdepth && ! researching)
 			targetdepthreached = true;
-		if ( seconds.count() > 30 && researching)
+		if ( seconds.count() > 60 && researching)
 			timeleft = false;
-		if ( seconds.count() > 30 && ! researching)
+		if ( seconds.count() > 60 && ! researching)
 			timeleft = false;
 	}while (!targetdepthreached && timeleft );
 	depth -= depthdelta;
@@ -86,7 +91,7 @@ int ChessGame::AlphaBeta( int depth , int alpha, int beta, LINE * pline)
 	/***************************************************
 	* Extensions
 	***************************************************/
-	if ( IsInCheck() )
+	if (IsInCheck() && searchdata.maxdepth < MAXDEPTH)
 		depth ++;
 
 	/**************************************************

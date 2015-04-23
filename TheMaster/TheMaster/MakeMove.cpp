@@ -22,13 +22,13 @@ bool ChessGame::MakeMove(ChessMove cm)
 	MoveType mt = getMoveType(cm);
 	//PrintMove(cm);
 
-	ASSERT ( isSquare(from) && "MakeMove");
-	ASSERT ( isSquare(to) && "MakeMove");
-	ASSERT ( ! isEmpty(from ) && "MakeMove");
+	//ASSERT ( isSquare(from) && "MakeMove");
+	//ASSERT ( isSquare(to) && "MakeMove");
+	//ASSERT ( ! isEmpty(from ) && "MakeMove");
 
-	//Cannot capture the king
-	if ( getPiece(to) & KING)
-		return false;
+	//Cannot capture the king// this is never true! removing....
+	//if ( getPiece(to) & KING)
+	//	return false;
 
 
 	//set state corresponding to next ply
@@ -43,6 +43,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	}
 	else
 		state[ply + 1].epsquare = INVALID;
+
 	if ( from == A1 || to == A1)
 		state[ply + 1].castling[WHITE] = state[ply + 1].castling[WHITE] & SHORT;
 	if ( from == H1 || to == H1)
@@ -82,7 +83,7 @@ bool ChessGame::MakeMove(ChessMove cm)
 	// EP
 	if ( mt & MT_ENPASSANT )
 	{
-		Clear(state[ply].epsquare - pawndirection[ctm] );
+		Clear(to - pawndirection[ctm]);
 		MovePiece(from, to);
 	}
 	// no capture
@@ -118,5 +119,6 @@ bool ChessGame::MakeMove(ChessMove cm)
 	state[ply].m_LastMove = cm;
 	state[ply].fiftymoverule ++;
 	//PrintMove(cm);
+	//BuildAttackMap();
 	return true;
 }

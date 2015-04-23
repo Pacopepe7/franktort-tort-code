@@ -13,20 +13,27 @@ using namespace std;
 
 __int64 ChessGame::perft( int depth)
 {
+	if (depth == 0)
+		return 1;
 	__int64 legalmoves = 0;
 	int moves;
 	int currDepthMoves = 0;
+	int testcount = 0;
 	ChessMove movebeingevaluated;
 	if ( depth == -1)
 	{
 		legalmoves = 0;
 		return 0;
 	}
-	if ( depth == 0 ) 
-		return 1;
-	mstack[ply].DumpStack();
 
-	GenerateMoves();
+	mstack[ply].DumpStack();
+	/*
+	If in check, generate only moves to get out of check.
+	*/
+	/*if (IsInCheck())
+		GenerateOutOfCheckMoves();
+	else*/
+		GenerateMoves();
 
 	while ( ! mstack[ply].empty()) 
 	{
@@ -42,9 +49,18 @@ __int64 ChessGame::perft( int depth)
 				moves = perft( (int) depth - 1);
 				currDepthMoves ++;
 				legalmoves += moves;
+				/*testcount += moves  ;
+				if (depth == 6){
+					PrintMove(movebeingevaluated);
+					cout << ": " << testcount << endl;
+					testcount = 0;
+				}*/
 			}
+
 			UnmakeMove(movebeingevaluated);
 		}
+
+
 	}
 	if ( ! currDepthMoves )
 	{
