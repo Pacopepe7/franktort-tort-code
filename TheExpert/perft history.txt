@@ -1,0 +1,27 @@
+perft TheExpert
+Entering main
+Instantiating Engine
+UCI interface initialized
+Allocated memory for ChessPosition
+Starting perft 1
+perft for depth 1 is  20
+Starting perft 2
+perft for depth 2 is  400
+Starting perft 3
+perft for depth 3 is  8754
+Waiting for input
+
+
+Entering main
+Instantiating Engine
+UCI interface initialized
+Allocated memory for ChessPosition
+Starting perft 1
+perft for depth 1 is  20
+Starting perft 2
+perft for depth 2 is  400
+Starting perft 3
+perft for depth 3 is  8874
+Waiting for input
+
+https://github.com/Pacopepe7/franktort-tort-code
