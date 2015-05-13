@@ -16,5 +16,16 @@ bool ChessGame::isGoodCapture(ChessMove cm)
 
 ChessMove ChessGame::RetrieveOrderedMove(void)
 {
-	return mstack[ply].pop();
+	int score = -INFINITY;;
+	ChessMove cm;
+	int c;
+	int bestsofar;
+	for (c = 0; c < mstack[ply].size(); c++)
+	{
+		if (mstack[ply].inspect(c).score > score)
+		{
+			bestsofar = c;
+		}
+	}
+	return mstack[ply].Remove(bestsofar).cm;
 }

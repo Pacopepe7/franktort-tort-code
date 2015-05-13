@@ -9,7 +9,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "Definitions.h"
 #include "utils.h"
 
-
+#undef INFINITY
 #define INFINITY				20000
 #define MATE					15000
 #define ONLYMOVE				25000

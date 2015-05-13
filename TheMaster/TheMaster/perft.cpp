@@ -6,6 +6,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "ChessGame.h"
+#include "zobrist.h"
 #include <iostream>
 
 using namespace std;
@@ -16,7 +17,7 @@ __int64 ChessGame::perft( int depth)
 	if (depth == 0)
 		return 1;
 	__int64 legalmoves = 0;
-	int moves;
+	U64 moves;
 	int currDepthMoves = 0;
 	int testcount = 0;
 	ChessMove movebeingevaluated;
@@ -37,7 +38,7 @@ __int64 ChessGame::perft( int depth)
 
 	while ( ! mstack[ply].empty()) 
 	{
-		movebeingevaluated = mstack[ply].pop();
+		movebeingevaluated = mstack[ply].pop().cm;
 
 		if ( MakeMove( movebeingevaluated )  )
 		{

@@ -5,7 +5,7 @@
 
 #include <string>
 #include <assert.h>
-#
+
 using namespace std;
 
 #define STARTPOS "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
@@ -22,21 +22,33 @@ using namespace std;
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
 
 enum {
-	A1 = 0, B1, C1, D1, E1, F1, G1, H1,
-	A2 = 8, B2, C2, D2, E2, F2, G2, H2,
-	A3 = 16, B3, C3, D3, E3, F3, G3, H3,
-	A4 = 24, B4, C4, D4, E4, F4, G4, H4,
-	A5 = 32, B5, C5, D5, E5, F5, G5, H5,
-	A6 = 40, B6, C6, D6, E6, F6, G6, H6,
-	A7 = 48, B7, C7, D7, E7, F7, G7, H7,
-	A8 = 56, B8, C8, D8, E8, F8, G8, H8,
+	A8 = 0, B8, C8, D8, E8, F8, G8, H8,
+	A7 = 16, B7, C7, D7, E7, F7, G7, H7,
+	A6 = 32, B6, C6, D6, E6, F6, G6, H6,
+	A5 = 48, B5, C5, D5, E5, F5, G5, H5,
+	A4 = 64, B4, C4, D4, E4, F4, G4, H4,
+	A3 = 80, B3, C3, D3, E3, F3, G3, H3,
+	A2 = 96, B2, C2, D2, E2, F2, G2, H2,
+	A1 = 112, B1, C1, D1, E1, F1, G1, H1,
 };
 
+enum { RANK8, RANK7, RANK6, RANK5, RANK4, RANK3, RANK2, RANK1};
 
+enum { WHITESHORT = 1, WHITELONG = 2, BLACKSHORT = 4, BLACKLONG = 8};
+#define NOCOLOR		0
+#define BLACK		1
+#define WHITE		2
+#define MAXCOLOR	3
 
 extern string notation[MAXBOARDARRAY0x88];
 extern int movement[64][8][8];
 extern int castling[MAXBOARDARRAY0x88];
+
+extern int pawndirection[MAXCOLOR];
+extern int seventhrank[MAXCOLOR];
+extern int secondrank[MAXCOLOR];
+extern int pawn_promotion_rank[MAXCOLOR];
+extern int ep_rank[MAXCOLOR];
 
 /* 0x88 math */
 
@@ -52,16 +64,26 @@ extern int castling[MAXBOARDARRAY0x88];
 /************************************************
 * Macros
 ************************************************/
-#define KingPos(side)			( KingPosition[side])
+#define KingPos(side)			( board->KingPosition[side])
 #define isSquare(sq)			( (sq & 0x88)? false: true )
+/*********************************************
+* Color related Macros
+*********************************************/
+#define ColorOnMove()			( board->sideToMove )
+#define ColorNotOnMove()		( board->sideToMove == WHITE? BLACK:WHITE )
 #define isPiece(p)				( (p & PIECE) )
-#define isEmpty(sq)				( board->Ox88Board[sq] == NULL) 
-#define isColor( sq, c)			( Ox88Board[sq]->cColor == c)
+#define isPieceAt(sq, p)		( board->Ox88Board[sq]->pPiece&  p )
+#define isEmpty(sq)				( board->Ox88Board[sq] == EMPTY) 
+#define isColor( sq, c)			( board->Ox88Board[sq]->cColor & c)
+//#define isValid()				( !isAttacked(board, KingPos(ColorOnMove()),ColorNotOnMove() ) )
+#define isValid()				( !isAttacked(board, KingPos(ColorNotOnMove()),ColorOnMove() ) )
 
-#define isOpponent(sq)			( ( (board->Ox88Board[sq]->cColor & ColorNotOnMove())))
-#define isOurs(sq)				( ( (board->Ox88Board[sq]->cColor & ColorOnMove())))
 
-#define IsInCheck( )			( isAttacked(board->KingPos(board->sideToMove), ColorNotOnMove()))
+
+#define isOpponent(sq)			( ( (board->Ox88Board[sq]->cColor & (ColorNotOnMove()))))
+#define isOurs(sq)				( ( (board->Ox88Board[sq]->cColor & (ColorOnMove()))))
+
+#define IsInCheck()				( isAttacked(board, KingPos(ColorOnMove()), ColorNotOnMove()))
 
 
 #define getRank(sq)				( ( sq >> 4) )
@@ -69,19 +91,16 @@ extern int castling[MAXBOARDARRAY0x88];
 
 #define MakeSquare(r, c)		( (16 * r) + c)
 
-/*********************************************
-* Color related Macros
-*********************************************/
-#define ColorOnMove()			( board->sideToMove )
-#define ColorNotOnMove()		( board->sideToMove == WHITE? BLACK:WHITE )
+
 /*************************************************
 * Getters
 **************************************************/
 #define getColor(sq)			( (board->Ox88Board[sq]->cColor ))
 #define getPiece(sq)			( (board->Ox88Board[sq]->pPiece ))
+#define getPieceWOColor(sq)		( (board->Ox88Board[sq]->pPiece ) >> 2)
 
 #define Opponent()				( board->sideToMove == WHITE? BLACK:WHITE)
-
+#define SideToMove()			( board->sideToMove )
 
 
 /* Piece movement vectors*/
@@ -123,13 +142,11 @@ typedef struct {
 	U64			positionkey;
 } UNMAKEMOVE;
 
-#define NOCOLOR		0
-#define BLACK		1
-#define WHITE		2
-#define MAXCOLOR	3
+
 
 #define isWhite(c)					( c & WHITE)
 #define isBlack(c)					( c & BLACK)
+#define isValidColor(c)				( isWhite(c) | isBlack(c))
 #define getPieceColor(p)			( p & MAXCOLOR)
 
 

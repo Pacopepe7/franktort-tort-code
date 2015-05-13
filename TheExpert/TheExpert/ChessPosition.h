@@ -4,8 +4,18 @@
 #include <string>
 #include <vector>
 #include "fixedLengthStack.h"
+#include "zobrist.h"
 
 using namespace std;
+
+/***********************************************
+*
+* Thanks http://chessprogramming.wikispaces.com/Bruce+Moreland
+***********************************************/
+typedef struct LINE {
+	int cmove;              // Number of moves in the line.
+	ChessMove argmove[50];  // The line.
+}   LINE;
 
 struct ChessPosition
 {
@@ -19,11 +29,13 @@ struct ChessPosition
 	int ply;
 	int historyply;
 	Location enpassantsquare;
+	Piece capturedpiece;
 	int castlingprivileges; //0 - 15 ( 0000 - 1111)
 	int fiftymoverule;
 	U64 positionkey;
 	UNMAKEMOVE unmake[MAXMOVES];
 } ;
+
 
 bool isBoardOK(ChessPosition * board);
 void InitializeBoard(ChessPosition * board);
@@ -38,6 +50,12 @@ ChessMove MakeMoveFromString(ChessPosition * board, string cm);
 void UnMakeMove(ChessPosition * board, ChessMove cm);
 bool SetFen(ChessPosition * board, string fen);
 U64 perft(ChessPosition * board, int depth);
-void PrintBoard(ChessPosition * board);
+void PrintBoard(const ChessPosition * board);
 
-void GenerateMoves(ChessPosition * board, MOVELIST * list);
+void GenerateMoves(const ChessPosition * board, MOVELIST * list);
+bool isAttacked(const ChessPosition * board, const Location target, const Color color);
+
+void AlphaBetaDriver(ChessPosition *);
+int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline);
+
+int Eval(void);

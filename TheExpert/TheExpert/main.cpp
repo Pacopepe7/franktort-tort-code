@@ -18,7 +18,8 @@ void main(void)
 
 	cout << "Instantiating Engine" << endl;
 	UCIInterface TheExpertUCI;
-	TheExpertUCI.Command("perft");
+	TheExpertUCI.Command("ucinewgame");
+	TheExpertUCI.Command("go");
 	do
 	{
 		cout << "Waiting for input" << endl;

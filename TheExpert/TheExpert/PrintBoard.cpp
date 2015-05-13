@@ -5,9 +5,10 @@
 
 using namespace std;
 
-void PrintBoard(ChessPosition * board)
+void PrintBoard(const ChessPosition * board)
 {
 	ASSERT(board);
+	cout << "---------------------------------------------------------" << endl;
 	int r, c;
 	for (r = 0; r < 8; r++){
 		for (c = 0; c < 8; c++){
@@ -17,44 +18,55 @@ void PrintBoard(ChessPosition * board)
 				cout << " ";
 				continue;
 			}
-				
+
 			//if (board->Ox88Board[MakeSquare(r, c) == NULL])
 			//	cout << ".";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == WP)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == WP)
 				cout << "P";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == WN)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == WN)
 				cout << "N";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == WB)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == WB)
 				cout << "B";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == WR)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == WR)
 				cout << "R";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == WQ)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == WQ)
 				cout << "Q";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == WK)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == WK)
 				cout << "K";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == BP)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == BP)
 				cout << "p";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == BN)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == BN)
 				cout << "n";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == BB)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == BB)
 				cout << "b";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == BR)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == BR)
 				cout << "r";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == BQ)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == BQ)
 				cout << "q";
-			if (board->Ox88Board[MakeSquare(r, c)]->pPiece == BK)
+			if ((getPiece(MakeSquare(r, c)) | getColor(MakeSquare(r, c))) == BK)
 				cout << "k";
 		}
 		cout << endl;
 	}
-	cout << "On move : " << ((board->sideToMove == WHITE)? "WHITE":"BLACK") << endl;
-	cout << "---------------------------------------------------------" << endl;
-	//cout << "White king at : " << not(state[ply].king[WHITE]) << endl;
-	//cout << "Black king at : " << not(state[ply].king[BLACK]) << endl;
-	//cout << "Material for White: " << materialCount[WHITE] << endl;
-	//cout << "Material for Black: " << materialCount[BLACK] << endl;
-	//cout << "PSQT for White: " << psqtCount[WHITE] << endl;
+	cout << "On move : " << ((board->sideToMove == WHITE) ? "WHITE" : "BLACK") << endl;
+	
+	cout << "White king at : " << notation[board->KingPosition[WHITE]] << endl;
+	cout << "Black king at : " << notation[board->KingPosition[BLACK]] << endl;
+
+	if ( board->historyply > 0)
+	for (r = 0; r < board->historyply; r++)
+		cout << MakeMoveString(board->unmake[r].move) << " ";
+	cout << endl;
+	cout << "Castling string: " <<
+		((board->castlingprivileges & WHITESHORT) ? "K" : "") << 
+		((board->castlingprivileges & WHITELONG) ? "Q" : "") << 
+		((board->castlingprivileges & BLACKSHORT) ? "k" : "") <<
+		((board->castlingprivileges & BLACKLONG) ? "q" : "")
+		<< endl;
+	cout << "EP Square " << ((board->enpassantsquare == INVALID) ? "na":notation[board->enpassantsquare]) << endl;
+	//cout << "Key: " << board->positionkey << endl;
+	printf("Key:%llX\n", board->positionkey);
 	//cout << "PSQT for Black: " << psqtCount[BLACK] << endl;
-	//cout << "MaxPieces WHITE: " << maxpieces[WHITE] << endl;
-	//cout << "MaxPieces BLACK: " << maxpieces[BLACK] << endl;
+	cout << "MaxPieces WHITE: " << board->numPieces[WHITE] << endl;
+	cout << "MaxPieces BLACK: " << board->numPieces[BLACK] << endl;
 }

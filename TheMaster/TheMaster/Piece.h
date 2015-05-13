@@ -17,6 +17,8 @@ typedef unsigned __int8		Piece;
 #define QUEEN						 16
 #define KING						 32
 
+extern int values[35];
+
 #define MAXPIECES					 16
 
 /****************************************************************

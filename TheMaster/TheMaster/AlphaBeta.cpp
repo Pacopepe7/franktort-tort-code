@@ -191,7 +191,7 @@ int ChessGame::QuietAlphaBeta( int depth , int alpha, int beta)
 
 	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[ply].pop();
+		movebeingevaluated =  mstack[ply].pop().cm;
 		if ( MakeMove( movebeingevaluated ) ){
 			if ( isPositionValid(movebeingevaluated)){
 				legalmoves++;

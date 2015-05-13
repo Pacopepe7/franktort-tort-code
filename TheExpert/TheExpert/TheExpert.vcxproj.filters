@@ -21,9 +21,6 @@
     <ClInclude Include="ChessPosition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChessGame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChessMove.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -34,6 +31,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="chess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zobrist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Eval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -78,6 +81,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChessMove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Attacked.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zobrist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AlphaBeta.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Eval.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

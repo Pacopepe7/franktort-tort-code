@@ -33,15 +33,25 @@ string notation[MAXBOARDARRAY0x88] = {
 	"a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "X", "X", "X", "X", "X", "X", "X", "X",
 	"a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "X", "X", "X", "X", "X", "X", "X", "X"
 };
+/*
+7 = 0111
+3 = 0011
+11= 1011
+
+13= 1101
+12= 1100
+14= 1110
+enum { WHITESHORT = 1, WHITELONG = 2, BLACKSHORT = 4, BLACKLONG = 8};
+*/
 int castling[MAXBOARDARRAY0x88] = {
+	7 , 15, 15, 15, 3, 15, 15, 11, 15, 15, 15, 15, 15, 15, 15, 15,
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
 	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
-	15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15
+	13, 15, 15, 15, 12, 15, 15, 14, 15, 15, 15, 15, 15, 15, 15, 15
 };
 
 int movement[64][8][8];
@@ -54,7 +64,11 @@ int  rookvectors[8] = { NORTH, SOUTH, EAST, WEST, 0, 0, 0, 0 };
 
 int  queenvectors[8] = { NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST };
 
-
+//                                {NOTUSED, BLACK, WHITE}
+int pawndirection[MAXCOLOR] = { EMPTY, NORTH, SOUTH };
+int secondrank[MAXCOLOR] = { EMPTY, RANK7, RANK2 };
+int pawn_promotion_rank[MAXCOLOR] = { EMPTY, RANK2, RANK7};
+int ep_rank[MAXCOLOR] = { EMPTY, RANK4, RANK5 };
 /* Functions */
 
 

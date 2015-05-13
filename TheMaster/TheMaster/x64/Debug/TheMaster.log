@@ -1,0 +1,33 @@
+﻿Build started 5/11/2015 3:33:33 PM.
+     1>Project "C:\Users\Paquito\Documents\franktort-tort-code\TheMaster\TheMaster\TheMaster.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _USING_V110_SDK71_ /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt GenMoves.cpp
+         GenMoves.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Paquito\Documents\franktort-tort-code\TheMaster\TheMaster\x64\Debug\TheMaster.exe" /NOLOGO "libboost_timer-vc120-mt-gd-1_57.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Paquito\Documents\franktort-tort-code\TheMaster\TheMaster\x64\Debug\TheMaster.pdb" /SUBSYSTEM:CONSOLE,"5.02" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Paquito\Documents\franktort-tort-code\TheMaster\TheMaster\x64\Debug\TheMaster.lib" /MACHINE:X64 x64\Debug\algorithms.obj
+         x64\Debug\AlphaBeta.obj
+         x64\Debug\Attacked.obj
+         x64\Debug\AttackTables.obj
+         x64\Debug\ChessGame.obj
+         x64\Debug\Evaluate.obj
+         x64\Debug\fen.obj
+         x64\Debug\GenCaptures.obj
+         x64\Debug\GenMoves.obj
+         x64\Debug\GoodCapture.obj
+         x64\Debug\MakeMove.obj
+         x64\Debug\Negamax.obj
+         x64\Debug\perft.obj
+         x64\Debug\PieceSquareTables.obj
+         x64\Debug\PrintBoard.obj
+         x64\Debug\PrintMove.obj
+         x64\Debug\TheMaster.obj
+         x64\Debug\UCIInterface.obj
+         x64\Debug\UnmakeMove.obj
+         x64\Debug\utils.obj
+         x64\Debug\zobrist.obj
+         TheMaster.vcxproj -> C:\Users\Paquito\Documents\franktort-tort-code\TheMaster\TheMaster\x64\Debug\TheMaster.exe
+     1>Done Building Project "C:\Users\Paquito\Documents\franktort-tort-code\TheMaster\TheMaster\TheMaster.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.21

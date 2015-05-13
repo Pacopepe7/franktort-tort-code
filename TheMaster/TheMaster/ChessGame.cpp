@@ -272,7 +272,7 @@ bool ChessGame::MakeMoveFromString( string cm)
 		ChessMove _cm;
 	for ( int c = 0; c < mstack[ply].size(); c++)
 	{
-		_cm =  mstack[ply].inspect(c);
+		_cm =  mstack[ply].inspect(c).cm;
 		string move = MakeAlgebraicMove(_cm);
 		
 		if (cm == move )

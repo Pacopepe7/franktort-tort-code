@@ -71,6 +71,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -97,7 +99,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CONSOLE;_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,18 +142,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="chess.h" />
-    <ClInclude Include="ChessGame.h" />
     <ClInclude Include="ChessMove.h" />
     <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChessPosition.h" />
+    <ClInclude Include="Eval.h" />
     <ClInclude Include="UCIInterface.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="zobrist.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlphaBeta.cpp" />
+    <ClCompile Include="Attacked.cpp" />
     <ClCompile Include="Chess.cpp" />
     <ClCompile Include="ChessMove.cpp" />
     <ClCompile Include="ChessPiece.cpp" />
     <ClCompile Include="ChessPosition.cpp" />
+    <ClCompile Include="Eval.cpp" />
     <ClCompile Include="GenerateMoves.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MakeMove.cpp" />
@@ -162,6 +168,7 @@
     <ClCompile Include="UCIInterface.cpp" />
     <ClCompile Include="UnMakeMove.cpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="zobrist.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

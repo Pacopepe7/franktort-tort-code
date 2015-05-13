@@ -25,7 +25,7 @@ public:
 	{ 
 		if ( ! empty() )
 			return arr[index--]; 
-		return (0); 
+		return arr[index];
 	} ;
 	void push(T cm)		
 	{

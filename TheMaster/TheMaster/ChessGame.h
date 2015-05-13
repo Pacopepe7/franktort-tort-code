@@ -38,6 +38,11 @@ struct SearchResult
 	bool onlymove;
 
 };
+struct ChessMoveStruct
+{
+	ChessMove cm;
+	int score;
+};
 enum SearchMethod { NEGAMAX, ALPHABETA, MTDF, CUSTOM};
 struct Searchdata
 {
@@ -147,6 +152,7 @@ typedef __int8				File;
 
 class ChessGame 
 {
+	ChessMoveStruct chessmovestruct;
 public:
 	/****************************************************
 	* Move Gen and Attack helper offssets
@@ -180,7 +186,7 @@ public:
 	* Has board info
 	******************************************************/
 	Pieceinfo_t * Ox88Board[MAXBOARDARRAY];
-	Cstack <ChessMove> mstack[MAXMOVES];
+	Cstack <ChessMoveStruct> mstack[MAXMOVES];
 	short ply;
 	short depthply;
 	Color ctm, opp;
@@ -242,7 +248,8 @@ public:
 	bool MakeMoveFromString( string cm);
 	void UnmakeMove( ChessMove cm);
 	ChessMove RetrieveOrderedMove(void);
-	
+	void ChessGame::AddQuietMove(ChessMove cm);
+	void ChessGame::AddCapture(ChessMove cm);
 	void Command(string c);
 	/********************************************
 	* Game Functions

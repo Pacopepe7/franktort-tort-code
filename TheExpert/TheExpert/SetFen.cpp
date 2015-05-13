@@ -4,7 +4,7 @@
 
 bool SetFen(ChessPosition * board, string fen)
 {
-
+	InitializeBoard(board);
 	ASSERT(fen.length() > 10);
 
 	vector<string> tokens;
@@ -42,8 +42,12 @@ bool SetFen(ChessPosition * board, string fen)
 
 	if (tokens[1] == "w") 
 		board->sideToMove = WHITE;
-	else 
+	else
+	{
+		HASH_SIDE();
 		board->sideToMove = BLACK;
+	}
+		
 
 
 	index = 0;
@@ -56,12 +60,16 @@ bool SetFen(ChessPosition * board, string fen)
 		}
 		index++;
 	} while (index < tokens[2].length());
+	HASH_CASTLE();
 
 	//en passant quare
 	if (tokens[3] == "-")
 		board->enpassantsquare = INVALID;
-	else
+	else{
 		board->enpassantsquare = MakeSquareFromString(tokens[3]);
+		HASH_EP(board->enpassantsquare, board->sideToMove)
+	}
+		
 
 	// 50 move rule counter
 	if (tokens[4] == "-")
@@ -71,7 +79,7 @@ bool SetFen(ChessPosition * board, string fen)
 	
 	//move number
 	board->Movenum = MakeInt(tokens[5]);
-
+	HASH_MOVENUM();
 
 	ASSERT(isBoardOK(board));
 	return true;

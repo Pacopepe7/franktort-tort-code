@@ -42,7 +42,7 @@ int ChessGame::NegaMax( int depth )
 
 	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[ply].pop();
+		movebeingevaluated =  mstack[ply].pop().cm;
 
 		if ( MakeMove( movebeingevaluated ) )
 		{
@@ -89,7 +89,7 @@ int ChessGame::QuietNegaMax( int depth )
 
 	while ( ! mstack[ply].empty() )
 	{
-		movebeingevaluated =  mstack[ply].pop();
+		movebeingevaluated =  mstack[ply].pop().cm;
 
 		if ( MakeMove( movebeingevaluated ) )
 		{
