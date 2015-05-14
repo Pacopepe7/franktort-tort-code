@@ -30,7 +30,10 @@ void InitializeBoard(ChessPosition * board)
 	board->KingPosition[BLACK] = INVALID;
 	board->numPieces[WHITE] = 0;
 	board->numPieces[BLACK] = 0;
-
+	board->Materialcount[WHITE] = 0;
+	board->Materialcount[BLACK] = 0;
+	board->PSQT[WHITE] = 0;
+	board->PSQT[BLACK] = 0;
 	board->sideToMove = NOCOLOR;
 	board->Movenum = 0;
 	board->ply = 0;
@@ -57,6 +60,16 @@ bool isBoardOK(ChessPosition * board)
 	ASSERT(getColor(board->KingPosition[BLACK]) == BLACK);
 	ASSERT(board->historyply < MAXMOVES);
 	ASSERT(board->historyply > -1);
+
+	ASSERT(board->Materialcount[WHITE] > 0);
+	ASSERT(board->Materialcount[BLACK] > 0);
+	ASSERT(board->Materialcount[WHITE] < 20000);
+	ASSERT(board->Materialcount[BLACK] < 20000);
+	ASSERT(board->PSQT[WHITE] > -300);
+	ASSERT(board->PSQT[BLACK] < 4000);
+	ASSERT(board->PSQT[WHITE] > -300);
+	ASSERT(board->PSQT[BLACK] < 4000);
+
 	return true;
 }
 void SetPiece(ChessPosition * board, ChessPiece  * piece)
@@ -97,8 +110,18 @@ void SetPiece(ChessPosition * board, Piece piece, Location square)
 	//board->pieces[board->numPieces[color]][color].PreviousPiece;
 	
 
-	if (piece & KING)
+	if (piece & KING){
 		board->KingPosition[color] = square;
+		board->PSQT[color] += PSQT_P[PSQT(square, color)];
+	}
+
+	board->Materialcount[color] += PieceValue(piece);
+	
+	if (piece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
+	if (piece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
+	if (piece & BISHOP) board->PSQT[color] += PSQT_B[PSQT(square, color)];
+	if (piece & ROOK) board->PSQT[color] += PSQT_R[PSQT(square, color)];
+	if (piece & QUEEN) board->PSQT[color] += PSQT_Q[PSQT(square, color)];
 
 	HASH_PCSQ(board->Ox88Board[square]);
 }
@@ -118,7 +141,14 @@ void Clear(ChessPosition * board, Location square)
 	ASSERT(isValidColor(color));
 
 	HASH_PCSQ(piece);
+	if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
+	if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
+	if (piece->pPiece & BISHOP) board->PSQT[color] -= PSQT_B[PSQT(square, color)];
+	if (piece->pPiece & ROOK) board->PSQT[color] -= PSQT_R[PSQT(square, color)];
+	if (piece->pPiece & QUEEN) board->PSQT[color] -= PSQT_Q[PSQT(square, color)];
+	if (piece->pPiece & KING) board->PSQT[color] -= PSQT_K[PSQT(square, color)];
 
+	board->Materialcount[color] -= PieceValue(piece->pPiece); 
 	board->numPieces[color]--;
 	board->pieces[index][color].cColor = NOCOLOR;
 	board->pieces[index][color].lLocation = INVALID;
@@ -129,7 +159,8 @@ void Clear(ChessPosition * board, Location square)
 	//if (index > board->numPieces[color] - 1)
 	//(board->pieces[index][color]) = (board->pieces[board->numPieces[color] - 1][color]);
 
-	
+
+
 	board->Ox88Board[square] = NULL;
 	ASSERT(isBoardOK(board));
 }
@@ -148,9 +179,18 @@ void MovePiece(ChessPosition * board, Location from, Location to)
 	ASSERT(isValidColor(piece->cColor) );
 
 	HASH_PCSQ(piece);
-	
-
 	ASSERT(isValidColor(piece->cColor));
+	Color color = piece->cColor;
+	Location square = piece->lLocation;
+
+	if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
+	if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
+	if (piece->pPiece & BISHOP) board->PSQT[color] -= PSQT_B[PSQT(square, color)];
+	if (piece->pPiece & ROOK) board->PSQT[color] -= PSQT_R[PSQT(square, color)];
+	if (piece->pPiece & QUEEN) board->PSQT[color] -= PSQT_Q[PSQT(square, color)];
+	if (piece->pPiece & KING) board->PSQT[color] -= PSQT_K[PSQT(square, color)];
+
+
 
 	board->Ox88Board[from] = NULL;
 
@@ -161,7 +201,13 @@ void MovePiece(ChessPosition * board, Location from, Location to)
 		board->KingPosition[piece->cColor] = to;
 
 	piece = board->Ox88Board[to];
-
+	square = to;
 	HASH_PCSQ(piece);
+	if (piece->pPiece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
+	if (piece->pPiece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
+	if (piece->pPiece & BISHOP) board->PSQT[color] += PSQT_B[PSQT(square, color)];
+	if (piece->pPiece & ROOK) board->PSQT[color] += PSQT_R[PSQT(square, color)];
+	if (piece->pPiece & QUEEN) board->PSQT[color] += PSQT_Q[PSQT(square, color)];
+	if (piece->pPiece & KING) board->PSQT[color] += PSQT_K[PSQT(square, color)];
 	ASSERT(isBoardOK(board));
 }

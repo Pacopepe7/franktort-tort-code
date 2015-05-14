@@ -79,6 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Paquito\Downloads\boost_1_57_0\boost_1_57_0\stage\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

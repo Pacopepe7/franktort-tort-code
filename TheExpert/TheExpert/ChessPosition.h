@@ -34,6 +34,8 @@ struct ChessPosition
 	int fiftymoverule;
 	U64 positionkey;
 	UNMAKEMOVE unmake[MAXMOVES];
+	int Materialcount[MAXCOLOR];
+	int PSQT[MAXCOLOR];
 } ;
 
 
@@ -52,10 +54,13 @@ bool SetFen(ChessPosition * board, string fen);
 U64 perft(ChessPosition * board, int depth);
 void PrintBoard(const ChessPosition * board);
 
-void GenerateMoves(const ChessPosition * board, MOVELIST * list);
+void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet = true);
+ChessMove RemoveMoveFromList(MOVELIST * list);
+void OrderPV(MOVELIST *, LINE *, int depth);
+
 bool isAttacked(const ChessPosition * board, const Location target, const Color color);
 
 void AlphaBetaDriver(ChessPosition *);
-int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline);
-
+int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, int * nodes);
+int QuietAlphaBeta(ChessPosition * board, int alpha, int beta);
 int Eval(void);

@@ -3,6 +3,7 @@
 * Francisco Tort
 * March 12, 2015
 */
+#include "ChessPosition.h"
 
 //////////////////////////////////////////////////////
 //http://chessprogramming.wikispaces.com/Point+Value
@@ -10,9 +11,9 @@
 
 #define PAWN_WEIGHT				100
 #define KNIGHT_WEIGHT			320
-#define BISHOP_WEIGHT			330
-#define ROOK_WEIGHT				525
-#define QUEEN_WEIGHT			1000
+#define BISHOP_WEIGHT			325
+#define ROOK_WEIGHT				500
+#define QUEEN_WEIGHT			975
 
 #define BISHOPPAIR				50
 #define KNIGHTPAIR				25
@@ -25,5 +26,7 @@
 
 #define EXCHANGE				(ROOK_WEIGHT - BISHOP_WEIGHT)
 
-#define MATE					15000
+#define MATE					18000
 #define INF						20000
+
+int Eval(ChessPosition * board);

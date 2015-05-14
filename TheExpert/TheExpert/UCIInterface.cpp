@@ -61,8 +61,8 @@ void UCIInterface::Command(string command )
 	// UCInewgame
 	if ( command == "ucinewgame" )
 	{
-		//SetFen(chessPosition, STARTPOS);
-		SetFen(chessPosition, "2rr3k/pp3pp1/1nnqbNQ1/3pN2p/2pP4/2P5/PPB4P/R4RK1 w - - 0 2");
+		SetFen(chessPosition, STARTPOS);
+		//SetFen(chessPosition, "7k/p7/1R5K/6r1/6p1/6P1/8/8 w - - 0 1 ");
 		//cg.Fen("r4q1k/p2bR1rp/2p2Q1N/5p2/5p2/2P5/PP3PPP/R5K1 w - - 0 0");
 		//cg.Fen("8/7p/5k2/5p2/p1p2P2/Pr1pPK2/1P1R3P/8 b - - 0 0");
 		//r1b2r1k/ppp1q2p/2nppp1Q/3n4/7B/2PB1N2/PPP2PPP/R4RK1 w - - 2 13 

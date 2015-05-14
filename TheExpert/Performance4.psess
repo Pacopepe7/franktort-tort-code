@@ -92,6 +92,27 @@
     <Report>
       <Path>TheExpert150512(3).vsp</Path>
     </Report>
+    <Report>
+      <Path>TheExpert150513.vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150513(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150513(2).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514.vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514(2).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514(3).vsp</Path>
+    </Report>
   </Reports>
   <Launches>
     <ProjBinary>

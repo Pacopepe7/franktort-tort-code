@@ -32,6 +32,8 @@ enum {
 	A1 = 112, B1, C1, D1, E1, F1, G1, H1,
 };
 
+#define PSQT(sq, color)			((color == WHITE)? (sq):(PSQT_WtoB[sq]))
+
 enum { RANK8, RANK7, RANK6, RANK5, RANK4, RANK3, RANK2, RANK1};
 
 enum { WHITESHORT = 1, WHITELONG = 2, BLACKSHORT = 4, BLACKLONG = 8};
@@ -49,6 +51,16 @@ extern int seventhrank[MAXCOLOR];
 extern int secondrank[MAXCOLOR];
 extern int pawn_promotion_rank[MAXCOLOR];
 extern int ep_rank[MAXCOLOR];
+
+/* Piece Square Tables*/
+
+extern int PSQT_P[MAXBOARDARRAY0x88];
+extern int PSQT_N[MAXBOARDARRAY0x88];
+extern int PSQT_B[MAXBOARDARRAY0x88];
+extern int PSQT_R[MAXBOARDARRAY0x88];
+extern int PSQT_Q[MAXBOARDARRAY0x88];
+extern int PSQT_K[MAXBOARDARRAY0x88];
+extern int PSQT_WtoB[MAXBOARDARRAY0x88];
 
 /* 0x88 math */
 
@@ -84,6 +96,7 @@ extern int ep_rank[MAXCOLOR];
 #define isOurs(sq)				( ( (board->Ox88Board[sq]->cColor & (ColorOnMove()))))
 
 #define IsInCheck()				( isAttacked(board, KingPos(ColorOnMove()), ColorNotOnMove()))
+#define OppIsInCheck()			( isAttacked(board, KingPos(ColorNotOnMove()), ColorOnMove()))
 
 
 #define getRank(sq)				( ( sq >> 4) )
@@ -130,6 +143,7 @@ typedef  __int32 ChessMove;
 
 typedef struct {
 	ChessMove move[MAXMOVELIST];
+	int movescore[MAXMOVELIST];
 	int index;
 }MOVELIST;
 
@@ -209,8 +223,9 @@ typedef unsigned int Piece;
 Location MakeSquareFromString(string);
 void InitMovementTable(void);
 int CountBits(U64 b);
+int PieceValue(U64 b);
 
-#define DEBUG
+//#define DEBUG
 
 #ifndef DEBUG
 #define ASSERT(n)

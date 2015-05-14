@@ -13,16 +13,16 @@ void main(void)
 {
 
 	
-	cout << "Entering main" << endl;
+	//cout << "Entering main" << endl;
 	string input, output;
 
-	cout << "Instantiating Engine" << endl;
+	//cout << "Instantiating Engine" << endl;
 	UCIInterface TheExpertUCI;
-	TheExpertUCI.Command("ucinewgame");
-	TheExpertUCI.Command("go");
+	//TheExpertUCI.Command("ucinewgame");
+	//TheExpertUCI.Command("go");
 	do
 	{
-		cout << "Waiting for input" << endl;
+		//cout << "Waiting for input" << endl;
 		getline(cin, input);
 		TheExpertUCI.Command(input);
 		cout << output;
