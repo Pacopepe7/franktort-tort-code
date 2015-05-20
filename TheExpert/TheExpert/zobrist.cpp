@@ -70,7 +70,7 @@ int ProbeHash(U64 ZobristKey, int depth, int alpha, int beta)
 	HASHE * phashe = &hash_table[ZobristKey % TableSize];
 
 	if (phashe->key == ZobristKey) {
-		if (phashe->depth == (MAXDEPTHFORTT - depth)) {
+		if (phashe->depth >= depth) {
 			if (phashe->flags == hashfEXACT)
 				return phashe->value;
 			if ((phashe->flags == hashfALPHA) &&
@@ -79,6 +79,7 @@ int ProbeHash(U64 ZobristKey, int depth, int alpha, int beta)
 			if ((phashe->flags == hashfBETA) &&
 				(phashe->value >= beta))
 				return beta;
+			return phashe->value;
 		}
 		movefromtable = phashe->best;
 	}
@@ -117,5 +118,5 @@ U64 ProbeHashperft(U64 ZobristKey, int depth)
 			return phashe->perft;
 		}
 	}
-	return 0;
+	return -1;
 }

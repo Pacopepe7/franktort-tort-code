@@ -18,8 +18,9 @@ void main(void)
 
 	//cout << "Instantiating Engine" << endl;
 	UCIInterface TheExpertUCI;
-	//TheExpertUCI.Command("ucinewgame");
+	//TheExpertUCI.Command("perft");
 	//TheExpertUCI.Command("go");
+	//return;
 	do
 	{
 		//cout << "Waiting for input" << endl;

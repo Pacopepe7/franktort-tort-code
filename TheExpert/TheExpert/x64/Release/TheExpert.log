@@ -1,8 +1,39 @@
-﻿Build started 5/14/2015 3:22:03 PM.
-     1>Project "C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\TheExpert\TheExpert.vcxproj" on node 2 (Build target(s)).
+﻿Build started 5/19/2015 8:03:30 PM.
+     1>Project "C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\TheExpert\TheExpert.vcxproj" on node 2 (Rebuild target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt Eval.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Ot /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt AlphaBeta.cpp Attacked.cpp Chess.cpp ChessMove.cpp ChessPiece.cpp ChessPosition.cpp Eval.cpp GenerateMoves.cpp main.cpp MakeMove.cpp MovementTable.cpp Perft.cpp PrintBoard.cpp SetFen.cpp UCIInterface.cpp UnMakeMove.cpp utils.cpp zobrist.cpp
+         AlphaBeta.cpp
+         Attacked.cpp
+         Chess.cpp
+         ChessMove.cpp
+         ChessPiece.cpp
+         ChessPosition.cpp
          Eval.cpp
+         GenerateMoves.cpp
+     1>GenerateMoves.cpp(245): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(258): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(259): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(260): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(261): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(264): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(265): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(266): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(267): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(278): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(283): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(295): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+     1>GenerateMoves.cpp(300): warning C4554: '<<' : check operator precedence for possible error; use parentheses to clarify precedence
+         main.cpp
+         MakeMove.cpp
+         MovementTable.cpp
+         Perft.cpp
+         PrintBoard.cpp
+         SetFen.cpp
+         UCIInterface.cpp
+         UnMakeMove.cpp
+         utils.cpp
+         zobrist.cpp
+     1>zobrist.cpp(32): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\x64\Release\TheExpert.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\x64\Release\TheExpert.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\x64\Release\TheExpert.lib" /MACHINE:X64 x64\Release\AlphaBeta.obj
          x64\Release\Attacked.obj
@@ -25,8 +56,8 @@
          Generating code
          Finished generating code
          TheExpert.vcxproj -> C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\x64\Release\TheExpert.exe
-     1>Done Building Project "C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\TheExpert\TheExpert.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\Paquito\Documents\franktort-tort-code\TheExpert\TheExpert\TheExpert.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:02.36
+Time Elapsed 00:00:10.43

@@ -50,6 +50,7 @@ extern int pawndirection[MAXCOLOR];
 extern int seventhrank[MAXCOLOR];
 extern int secondrank[MAXCOLOR];
 extern int pawn_promotion_rank[MAXCOLOR];
+extern int pawn_sixth_rank[MAXCOLOR];
 extern int ep_rank[MAXCOLOR];
 
 /* Piece Square Tables*/
@@ -145,6 +146,7 @@ typedef struct {
 	ChessMove move[MAXMOVELIST];
 	int movescore[MAXMOVELIST];
 	int index;
+	int lastmovescore;
 }MOVELIST;
 
 
@@ -154,6 +156,7 @@ typedef struct {
 	Location	enpassantsquare;
 	int			fiftymoverule;
 	U64			positionkey;
+	int			psqt[3];
 } UNMAKEMOVE;
 
 

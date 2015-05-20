@@ -8,7 +8,10 @@
 #include <iostream>
 using namespace std;
 
-
+#define WINDOWSIZE		120
+#define WINDOWSTEP		20
+#define WINDOWMIN		40
+#define MISSEDWINDOW	INF
 
 using namespace boost;
 
@@ -22,8 +25,8 @@ void AlphaBetaDriver(ChessPosition * board)
 	int value;
 	int alpha = -INF;
 	int beta = INF;
-	int window = 150;
-	int maxdepth = 8;
+	int window = WINDOWSIZE;
+	int maxdepth = 10;
 	int depth = 1;
 	
 	int nodes = 0;
@@ -33,7 +36,7 @@ void AlphaBetaDriver(ChessPosition * board)
 	do {
 		nodes = 0;
 
-		//cout << "info alpha " << alpha << " beta " << beta << " window " << window;
+		cout << "info alpha " << alpha << " beta " << beta << " window " << window << endl;
 		value = AlphaBeta(board, alpha, beta, depth, &pv, &nodes);
 		cout << "info nodes " << nodes;
 		seconds = boost::chrono::nanoseconds(timer.elapsed().user);
@@ -56,21 +59,25 @@ void AlphaBetaDriver(ChessPosition * board)
 
 		if ((value <= alpha) || (value >= beta))
 		{
-			if (value <= alpha)
-				alpha = -INF;
 			if ((value >= beta))
 				beta = INF;
+			if (value <= alpha)
+				alpha = -INF;
+			window = WINDOWSIZE;
 		}
 		else
 		{
 			depth ++;
+			if (window > WINDOWMIN)
+				window -= WINDOWSTEP;
 			alpha = value - window;
 			beta = value + window;
 		}
 			
 
-	} while (/*(depth != maxdepth) &&*/  (seconds.count() < 5));
+	} while ((depth != maxdepth) && (seconds.count() <= 2));
 	cout << "bestmove " << MakeMoveString(pv.argmove[0]) << endl;
+	PrintBoard(board);
 	return;
 
 }
@@ -85,10 +92,13 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 	bool extended = false;
 	int legalmoves = 0;
 	int movestomate = 0;
+	bool extension = false;
+	int uninterestingdepth;
+	if (depth > 5)
+		uninterestingdepth = depth - 2;
+	//if ((score = ProbeHash(board->positionkey, depth, alpha, beta)) != -1)
+	//	return score;
 
-
-	if ((score = ProbeHash(board->positionkey, MAXABDEPTH - depth, alpha, beta)) != -1)
-		return score;
 	LINE line;
 	ChessMove move;
 	MOVELIST list;
@@ -96,16 +106,14 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 	/***************************************************
 	* Extensions
 	***************************************************/
-	if (IsInCheck())
+	if (IsInCheck() | OppIsInCheck())
 		depth++;
 
 	if (depth == 0)
 	{
-		
 		pline->cmove = 0;
 		score = QuietAlphaBeta(board, alpha, beta);
-		//score = Eval(board);
-		RecordHash(board->positionkey, MAXABDEPTH - depth, score, hashfEXACT);
+		//RecordHash(board->positionkey, depth, score, hashfEXACT);
 		return score;
 	}
 	if (board->fiftymoverule >= 50)
@@ -117,13 +125,15 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 		ASSERT(list.index != -1);
 		move = RemoveMoveFromList(&list);
 		ASSERT(move);
+		
 		MakeMove(board, move);
 		if (isValid())	{
+
 			score = -AlphaBeta(board, -beta, -alpha, depth - 1, &line, nodes);
 			legalmoves++;
 			(*nodes)++;
 			if (score >= beta)				{
-				RecordHash(board->positionkey, MAXABDEPTH - depth, beta, hashfBETA);
+				//RecordHash(board->positionkey, depth, beta, hashfBETA);
 				UnMakeMove(board, move);
 				return beta;
 			}
@@ -146,18 +156,16 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 		else
 			return 0;
 	}
-	RecordHash(board->positionkey, MAXABDEPTH - depth,  alpha, hashf);
+	//RecordHash(board->positionkey,  depth,  alpha, hashf);
 	return alpha;
 }
-
-
-
 
 
 int QuietAlphaBeta(ChessPosition * board, int alpha, int beta)
 {
 	if (board->fiftymoverule >= 50)
 		return 0;
+
 	int score = Eval(board);
 
 	if (score >= beta)
@@ -186,7 +194,7 @@ int QuietAlphaBeta(ChessPosition * board, int alpha, int beta)
 
 			if (score >= beta){
 				UnMakeMove(board, move);
-				return beta;
+				return score;
 			}
 			if (score > alpha){
 				alpha = score;
@@ -196,13 +204,8 @@ int QuietAlphaBeta(ChessPosition * board, int alpha, int beta)
 	}
 	//PrintBoard();
 	if (!legalmoves)	
-	{		
-		if (IsInCheck())
-			return -MATE;
-		else
-			return 0;
-	}
-
+		alpha = Eval(board);
+	//RecordHash(board->positionkey, depth, alpha, hashf);
 	return alpha;
 }
 

@@ -64,6 +64,8 @@ void UnMakeMove(ChessPosition * board, ChessMove cm)
 	board->enpassantsquare = board->unmake[board->historyply].enpassantsquare;
 	board->fiftymoverule = board->unmake[board->historyply].fiftymoverule;
 	board->positionkey = board->unmake[board->historyply].positionkey;
+	board->PSQT[WHITE] = board->unmake[board->historyply].psqt[WHITE];
+	board->PSQT[BLACK] = board->unmake[board->historyply].psqt[BLACK];
 	//cout << "New key: "; printf("Key:%llX\n", board->positionkey); 
 
 	board->sideToMove = Opponent();

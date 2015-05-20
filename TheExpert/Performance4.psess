@@ -113,6 +113,21 @@
     <Report>
       <Path>TheExpert150514(3).vsp</Path>
     </Report>
+    <Report>
+      <Path>TheExpert150514(4).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514(5).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514(6).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150514(7).vsp</Path>
+    </Report>
+    <Report>
+      <Path>TheExpert150515.vsp</Path>
+    </Report>
   </Reports>
   <Launches>
     <ProjBinary>

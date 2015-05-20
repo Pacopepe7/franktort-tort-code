@@ -8,6 +8,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "UCIInterface.h"
 #include "utils.h"
 
+#include <boost/timer/timer.hpp>
+#include <boost/chrono/include.hpp>
+
+using namespace boost;
+typedef boost::timer::auto_cpu_timer btimer;
+typedef boost::chrono::duration<double> sec;
 
 //#include "Evaluate.h"
 
@@ -55,7 +61,7 @@ void UCIInterface::Command(string command )
 	//PrintBoard
 	if ( command == "pb" )
 	{
-		//cg.PrintBoard();
+		PrintBoard(chessPosition);
 		return;
 	}
 	// UCInewgame
@@ -144,13 +150,18 @@ void UCIInterface::Command(string command )
 		//if (tokens[1] == "off")
 		//	cg.debug = false;
 	}
+	if (tokens[0] == "pb")
+	{
+		PrintBoard(chessPosition);
+	}
+
 	if (tokens[0] == "depth")
 	{
 		//cg.depth = atoi(tokens[1].c_str());
 	}
 	if (tokens[0] == "test"){
 		//cg.Fen("8/7p/3k4/8/p4P2/P3PK2/2Rp3P/8 b - - 0 12 ");
-		SetFen(chessPosition, "r1bq4/1p4kp/3p1n2/p4pB1/2pQ4/8/1P4PP/4RRK1 w - - 0 1 ");
+		SetFen(chessPosition, "4b2r/P5k1/8/8/8/5BP1/5PKP/R7 b - - 0 1 ");
 	}
 	if (tokens[0] == "search")
 	{
@@ -161,17 +172,23 @@ void UCIInterface::Command(string command )
 	}
 	if (tokens[0] == "perft")
 	{
+		sec 	seconds;
+		sec last(0);
+		boost::timer::cpu_timer timer;
 #ifdef _DEBUG
 		for ( int i = 1; i < 7; i++)
 #else
-		for ( int i = 1; i <= 7; i++)
+		for ( int i = 1; i <= 6; i++)
 #endif
 		{
+			
 			cout << "Starting perft " << i << endl;
 			
 			InitializeBoard(chessPosition);
 			SetFen(chessPosition, STARTPOS);
 			cout << "perft for depth " << (i) << " is  " << perft(chessPosition, i) << "\n";
+			seconds = boost::chrono::nanoseconds(timer.elapsed().user) - last; last = seconds;
+			cout << "Perft completed on : " << seconds.count() << endl;
 		}
 		//PrintBoard(chessPosition);
 		return ;

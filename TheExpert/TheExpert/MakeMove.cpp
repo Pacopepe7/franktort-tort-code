@@ -8,10 +8,10 @@ string MakeMoveString(ChessMove cm)
 	//ASSERT(FromSquare(cm) != ToSquare(cm));
 	string prom = "";
 	if (Promotion(cm)){
-		if (Promotion(cm) == (QUEEN) >> 3) prom = "Q";
-		if (Promotion(cm) == (ROOK) >> 3) prom = "R";
-		if (Promotion(cm) == (BISHOP) >> 3) prom = "B";
-		if (Promotion(cm) == (KNIGHT) >> 3) prom = "N";
+		if (Promotion(cm) == (QUEEN>> 3)) prom = "q";
+		if (Promotion(cm) == (ROOK >> 3)) prom = "r";
+		if (Promotion(cm) == (BISHOP >> 3)) prom = "b";
+		if (Promotion(cm) == (KNIGHT >> 3)) prom = "n";
 
 	}
 	string move = notation[FromSquare(cm)];
@@ -30,6 +30,7 @@ ChessMove MakeMoveFromString(ChessPosition * board, string move)
 	while (MovesStillLeft(list))
 	{
 		cm = GetMoveFrom(list);
+		cout << MakeMoveString(cm) << endl;
 		chessmove = MakeMoveString(cm);
 		if (move == chessmove)
 			return cm;
@@ -49,6 +50,8 @@ void MakeMove(ChessPosition * board, ChessMove cm)
 	board->unmake[board->historyply].enpassantsquare = board->enpassantsquare;
 	board->unmake[board->historyply].fiftymoverule = board->fiftymoverule;
 	board->unmake[board->historyply].positionkey = board->positionkey;
+	board->unmake[board->historyply].psqt[WHITE] = board->PSQT[WHITE];
+	board->unmake[board->historyply].psqt[BLACK] = board->PSQT[BLACK];
 
 	if (EPCapture(cm)){
 		Clear(board, ToSquare(cm) - pawndirection[SideToMove()]);

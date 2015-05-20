@@ -77,7 +77,7 @@ void SetPiece(ChessPosition * board, ChessPiece  * piece)
 
 
 }
-void SetPiece(ChessPosition * board, Piece piece, Location square)
+void SetPiece(ChessPosition * board, Piece piece, Location square, bool making)
 {
 	ASSERT(board);
 	ASSERT(CountBits(piece) == 2);
@@ -116,16 +116,18 @@ void SetPiece(ChessPosition * board, Piece piece, Location square)
 	}
 
 	board->Materialcount[color] += PieceValue(piece);
-	
-	if (piece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
-	if (piece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
-	if (piece & BISHOP) board->PSQT[color] += PSQT_B[PSQT(square, color)];
-	if (piece & ROOK) board->PSQT[color] += PSQT_R[PSQT(square, color)];
-	if (piece & QUEEN) board->PSQT[color] += PSQT_Q[PSQT(square, color)];
+	if (making){
+		HASH_PCSQ(board->Ox88Board[square]);
+		if (piece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
+		if (piece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
+		if (piece & BISHOP) board->PSQT[color] += PSQT_B[PSQT(square, color)];
+		if (piece & ROOK) board->PSQT[color] += PSQT_R[PSQT(square, color)];
+		if (piece & QUEEN) board->PSQT[color] += PSQT_Q[PSQT(square, color)];
+	}
 
-	HASH_PCSQ(board->Ox88Board[square]);
+	
 }
-void Clear(ChessPosition * board, Location square)
+void Clear(ChessPosition * board, Location square, bool making )
 {
 	ASSERT(isBoardOK(board));
 	ASSERT(isSquare(square));
@@ -137,16 +139,16 @@ void Clear(ChessPosition * board, Location square)
 	
 	int index = piece->index;
 	Color color = piece->cColor;
-
 	ASSERT(isValidColor(color));
-
-	HASH_PCSQ(piece);
-	if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
-	if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
-	if (piece->pPiece & BISHOP) board->PSQT[color] -= PSQT_B[PSQT(square, color)];
-	if (piece->pPiece & ROOK) board->PSQT[color] -= PSQT_R[PSQT(square, color)];
-	if (piece->pPiece & QUEEN) board->PSQT[color] -= PSQT_Q[PSQT(square, color)];
-	if (piece->pPiece & KING) board->PSQT[color] -= PSQT_K[PSQT(square, color)];
+	if (making){
+		HASH_PCSQ(piece);
+		if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
+		if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
+		if (piece->pPiece & BISHOP) board->PSQT[color] -= PSQT_B[PSQT(square, color)];
+		if (piece->pPiece & ROOK) board->PSQT[color] -= PSQT_R[PSQT(square, color)];
+		if (piece->pPiece & QUEEN) board->PSQT[color] -= PSQT_Q[PSQT(square, color)];
+		if (piece->pPiece & KING) board->PSQT[color] -= PSQT_K[PSQT(square, color)];
+	}
 
 	board->Materialcount[color] -= PieceValue(piece->pPiece); 
 	board->numPieces[color]--;
@@ -154,17 +156,10 @@ void Clear(ChessPosition * board, Location square)
 	board->pieces[index][color].lLocation = INVALID;
 	board->pieces[index][color].pPiece = EMPTY;
 	board->pieces[index][color].index = INVALID;
-	//board->pieces[board->Ox88Board[square]->index][board->Ox88Board[square]->nextPiece;
-	//board->pieces[board->Ox88Board[square]->index][board->Ox88Board[square]->PreviousPiece;
-	//if (index > board->numPieces[color] - 1)
-	//(board->pieces[index][color]) = (board->pieces[board->numPieces[color] - 1][color]);
-
-
-
 	board->Ox88Board[square] = NULL;
 	ASSERT(isBoardOK(board));
 }
-void MovePiece(ChessPosition * board, Location from, Location to)
+void MovePiece(ChessPosition * board, Location from, Location to, bool making)
 {
 	ASSERT(isBoardOK(board));
 	ASSERT(isSquare(from));
@@ -178,36 +173,36 @@ void MovePiece(ChessPosition * board, Location from, Location to)
 	ASSERT(piece->lLocation >= 0 );
 	ASSERT(isValidColor(piece->cColor) );
 
-	HASH_PCSQ(piece);
-	ASSERT(isValidColor(piece->cColor));
+
 	Color color = piece->cColor;
+	ASSERT(isValidColor(color));
 	Location square = piece->lLocation;
-
-	if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
-	if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
-	if (piece->pPiece & BISHOP) board->PSQT[color] -= PSQT_B[PSQT(square, color)];
-	if (piece->pPiece & ROOK) board->PSQT[color] -= PSQT_R[PSQT(square, color)];
-	if (piece->pPiece & QUEEN) board->PSQT[color] -= PSQT_Q[PSQT(square, color)];
-	if (piece->pPiece & KING) board->PSQT[color] -= PSQT_K[PSQT(square, color)];
-
-
-
+	ASSERT(piece->pPiece & PIECE);
+	if (making){
+		HASH_PCSQ(piece);
+		if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
+		if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
+		if (piece->pPiece & BISHOP) board->PSQT[color] -= PSQT_B[PSQT(square, color)];
+		if (piece->pPiece & ROOK) board->PSQT[color] -= PSQT_R[PSQT(square, color)];
+		if (piece->pPiece & QUEEN) board->PSQT[color] -= PSQT_Q[PSQT(square, color)];
+		if (piece->pPiece & KING) board->PSQT[color] -= PSQT_K[PSQT(square, color)];
+	}
 	board->Ox88Board[from] = NULL;
-
 	piece->lLocation = to;
 	board->Ox88Board[to] = piece;
-
 	if (piece->pPiece & KING)
 		board->KingPosition[piece->cColor] = to;
-
 	piece = board->Ox88Board[to];
 	square = to;
-	HASH_PCSQ(piece);
-	if (piece->pPiece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
-	if (piece->pPiece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
-	if (piece->pPiece & BISHOP) board->PSQT[color] += PSQT_B[PSQT(square, color)];
-	if (piece->pPiece & ROOK) board->PSQT[color] += PSQT_R[PSQT(square, color)];
-	if (piece->pPiece & QUEEN) board->PSQT[color] += PSQT_Q[PSQT(square, color)];
-	if (piece->pPiece & KING) board->PSQT[color] += PSQT_K[PSQT(square, color)];
+
+	if (making){
+		HASH_PCSQ(piece);
+		if (piece->pPiece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
+		if (piece->pPiece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
+		if (piece->pPiece & BISHOP) board->PSQT[color] += PSQT_B[PSQT(square, color)];
+		if (piece->pPiece & ROOK) board->PSQT[color] += PSQT_R[PSQT(square, color)];
+		if (piece->pPiece & QUEEN) board->PSQT[color] += PSQT_Q[PSQT(square, color)];
+		if (piece->pPiece & KING) board->PSQT[color] += PSQT_K[PSQT(square, color)];
+	}
 	ASSERT(isBoardOK(board));
 }

@@ -9,13 +9,6 @@ bool isAttacked(const ChessPosition * board, const Location target, const Color 
 	ASSERT(isSquare(target));
 	ASSERT(isValidColor(color));
 
-	//if (!isEmpty(target)){
-	//	if (getColor(target) == color){
-	//		cout << "Target: " << notation[target] << " " << color << endl;
-	//	ASSERT(getColor(target) != color);
-	//}
-	//}
-
 	int c;
 	Location sq;
 

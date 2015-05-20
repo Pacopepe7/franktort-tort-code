@@ -1,7 +1,6 @@
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\vc120.pdb
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\zobrist.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\utils.obj
-c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\main.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\unmakemove.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\uciinterface.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\setfen.obj
@@ -9,6 +8,7 @@ c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\p
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\perft.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\movementtable.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\makemove.obj
+c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\main.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\generatemoves.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\eval.obj
 c:\users\paquito\documents\franktort-tort-code\theexpert\theexpert\x64\release\chessposition.obj

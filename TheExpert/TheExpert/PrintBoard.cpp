@@ -66,7 +66,8 @@ void PrintBoard(const ChessPosition * board)
 	cout << "EP Square " << ((board->enpassantsquare == INVALID) ? "na":notation[board->enpassantsquare]) << endl;
 	//cout << "Key: " << board->positionkey << endl;
 	printf("Key:%llX\n", board->positionkey);
-	//cout << "PSQT for Black: " << psqtCount[BLACK] << endl;
-	cout << "MaxPieces WHITE: " << board->numPieces[WHITE] << endl;
-	cout << "MaxPieces BLACK: " << board->numPieces[BLACK] << endl;
+	cout << "PSQT for WHITE: " << board->PSQT[WHITE] << endl;
+	cout << "PSQT for Black: " << board->PSQT[BLACK] << endl;
+	cout << "Material WHITE: " << board->Materialcount[WHITE] << endl;
+	cout << "Material BLACK: " << board->Materialcount[BLACK] << endl;
 }

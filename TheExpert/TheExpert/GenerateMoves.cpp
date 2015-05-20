@@ -35,11 +35,14 @@ ChessMove RemoveMoveFromList(MOVELIST * list)
 			cm = list->move[i];
 			movescore = list->movescore[i];
 			indexofbestmove = i;
+			list->lastmovescore = movescore;
 		}
 	}
 	ASSERT(indexofbestmove != -1);
-	if (indexofbestmove == list->index)
+	if (indexofbestmove == list->index){
+		list->lastmovescore = list->movescore[list->index -1];
 		return GetMoveFrom((*list));
+	}
 	//cout << "Removing from index: " << indexofbestmove << endl;
 	cm = list->move[indexofbestmove];
 	list->move[indexofbestmove] = list->move[list->index - 1];
@@ -56,13 +59,13 @@ void AddQuietMove(const ChessPosition * board, const ChessMove cm, MOVELIST * li
 	ASSERT(isEmpty(ToSquare(cm)));
 
 	list->move[list->index] = cm;
-	list->movescore[list->index] = 0;
+	list->movescore[list->index] = -50;
 	list->index++;
 }
 
 void AddCapture(const ChessPosition * board, const ChessMove cm, MOVELIST * list)
 {
-	list->movescore[list->index] = 0;
+	list->movescore[list->index] = 50;
 	//To square CAN be empty, enpassant capture...
 	if (!isEmpty(ToSquare(cm))){
 		list->movescore[list->index] = PieceValue(getPiece(ToSquare(cm))) - PieceValue(getPiece(FromSquare(cm)));
@@ -81,8 +84,6 @@ void AddCapture(const ChessPosition * board, const ChessMove cm, MOVELIST * list
 	{
 		ASSERT(!isEmpty(ToSquare(cm)));
 		ASSERT(!(getPiece(ToSquare(cm)) & KING));
-		list->movescore[list->index] = 50;
-		
 	}
 	if (Promotion(cm)){
 		ASSERT(Promotion(cm) & PROMOTIONPIECEMASK);
@@ -112,8 +113,9 @@ void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet )
 	for (i = 0; i < MAXPIECES; i++)
 	{
 		const Location curr = board->pieces[i][color].lLocation;
-		if (curr == INVALID)
-			continue;
+		ASSERT(curr == INVALID);
+		//if (curr == INVALID)
+		//	continue;
 		p = board->pieces[i][color].pPiece;
 
 		switch (p)
@@ -247,10 +249,10 @@ void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet )
 			{
 
 				if (isSquare(sq) && isEmpty(sq)){
-					AddQuietMove(board, CM(curr, sq, EMPTY, (QUEEN >> 3), EMPTY), list);
-					AddQuietMove(board, CM(curr, sq, EMPTY, (ROOK >> 3), EMPTY), list);
-					AddQuietMove(board, CM(curr, sq, EMPTY, (BISHOP >> 3), EMPTY), list);
-					AddQuietMove(board, CM(curr, sq, EMPTY, (KNIGHT >> 3), EMPTY), list);
+					AddCapture(board, CM(curr, sq, EMPTY, (QUEEN >> 3), EMPTY), list);
+					AddCapture(board, CM(curr, sq, EMPTY, (ROOK >> 3), EMPTY), list);
+					AddCapture(board, CM(curr, sq, EMPTY, (BISHOP >> 3), EMPTY), list);
+					AddCapture(board, CM(curr, sq, EMPTY, (KNIGHT >> 3), EMPTY), list);
 				}
 				if (isSquare(sq + EAST) && !isEmpty(sq + EAST) && isOpponent(sq + EAST)){
 					AddCapture(board, CM(curr, sq + EAST, getPieceWOColor(sq + EAST), (QUEEN >> 3), EMPTY), list);
@@ -266,12 +268,9 @@ void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet )
 				}
 			}
 			else{
-
-
 				if (isEmpty(sq))
-				{
-					if (quiet)AddQuietMove(board, CM(curr, sq, EMPTY, EMPTY, EMPTY), list);
-				}
+					if (quiet)AddCapture(board, CM(curr, sq, EMPTY, EMPTY, EMPTY), list);
+
 
 				if (isSquare(sq + WEST))
 					if (!isEmpty(sq + WEST))

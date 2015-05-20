@@ -43,9 +43,9 @@ bool isBoardOK(ChessPosition * board);
 void InitializeBoard(ChessPosition * board);
 
 void SetPiece(ChessPosition * board, ChessPiece  * piece);
-void SetPiece(ChessPosition * board, Piece p, Location l);
-void MovePiece(ChessPosition * board, Location, Location);
-void Clear(ChessPosition * board, Location Square);
+void SetPiece(ChessPosition * board, Piece p, Location l, bool making = true);
+void MovePiece(ChessPosition * board, Location, Location, bool making = true);
+void Clear(ChessPosition * board, Location Square, bool making = true);
 
 void MakeMove(ChessPosition * board, ChessMove chessmove);
 ChessMove MakeMoveFromString(ChessPosition * board, string cm);
