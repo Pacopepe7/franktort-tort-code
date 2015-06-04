@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-void OrderPV(MOVELIST *list, LINE * pline, int depth)
+bool OrderPV(MOVELIST *list, LINE * pline, int depth)
 {
 	//Remove from PV is available
 	static ChessMove pvmove;
@@ -12,10 +12,11 @@ void OrderPV(MOVELIST *list, LINE * pline, int depth)
 		for (int c = 0; c < list->index; c++){
 			if (pvmove == list->move[c]){
 				list->movescore[c] = 10000;
-				return;
+				return true;
 			}
 		}
 	}
+	return false;
 }
 
 ChessMove RemoveMoveFromList(MOVELIST * list)
@@ -72,7 +73,7 @@ void AddCapture(const ChessPosition * board, const ChessMove cm, MOVELIST * list
 		if ((getPiece(ToSquare(cm)) & KING))
 		{
 			PrintBoard(board);
-			cout << MakeMoveString(cm) << "   " << endl;
+			//cout << MakeMoveString(cm) << "   " << endl;
 		}
 		ASSERT(!(getPiece(ToSquare(cm)) & KING));
 		ASSERT(isOpponent(ToSquare(cm)));	
@@ -80,11 +81,11 @@ void AddCapture(const ChessPosition * board, const ChessMove cm, MOVELIST * list
 	}
 	ASSERT(isSquare(FromSquare(cm)));
 	ASSERT(isSquare(ToSquare(cm)));
-	if (!EPCapture(cm))
-	{
-		ASSERT(!isEmpty(ToSquare(cm)));
-		ASSERT(!(getPiece(ToSquare(cm)) & KING));
-	}
+	//if (!EPCapture(cm))
+	//{
+	//	ASSERT(isEmpty(ToSquare(cm)));
+	//	ASSERT(!(getPiece(ToSquare(cm)) & KING));
+	//}
 	if (Promotion(cm)){
 		ASSERT(Promotion(cm) & PROMOTIONPIECEMASK);
 		ASSERT(Promotion(cm) & ((QUEEN | BISHOP | ROOK | KNIGHT) >> 3));
@@ -113,9 +114,9 @@ void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet )
 	for (i = 0; i < MAXPIECES; i++)
 	{
 		const Location curr = board->pieces[i][color].lLocation;
-		ASSERT(curr == INVALID);
-		//if (curr == INVALID)
-		//	continue;
+		//ASSERT(curr == INVALID);
+		if (curr == INVALID)
+			continue;
 		p = board->pieces[i][color].pPiece;
 
 		switch (p)

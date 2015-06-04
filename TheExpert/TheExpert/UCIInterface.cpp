@@ -7,6 +7,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "UCIInterface.h"
 #include "utils.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "windows.h"
 
 #include <boost/timer/timer.hpp>
 #include <boost/chrono/include.hpp>
@@ -119,28 +122,68 @@ void UCIInterface::Command(string command )
 			}
 		}
 	}
+	//// go depth 6 wtime 180000 btime 100000 binc 1000 winc 1000 movetime 1000 movestogo 40
+
 	if (tokens[0] == "go")
 	{
+		S_SEARCHINFO info;
+		int i = 0;
+		int depth = -1, movestogo = 30, movetime = -1;
+		int time = -1, inc = 0;
+		info.timeset = FALSE;
+		do{
+			if (tokens[i] == "infinite"){
+				movetime = 29000;
+				time = 29000;
+				movestogo = 1;
+				//cout << "info depth: " << info.depth;
+			}
+			if (tokens[i] == "depth"){
+				info.depth = atoi(tokens[i + 1].c_str());
+				depth = info.depth;
+				//cout << "info depth: " << info.depth;
+			}
 
-		//int value;
-		//boost::timer::auto_cpu_timer tt(6, "info search took %w seconds\n");
-		AlphaBetaDriver(chessPosition);
-		/*switch (cg.searchmethod)
-		{
-		case NEGAMAX:
-			value = cg.NegaMax( cg.depth );
-			break;
-		case ALPHABETA:
-			value = cg.AlphaBetaDriver( );
-				break;
-		default:
-			cout << "Search method Invalid!\n";
-			break;
-		}*/
+			if (tokens[i] == "movestogo"){
+				info.movestogo = atoi(tokens[i + 1].c_str());
+				//cout << "info movestogo: " << info.movestogo;
+			}
 
-		//ChessMove cm = cg.chessresult[cg.ply].best;
-		//cout <<  "info depth " << cg.depth << " score cp " << cg.chessresult[cg.ply ].value<< "\nbestmove " <<  cg.MakeAlgebraicMove(cm) <<  "\n";
-		//cg.mstack[0].DumpStack();
+			if ((tokens[i] == "wtime") && (chessPosition->sideToMove == WHITE)) {
+				time = atoi(tokens[i + 1].c_str());
+				//cout << "info time: " << time;
+			}
+			if ((tokens[i] == "btime") && (chessPosition->sideToMove == BLACK)) {
+				time = atoi(tokens[i + 1].c_str());
+				//cout << "info time: " << time;
+			}
+
+			if (tokens[i] == "movetime") 
+				movetime = atoi(tokens[i + 1].c_str());
+			
+		} while (++i < tokens.size());
+
+		info.starttime = GetTickCount();
+		info.depth = depth;
+		cout << "info starttime: " << info.starttime;
+		if (time != -1) {
+			info.timeset = TRUE;
+			time /= movestogo;
+			time -= 50;
+			info.stoptime = info.starttime + time + inc;
+		}
+		if (movetime != -1) {
+			info.timeset = TRUE;
+			info.stoptime = info.starttime + movetime + inc;
+		}
+		if (depth == -1) {
+			info.depth = 15;
+		}
+		cout << "info depth: " << info.depth;
+		cout << " movestogo: " << movestogo;
+		cout << " starttime: " << info.starttime;
+		cout << " stoptime: " << info.stoptime << endl;
+		AlphaBetaDriver(chessPosition, &info);
 		
 	}
 	if (tokens[0] == "debug")
@@ -161,7 +204,7 @@ void UCIInterface::Command(string command )
 	}
 	if (tokens[0] == "test"){
 		//cg.Fen("8/7p/3k4/8/p4P2/P3PK2/2Rp3P/8 b - - 0 12 ");
-		SetFen(chessPosition, "4b2r/P5k1/8/8/8/5BP1/5PKP/R7 b - - 0 1 ");
+		SetFen(chessPosition, "3r1k2/1p4p1/pRB2p2/P1P1p2p/4P3/2P1BbPP/5P1K/2Rr4 b - - 0 1");
 	}
 	if (tokens[0] == "search")
 	{

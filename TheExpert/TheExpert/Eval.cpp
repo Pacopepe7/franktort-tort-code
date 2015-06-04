@@ -20,11 +20,26 @@ int Eval(ChessPosition * board)
 
 	ASSERT(isValidColor(ColorOnMove()));
 	ASSERT(isValidColor(ColorNotOnMove()));
+	int pawnpos;
+	int pawnshelter = 0;
+	int stm = board->sideToMove;
+	int materialdelta = 0;
+	int psqtabledelta = 0;
+	//pawnpos = board->KingPosition[stm] + pawndirection[stm];
+	//	if (isSquare(pawnpos) && !isEmpty(pawnpos))
+	//		pawnshelter += 5;
+	//	pawnpos = board->KingPosition[stm] + pawndirection[stm] + EAST;
+	//	if (isSquare(pawnpos) && !isEmpty(pawnpos))
+	//		pawnshelter += 5;
+	//	pawnpos = board->KingPosition[stm] + pawndirection[stm] + WEST;
+	//	if (isSquare(pawnpos) && !isEmpty(pawnpos))
+	//		pawnshelter += 5;
 
-	int materialdelta = board->Materialcount[ColorOnMove()] - board->Materialcount[ColorNotOnMove()];
-	int psqtabledelta = board->PSQT[ColorOnMove()] - board->PSQT[ColorNotOnMove()];
+
+	materialdelta = board->Materialcount[ColorOnMove()] - board->Materialcount[ColorNotOnMove()];
+	//psqtabledelta = board->PSQT[ColorOnMove()] - board->PSQT[ColorNotOnMove()];
 	
-	//return (materialdelta);
-	return (materialdelta + psqtabledelta);
-	return 0;
+	
+	return (materialdelta + psqtabledelta + pawnshelter);
+	
 }

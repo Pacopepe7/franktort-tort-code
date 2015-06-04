@@ -21,6 +21,9 @@ using namespace std;
 #define ATTACKTABLEINDEXOFFSET	260
 #define ATTACKTABLEMAX			(ATTACKTABLEINDEXOFFSET * 2)
 
+
+#define NULLMOVE			0
+
 enum {
 	A8 = 0, B8, C8, D8, E8, F8, G8, H8,
 	A7 = 16, B7, C7, D7, E7, F7, G7, H7,
@@ -97,7 +100,7 @@ extern int PSQT_WtoB[MAXBOARDARRAY0x88];
 #define isOurs(sq)				( ( (board->Ox88Board[sq]->cColor & (ColorOnMove()))))
 
 #define IsInCheck()				( isAttacked(board, KingPos(ColorOnMove()), ColorNotOnMove()))
-#define OppIsInCheck()			( isAttacked(board, KingPos(ColorNotOnMove()), ColorOnMove()))
+#define IsOppInCheck()			( isAttacked(board, KingPos(ColorNotOnMove()), ColorOnMove()))
 
 
 #define getRank(sq)				( ( sq >> 4) )
@@ -159,7 +162,28 @@ typedef struct {
 	int			psqt[3];
 } UNMAKEMOVE;
 
+typedef struct {
 
+	int starttime;
+	int stoptime;
+	int depth;
+	int timeset;
+	int movestogo;
+
+	long nodes;
+
+	int quit;
+	int stopped;
+	bool lastmoveforced;
+	bool pv;
+	float fh;
+	float fhf;
+	int nullCut;
+
+	int GAME_MODE;
+	int POST_THINKING;
+
+} S_SEARCHINFO;
 
 #define isWhite(c)					( c & WHITE)
 #define isBlack(c)					( c & BLACK)
@@ -228,7 +252,7 @@ void InitMovementTable(void);
 int CountBits(U64 b);
 int PieceValue(U64 b);
 
-//#define DEBUG
+#define DEBUG
 
 #ifndef DEBUG
 #define ASSERT(n)

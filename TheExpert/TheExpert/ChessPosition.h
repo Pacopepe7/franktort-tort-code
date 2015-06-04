@@ -48,19 +48,24 @@ void MovePiece(ChessPosition * board, Location, Location, bool making = true);
 void Clear(ChessPosition * board, Location Square, bool making = true);
 
 void MakeMove(ChessPosition * board, ChessMove chessmove);
-ChessMove MakeMoveFromString(ChessPosition * board, string cm);
 void UnMakeMove(ChessPosition * board, ChessMove cm);
+
+void MakeNullMove(ChessPosition * board);
+void UnMakeNullMove(ChessPosition * board);
+
+ChessMove MakeMoveFromString(ChessPosition * board, string cm);
+
 bool SetFen(ChessPosition * board, string fen);
 U64 perft(ChessPosition * board, int depth);
 void PrintBoard(const ChessPosition * board);
 
 void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet = true);
 ChessMove RemoveMoveFromList(MOVELIST * list);
-void OrderPV(MOVELIST *, LINE *, int depth);
+bool OrderPV(MOVELIST *, LINE *, int depth);
 
 bool isAttacked(const ChessPosition * board, const Location target, const Color color);
 
-void AlphaBetaDriver(ChessPosition *);
-int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, int * nodes);
-int QuietAlphaBeta(ChessPosition * board, int alpha, int beta);
+void AlphaBetaDriver(ChessPosition *, S_SEARCHINFO * );
+int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, S_SEARCHINFO *info, bool DoNullMove = true);
+int QuietAlphaBeta(ChessPosition * board, int alpha, int beta, S_SEARCHINFO *info);
 int Eval(void);

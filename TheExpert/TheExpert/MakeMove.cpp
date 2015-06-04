@@ -30,14 +30,46 @@ ChessMove MakeMoveFromString(ChessPosition * board, string move)
 	while (MovesStillLeft(list))
 	{
 		cm = GetMoveFrom(list);
-		cout << MakeMoveString(cm) << endl;
+		//cout << MakeMoveString(cm) << endl;
 		chessmove = MakeMoveString(cm);
 		if (move == chessmove)
 			return cm;
 	}
 	return false;
 }
+void MakeNullMove(ChessPosition * board)
+{
+	board->unmake[board->historyply].move = NULLMOVE;
+	board->unmake[board->historyply].castlingprivileges = board->castlingprivileges;
+	board->unmake[board->historyply].enpassantsquare = board->enpassantsquare;
+	board->unmake[board->historyply].fiftymoverule = board->fiftymoverule;
+	board->unmake[board->historyply].positionkey = board->positionkey;
+	board->unmake[board->historyply].psqt[WHITE] = board->PSQT[WHITE];
+	board->unmake[board->historyply].psqt[BLACK] = board->PSQT[BLACK];
+	board->ply++;
+	board->historyply++;
+	board->sideToMove = Opponent();
 
+}
+
+void UnMakeNullMove(ChessPosition * board)
+{
+	board->ply--;
+	board->historyply--;
+
+	//Restore position flags
+	board->castlingprivileges = board->unmake[board->historyply].castlingprivileges;
+	board->enpassantsquare = board->unmake[board->historyply].enpassantsquare;
+	board->fiftymoverule = board->unmake[board->historyply].fiftymoverule;
+	board->positionkey = board->unmake[board->historyply].positionkey;
+	board->PSQT[WHITE] = board->unmake[board->historyply].psqt[WHITE];
+	board->PSQT[BLACK] = board->unmake[board->historyply].psqt[BLACK];
+	//cout << "New key: "; printf("Key:%llX\n", board->positionkey); 
+
+	board->sideToMove = Opponent();
+
+
+}
 void MakeMove(ChessPosition * board, ChessMove cm)
 {
 	ASSERT(isSquare(FromSquare(cm)));

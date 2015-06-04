@@ -36,7 +36,7 @@ void InitZobristTable(void)
 				Zobrist[p][c][sq] = rand64();
 
 	for (int p = 0; p < MAXMOVES; p++)
-		moves[MAXMOVES] = rand64();
+		moves[p] = rand64();
 	for (int i = 0; i < TableSize; i++)
 	{
 		hash_table[i].best = 0;
@@ -61,16 +61,19 @@ void PrintZTStats(void)
 	cout << "Probes    : " << Probes << endl;
 	cout << "Stores    : " << Stores << endl;
 	cout << "Hits      : " << TTHits << endl;
-
-	InitZobristTable();
+	TTHits = 0;
+	Probes = 0;
+	Stores = 0;
+	
 }
 
 int ProbeHash(U64 ZobristKey, int depth, int alpha, int beta)
 {
 	HASHE * phashe = &hash_table[ZobristKey % TableSize];
-
+	Probes++;
 	if (phashe->key == ZobristKey) {
 		if (phashe->depth >= depth) {
+			TTHits++;
 			if (phashe->flags == hashfEXACT)
 				return phashe->value;
 			if ((phashe->flags == hashfALPHA) &&
@@ -90,7 +93,7 @@ int ProbeHash(U64 ZobristKey, int depth, int alpha, int beta)
 void RecordHash(U64 ZobristKey, int depth, int val, int hashf)
 {
 	HASHE * phashe = &hash_table[ZobristKey % TableSize];
-
+	Stores++;
 	phashe->key = ZobristKey;
 
 	phashe->best = movefromtable;
