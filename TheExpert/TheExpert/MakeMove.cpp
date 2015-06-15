@@ -70,11 +70,12 @@ void UnMakeNullMove(ChessPosition * board)
 
 
 }
-void MakeMove(ChessPosition * board, ChessMove cm)
+void MakeMove(ChessPosition * board, ChessMove cm, bool update)
 {
 	ASSERT(isSquare(FromSquare(cm)));
 	ASSERT(isSquare(ToSquare(cm)));
 	ASSERT(isBoardOK(board));
+	ASSERT(board->historyply < MAXMOVES);
 	//cout << "Making " << MakeMoveString(cm) << endl;
 	//Save pos for later undo
 	board->unmake[board->historyply].move = cm;
@@ -86,31 +87,31 @@ void MakeMove(ChessPosition * board, ChessMove cm)
 	board->unmake[board->historyply].psqt[BLACK] = board->PSQT[BLACK];
 
 	if (EPCapture(cm)){
-		Clear(board, ToSquare(cm) - pawndirection[SideToMove()]);
+		Clear(board, ToSquare(cm) - pawndirection[SideToMove()], update);
 	}
 	else 
 	if (Capture(cm)){
 		ASSERT(CountBits(Capture(cm)) == 1);
-		Clear(board, ToSquare(cm));
+		Clear(board, ToSquare(cm), update);
 		}
 
 	if (Castle(cm))
 	{
 		if (ToSquare(cm) == G1)		{
-			Clear(board, H1);
-			SetPiece(board, (ROOK) | SideToMove(), F1);
+			Clear(board, H1, update);
+			SetPiece(board, (ROOK) | SideToMove(), F1, update);
 		}
 		if (ToSquare(cm) == C1)		{
-			Clear(board, A1);
-			SetPiece(board, (ROOK) | SideToMove(), D1);
+			Clear(board, A1, update);
+			SetPiece(board, (ROOK) | SideToMove(), D1, update);
 		}
 		if (ToSquare(cm) == G8)		{
-			Clear(board, H8);
-			SetPiece(board, (ROOK) | SideToMove(), F8);
+			Clear(board, H8, update);
+			SetPiece(board, (ROOK) | SideToMove(), F8, update);
 		}
 		if (ToSquare(cm) == C8)		{
-			Clear(board, A8);
-			SetPiece(board, (ROOK) | SideToMove(), D8);
+			Clear(board, A8, update);
+			SetPiece(board, (ROOK) | SideToMove(), D8, update);
 		}
 
 	}
@@ -118,13 +119,13 @@ void MakeMove(ChessPosition * board, ChessMove cm)
 	{
 		ASSERT(CountBits(Promotion(cm)) == 1);
 		ASSERT(Promotion(cm) & ((QUEEN | BISHOP | ROOK | KNIGHT) >> 3));
-		Clear(board, FromSquare(cm));
-		SetPiece(board, (Promotion(cm) << 3) | SideToMove(), ToSquare(cm));
+		Clear(board, FromSquare(cm), update);
+		SetPiece(board, (Promotion(cm) << 3) | SideToMove(), ToSquare(cm), update);
 		/*PrintBoard(board);
 		getchar();*/
 	}
 	else
-		MovePiece(board, FromSquare(cm), ToSquare(cm));
+		MovePiece(board, FromSquare(cm), ToSquare(cm), update);
 
 	if (EPPossible(cm)){
 		board->enpassantsquare = ToSquare(cm) - pawndirection[SideToMove()];
@@ -135,13 +136,16 @@ void MakeMove(ChessPosition * board, ChessMove cm)
 
 	board->castlingprivileges = board->castlingprivileges & castling[ToSquare(cm)];
 	board->castlingprivileges = board->castlingprivileges & castling[FromSquare(cm)];
-	HASH_CASTLE();
+	
 
 	board->ply++;
 	board->historyply++;
 	board->sideToMove = Opponent();
 	ASSERT(isBoardOK(board));
 	//if (ColorOnMove() == WHITE)
-	HASH_SIDE();
-	HASH_MOVENUM();
+	if (update){
+		HASH_CASTLE();
+		HASH_SIDE();
+		HASH_MOVENUM();
+	}
 }

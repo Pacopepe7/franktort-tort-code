@@ -31,14 +31,14 @@ U64 perft(ChessPosition * board, int depth)
 	{
 		move = GetMoveFrom(list);
 		
-		MakeMove(board, move);
+		MakeMove(board, move, false);
 		if (isValid())
 		{
 			moves = perft(board, (int)depth - 1);
 			currDepthMoves++;
 			legalmoves += moves;
 		}
-		UnMakeMove(board, move);
+		UnMakeMove(board, move, false);
 	}
 	//RecordHashperft(board->positionkey, board->historyply, legalmoves);
 	return legalmoves;

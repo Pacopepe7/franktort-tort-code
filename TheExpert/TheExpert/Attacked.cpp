@@ -12,7 +12,24 @@ bool isAttacked(const ChessPosition * board, const Location target, const Color 
 	int c;
 	Location sq;
 
-	//Non sliding pieces...
+	//Sliding Pieces.
+
+	for (c = 0; c < MAXQUEENVECTORS; c++)
+	{
+		for (sq = target + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c]);
+		if (isSquare(sq))
+			if (isColor(sq, color)){
+				if (isPieceAt(sq, QUEEN))
+					return true;
+				if (isPieceAt(sq, BISHOP) && ((c % 2) == 1))
+					return true;
+				if (isPieceAt(sq, ROOK) && ((c % 2) == 0))
+					return true;
+
+
+			}
+	}
+
 	//KNIGHT:
 	for (c = 0; c < MAXKNIGHTVECTORS; c++)
 	{
@@ -51,23 +68,6 @@ bool isAttacked(const ChessPosition * board, const Location target, const Color 
 		if (isSquare(target + SOUTHEAST) && !isEmpty(target + SOUTHEAST))
 			if (isColor(target + SOUTHEAST, color) && isPieceAt(target + SOUTHEAST, PAWN))
 				return true;
-	}
-	//Sliding Pieces.
-
-	for (c = 0; c < MAXQUEENVECTORS; c++)
-	{
-		for (sq = target + queenvectors[c]; isSquare(sq) && isEmpty(sq); sq += queenvectors[c]);
-		if (isSquare(sq))
-			if (isColor(sq, color)){
-				if (isPieceAt(sq, QUEEN))
-					return true;
-				if (isPieceAt(sq, BISHOP) && ((c % 2) == 1))
-					return true;
-				if (isPieceAt(sq, ROOK) && ((c % 2) == 0))
-					return true;
-
-
-			}
 	}
 	return false;
 }

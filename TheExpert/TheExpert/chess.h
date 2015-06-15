@@ -5,6 +5,7 @@
 
 #include <string>
 #include <assert.h>
+#include "chess.h"
 
 using namespace std;
 
@@ -12,6 +13,11 @@ using namespace std;
 
 /************************************************
 * MASKS
+*/
+
+
+/************************************************
+* Array maximums
 */
 #define MAXBOARDARRAY0x88	128
 #define MAXMOVELIST			250
@@ -40,6 +46,7 @@ enum {
 enum { RANK8, RANK7, RANK6, RANK5, RANK4, RANK3, RANK2, RANK1};
 
 enum { WHITESHORT = 1, WHITELONG = 2, BLACKSHORT = 4, BLACKLONG = 8};
+
 #define NOCOLOR		0
 #define BLACK		1
 #define WHITE		2
@@ -56,7 +63,9 @@ extern int pawn_promotion_rank[MAXCOLOR];
 extern int pawn_sixth_rank[MAXCOLOR];
 extern int ep_rank[MAXCOLOR];
 
-/* Piece Square Tables*/
+/***************************************************
+* Piece Square Tables
+*/
 
 extern int PSQT_P[MAXBOARDARRAY0x88];
 extern int PSQT_N[MAXBOARDARRAY0x88];
@@ -66,9 +75,8 @@ extern int PSQT_Q[MAXBOARDARRAY0x88];
 extern int PSQT_K[MAXBOARDARRAY0x88];
 extern int PSQT_WtoB[MAXBOARDARRAY0x88];
 
-/* 0x88 math */
 
-
+/* 0x88 Macros */
 
 #define isSquare(sq)			( (sq & 0x88)? false: true )
 #define getRank(sq)				( ( sq >> 4) )
@@ -76,12 +84,13 @@ extern int PSQT_WtoB[MAXBOARDARRAY0x88];
 #define sameFile( sq1, sq2)		( ( getFile0x88(sq1) == getFile0x88(sq2))? 0:1 )
 #define sameRank( sq1, sq2)		( ( getRank0x88(sq1) == getRank0x88(sq2))? 0:1 )
 
+#define MakeSquare(r, c)		( (16 * r) + c)
 
 /************************************************
 * Macros
 ************************************************/
 #define KingPos(side)			( board->KingPosition[side])
-#define isSquare(sq)			( (sq & 0x88)? false: true )
+
 /*********************************************
 * Color related Macros
 *********************************************/
@@ -91,22 +100,17 @@ extern int PSQT_WtoB[MAXBOARDARRAY0x88];
 #define isPieceAt(sq, p)		( board->Ox88Board[sq]->pPiece&  p )
 #define isEmpty(sq)				( board->Ox88Board[sq] == EMPTY) 
 #define isColor( sq, c)			( board->Ox88Board[sq]->cColor & c)
-//#define isValid()				( !isAttacked(board, KingPos(ColorOnMove()),ColorNotOnMove() ) )
 #define isValid()				( !isAttacked(board, KingPos(ColorNotOnMove()),ColorOnMove() ) )
 
 
-
+/*********************************************
+* On Move Macros
+*/
 #define isOpponent(sq)			( ( (board->Ox88Board[sq]->cColor & (ColorNotOnMove()))))
 #define isOurs(sq)				( ( (board->Ox88Board[sq]->cColor & (ColorOnMove()))))
 
 #define IsInCheck()				( isAttacked(board, KingPos(ColorOnMove()), ColorNotOnMove()))
 #define IsOppInCheck()			( isAttacked(board, KingPos(ColorNotOnMove()), ColorOnMove()))
-
-
-#define getRank(sq)				( ( sq >> 4) )
-#define getFile(sq)				( ( sq & 7) )
-
-#define MakeSquare(r, c)		( (16 * r) + c)
 
 
 /*************************************************
@@ -144,6 +148,23 @@ typedef int Location;
 typedef unsigned __int64 U64;
 typedef int Color;
 typedef  __int32 ChessMove;
+typedef unsigned int Piece;
+
+/*
+
+
+*/
+
+typedef struct {
+	Color cColor;
+	Piece pPiece;
+	Location lLocation; // 0x88
+	int index; //this is the index the piece is on the array
+	//Location nextPiece;
+	//Location PreviousPiece;
+} ChessPiece;
+
+bool IsChessPieceOK(ChessPiece * piece);
 
 typedef struct {
 	ChessMove move[MAXMOVELIST];
@@ -167,6 +188,7 @@ typedef struct {
 	int starttime;
 	int stoptime;
 	int depth;
+	int seldepth;
 	int timeset;
 	int movestogo;
 
@@ -175,6 +197,9 @@ typedef struct {
 	int quit;
 	int stopped;
 	bool lastmoveforced;
+	bool lastmovecheck;
+	bool onlymoveplyone;
+	int totalcheckextensions;
 	bool pv;
 	float fh;
 	float fhf;
@@ -226,7 +251,7 @@ typedef struct {
 #define EPSQUARE		8
 #define MAXPIECES12		9
 
-typedef unsigned int Piece;
+
 
 
 #define isSlider(p)		(p & 0x4)
@@ -252,7 +277,7 @@ void InitMovementTable(void);
 int CountBits(U64 b);
 int PieceValue(U64 b);
 
-#define DEBUG
+//#define DEBUG
 
 #ifndef DEBUG
 #define ASSERT(n)

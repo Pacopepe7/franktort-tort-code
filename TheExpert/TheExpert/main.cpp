@@ -19,7 +19,7 @@ void main(void)
 	//cout << "Instantiating Engine" << endl;
 	UCIInterface TheExpertUCI;
 	//TheExpertUCI.Command("test");
-	//TheExpertUCI.Command("go");
+	TheExpertUCI.Command("perft");
 	//return;
 	do
 	{

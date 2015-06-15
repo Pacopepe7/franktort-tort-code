@@ -37,7 +37,7 @@ int Eval(ChessPosition * board)
 
 
 	materialdelta = board->Materialcount[ColorOnMove()] - board->Materialcount[ColorNotOnMove()];
-	//psqtabledelta = board->PSQT[ColorOnMove()] - board->PSQT[ColorNotOnMove()];
+	psqtabledelta = board->PSQT[ColorOnMove()] - board->PSQT[ColorNotOnMove()];
 	
 	
 	return (materialdelta + psqtabledelta + pawnshelter);

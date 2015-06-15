@@ -98,6 +98,7 @@ void AddCapture(const ChessPosition * board, const ChessMove cm, MOVELIST * list
 	//PieceValue
 	
 	list->move[list->index] = cm;
+	//list->movescore[list->index] = -50;
 	list->index++;
 }
 void GenerateMoves(const ChessPosition * board, MOVELIST * list, bool quiet )

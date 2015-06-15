@@ -17,14 +17,10 @@ void InitializeBoard(ChessPosition * board)
 		board->pieces[i][WHITE].pPiece = EMPTY;
 		board->pieces[i][WHITE].cColor = NOCOLOR;
 		board->pieces[i][WHITE].lLocation = INVALID;
-		board->pieces[i][WHITE].nextPiece = INVALID;
-		board->pieces[i][WHITE].PreviousPiece = INVALID;
 
 		board->pieces[i][BLACK].pPiece = EMPTY;
 		board->pieces[i][BLACK].cColor = NOCOLOR;
 		board->pieces[i][BLACK].lLocation = INVALID;
-		board->pieces[i][BLACK].nextPiece = INVALID;
-		board->pieces[i][BLACK].PreviousPiece = INVALID;
 	}
 	board->KingPosition[WHITE] = INVALID;
 	board->KingPosition[BLACK] = INVALID;
@@ -77,7 +73,7 @@ void SetPiece(ChessPosition * board, ChessPiece  * piece)
 
 
 }
-void SetPiece(ChessPosition * board, Piece piece, Location square, bool making)
+void SetPiece(ChessPosition * board, Piece piece, Location square, bool update)
 {
 	ASSERT(board);
 	ASSERT(CountBits(piece) == 2);
@@ -98,7 +94,6 @@ void SetPiece(ChessPosition * board, Piece piece, Location square, bool making)
 			break;
 		}
 	
-
 	board->numPieces[color]++;
 
 	board->pieces[index][color].cColor = color;
@@ -116,7 +111,7 @@ void SetPiece(ChessPosition * board, Piece piece, Location square, bool making)
 	}
 
 	board->Materialcount[color] += PieceValue(piece);
-	if (making){
+	if (update){
 		HASH_PCSQ(board->Ox88Board[square]);
 		if (piece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
 		if (piece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];
@@ -127,7 +122,7 @@ void SetPiece(ChessPosition * board, Piece piece, Location square, bool making)
 
 	
 }
-void Clear(ChessPosition * board, Location square, bool making )
+void Clear(ChessPosition * board, Location square, bool update )
 {
 	ASSERT(isBoardOK(board));
 	ASSERT(isSquare(square));
@@ -140,7 +135,7 @@ void Clear(ChessPosition * board, Location square, bool making )
 	int index = piece->index;
 	Color color = piece->cColor;
 	ASSERT(isValidColor(color));
-	if (making){
+	if (update){
 		HASH_PCSQ(piece);
 		if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
 		if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
@@ -159,7 +154,7 @@ void Clear(ChessPosition * board, Location square, bool making )
 	board->Ox88Board[square] = NULL;
 	ASSERT(isBoardOK(board));
 }
-void MovePiece(ChessPosition * board, Location from, Location to, bool making)
+void MovePiece(ChessPosition * board, Location from, Location to, bool update)
 {
 	ASSERT(isBoardOK(board));
 	ASSERT(isSquare(from));
@@ -178,7 +173,7 @@ void MovePiece(ChessPosition * board, Location from, Location to, bool making)
 	ASSERT(isValidColor(color));
 	Location square = piece->lLocation;
 	ASSERT(piece->pPiece & PIECE);
-	if (making){
+	if (update){
 		HASH_PCSQ(piece);
 		if (piece->pPiece & PAWN) board->PSQT[color] -= PSQT_P[PSQT(square, color)];
 		if (piece->pPiece & KNIGHT) board->PSQT[color] -= PSQT_N[PSQT(square, color)];
@@ -195,7 +190,7 @@ void MovePiece(ChessPosition * board, Location from, Location to, bool making)
 	piece = board->Ox88Board[to];
 	square = to;
 
-	if (making){
+	if (update){
 		HASH_PCSQ(piece);
 		if (piece->pPiece & PAWN) board->PSQT[color] += PSQT_P[PSQT(square, color)];
 		if (piece->pPiece & KNIGHT) board->PSQT[color] += PSQT_N[PSQT(square, color)];

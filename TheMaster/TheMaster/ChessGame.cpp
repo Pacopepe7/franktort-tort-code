@@ -135,7 +135,7 @@ void ChessGame::Init ( void )
 	maxdepth = 3;
 #else
 	debug = false;
-	maxdepth = 9; // 7 works best 
+	maxdepth = 8; // 7 works best 
 #endif
 
 	for (int i = 0; i < 128; i++)

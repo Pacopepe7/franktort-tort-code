@@ -133,8 +133,8 @@ void UCIInterface::Command(string command )
 		info.timeset = FALSE;
 		do{
 			if (tokens[i] == "infinite"){
-				movetime = 29000;
-				time = 29000;
+				movetime = 14500;
+				time = 14500;
 				movestogo = 1;
 				//cout << "info depth: " << info.depth;
 			}
@@ -179,7 +179,7 @@ void UCIInterface::Command(string command )
 		if (depth == -1) {
 			info.depth = 15;
 		}
-		cout << "info depth: " << info.depth;
+		cout << " info depth: " << info.depth;
 		cout << " movestogo: " << movestogo;
 		cout << " starttime: " << info.starttime;
 		cout << " stoptime: " << info.stoptime << endl;

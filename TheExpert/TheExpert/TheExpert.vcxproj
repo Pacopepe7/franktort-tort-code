@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClInclude Include="chess.h" />
     <ClInclude Include="ChessMove.h" />
-    <ClInclude Include="ChessPiece.h" />
     <ClInclude Include="ChessPosition.h" />
     <ClInclude Include="Eval.h" />
     <ClInclude Include="UCIInterface.h" />

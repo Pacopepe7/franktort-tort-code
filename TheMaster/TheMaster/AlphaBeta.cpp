@@ -62,9 +62,9 @@ int ChessGame::AlphaBetaDriver()
 
 		if ( depth > maxdepth && ! researching)
 			targetdepthreached = true;
-		if ( seconds.count() > 60 && researching)
+		if ( seconds.count() > 5 && researching)
 			timeleft = false;
-		if ( seconds.count() > 60 && ! researching)
+		if ( seconds.count() > 3 && ! researching)
 			timeleft = false;
 	}while (!targetdepthreached && timeleft );
 	depth -= depthdelta;

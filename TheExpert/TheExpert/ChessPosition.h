@@ -42,14 +42,15 @@ struct ChessPosition
 bool isBoardOK(ChessPosition * board);
 void InitializeBoard(ChessPosition * board);
 
-void SetPiece(ChessPosition * board, ChessPiece  * piece);
-void SetPiece(ChessPosition * board, Piece p, Location l, bool making = true);
-void MovePiece(ChessPosition * board, Location, Location, bool making = true);
-void Clear(ChessPosition * board, Location Square, bool making = true);
+/* Move making funcs*/
+void SetPiece(ChessPosition * board, ChessPiece  * piece, bool update = true);
+void SetPiece(ChessPosition * board, Piece p, Location l, bool update = true);
+void MovePiece(ChessPosition * board, Location, Location, bool update = true);
+void Clear(ChessPosition * board, Location Square, bool update = true);
+void MakeMove(ChessPosition * board, ChessMove chessmove, bool update = true);
+void UnMakeMove(ChessPosition * board, ChessMove cm, bool update = true);
 
-void MakeMove(ChessPosition * board, ChessMove chessmove);
-void UnMakeMove(ChessPosition * board, ChessMove cm);
-
+/* Null Move */
 void MakeNullMove(ChessPosition * board);
 void UnMakeNullMove(ChessPosition * board);
 
@@ -66,6 +67,6 @@ bool OrderPV(MOVELIST *, LINE *, int depth);
 bool isAttacked(const ChessPosition * board, const Location target, const Color color);
 
 void AlphaBetaDriver(ChessPosition *, S_SEARCHINFO * );
-int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, S_SEARCHINFO *info, bool DoNullMove = true);
+int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, S_SEARCHINFO *, bool DoNullMove = true);
 int QuietAlphaBeta(ChessPosition * board, int alpha, int beta, S_SEARCHINFO *info);
 int Eval(void);

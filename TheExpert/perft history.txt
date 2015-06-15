@@ -25,3 +25,68 @@ perft for depth 3 is  8874
 Waiting for input
 
 https://github.com/Pacopepe7/franktort-tort-code
+
+UCI interface initialized
+Allocated memory for ChessPosition
+Starting perft 1
+perft for depth 1 is  20
+Perft completed on : 0.0156001
+Starting perft 2
+perft for depth 2 is  400
+Perft completed on : 0.0156001
+Starting perft 3
+perft for depth 3 is  8902
+Perft completed on : 0.0468003
+Starting perft 4
+perft for depth 4 is  197281
+Perft completed on : 0.109201
+Starting perft 5
+perft for depth 5 is  4865609
+Perft completed on : 1.77841
+Starting perft 6
+perft for depth 6 is  119060324
+Perft completed on : 41.3715
+
+
+UCI interface initialized
+Allocated memory for ChessPosition
+Starting perft 1
+perft for depth 1 is  20
+Perft completed on : 0.0312002
+Starting perft 2
+perft for depth 2 is  400
+Perft completed on : 0.0156001
+Starting perft 3
+perft for depth 3 is  8902
+Perft completed on : 0.0624004
+Starting perft 4
+perft for depth 4 is  197281
+Perft completed on : 0.109201
+Starting perft 5
+perft for depth 5 is  4865609
+Perft completed on : 1.66921
+Starting perft 6
+perft for depth 6 is  119060324
+Perft completed on : 38.9222
+
+
+UCI interface initialized
+Allocated memory for ChessPosition
+Starting perft 1
+perft for depth 1 is  20
+Perft completed on : 0.0156001
+Starting perft 2
+perft for depth 2 is  400
+Perft completed on : 0.0312002
+Starting perft 3
+perft for depth 3 is  8902
+Perft completed on : 0.0312002
+Starting perft 4
+perft for depth 4 is  197281
+Perft completed on : 0.0936006
+Starting perft 5
+perft for depth 5 is  4865609
+Perft completed on : 0.811205
+Starting perft 6
+perft for depth 6 is  119060324
+Perft completed on : 18.2989

@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChessPiece.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChessPosition.h">
       <Filter>Header Files</Filter>
     </ClInclude>

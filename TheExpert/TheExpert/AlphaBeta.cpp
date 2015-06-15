@@ -13,11 +13,12 @@
 
 using namespace std;
 
-#define WINDOWSIZE		60
-#define WINDOWSTEP		5
-#define WINDOWMIN		30
+#define WINDOWSIZE		100
+#define WINDOWSTEP		20
+#define WINDOWMIN		20
 #define MISSEDWINDOW	INF
 #define MAXGAMEMOVES	256
+#define TOTALCHECKEXTENSIONS	10
 
 using namespace boost;
 
@@ -40,6 +41,8 @@ static int IsRepetition(ChessPosition *pos) {
 
 	for (index = pos->historyply - pos->fiftymoverule; index < pos->historyply - 1; ++index) {
 		ASSERT(index >= 0 && index < MAXGAMEMOVES);
+		ASSERT(index > -1);
+		ASSERT(index < MAXGAMEMOVES);
 		if (pos->positionkey == pos->unmake[index].positionkey) {
 			return true;
 		}
@@ -67,8 +70,12 @@ static void ClearForSearch(S_SEARCHINFO *info) {
 	//pos->HashTable->hit = 0;
 	//pos->HashTable->cut = 0;
 	//pos->ply = 0;
-	info->pv = false;
-	info->lastmoveforced = false;
+	info->totalcheckextensions = 0;
+	info->seldepth = 0;
+	info->onlymoveplyone = FALSE;
+	//info->pv = false;
+	//info->lastmoveforced = false;
+	//info->lastmovecheck = false;
 	info->stopped = 0;
 	info->nodes = 0;
 	info->fh = 0;
@@ -83,45 +90,49 @@ void AlphaBetaDriver(ChessPosition * board, S_SEARCHINFO * info)
 	int window = WINDOWSIZE;
 	int maxdepth = 8;
 	int depth = 1;
-	
+	int starttime;
+	int mseconds;
 
 	LINE pv;
 	sec 	seconds;
 	boost::timer::cpu_timer timer;
 	do {
 		ClearForSearch(info);
+		starttime = GetTickCount();
 		cout << "info alpha " << alpha << " beta " << beta << " window " << window << endl;
 		value = AlphaBeta(board, alpha, beta, depth, &pv, info, false);
-		if (info->stopped == TRUE) {
-			break;
-		}
+
 		cout << "info nodes " << info->nodes;
-		seconds = boost::chrono::nanoseconds(timer.elapsed().user);
-		cout << " time " << seconds.count();
+		mseconds = GetTickCount() - starttime;
+		cout << " time " << mseconds;
 
 		std::cout.precision(3);
-		if (seconds.count())
-			cout << " nps " << (int)(info->nodes / seconds.count());
+		if ((mseconds ))
+			cout << " nps " << ((info->nodes / mseconds) * 1000 ) ;
 		else
 			cout << " nps " << (info->nodes);
 		std::cout.unsetf(std::ios::floatfield);
 
 		cout << " score cp " << value;
-		cout << " depth " << depth << " pv ";
+		cout << " pv ";
 		for (int c = 0; c < pv.cmove; c++)
 			cout << MakeMoveString(pv.argmove[c]) << " ";
+		cout << " depth " << depth << " seldepth " << info->seldepth;
 		cout << endl;
 		///PrintZTStats();
 		if ((value == MATE) || (value == -MATE))
 			break;
-
+		if (info->stopped == TRUE) 
+			break;
+		if (depth == 1 && info->onlymoveplyone == TRUE)
+			break;
 		if ((value <= alpha) || (value >= beta))
 		{
 			if ((value >= beta))
 				beta = INF;
 			if (value <= alpha)
 				alpha = -INF;
-			//window = WINDOWSIZE;
+			window = WINDOWSIZE;
 		}
 		else
 		{
@@ -132,7 +143,7 @@ void AlphaBetaDriver(ChessPosition * board, S_SEARCHINFO * info)
 			beta = value + window;
 		}
 			
-	} while (depth < info->depth);
+	} while (depth <= info->depth);
 
 	cout << "bestmove " << MakeMoveString(pv.argmove[0]) << endl;
 	PrintBoard(board);
@@ -143,7 +154,7 @@ void AlphaBetaDriver(ChessPosition * board, S_SEARCHINFO * info)
 * Alpha Beta
 *
 */
-int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, S_SEARCHINFO *info, bool DoNullMove)
+int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * pline, S_SEARCHINFO * info, bool DoNullMove)
 {
 	
 	int score;
@@ -173,55 +184,58 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 	* Extensions
 	***************************************************/
 	incheck = IsInCheck();
-	if (incheck ){
-		depth++;
+	ASSERT(info->totalcheckextensions <= TOTALCHECKEXTENSIONS);
+	if (incheck && (info->totalcheckextensions < TOTALCHECKEXTENSIONS)){
+		
+		depth ++;
+		info->totalcheckextensions ++;
+		//info->lastmovecheck = true;
 	}
+	
 
 	if ((info->nodes & 2048) == 0) {
 		CheckUp(info);
 	}
-
-	if ((IsRepetition(board) || board->fiftymoverule >= 100) && board->ply ) {
+	if (IsRepetition(board) ) 
+		return 0;
+	if (( board->fiftymoverule >= 100) && board->ply ) {
 		return 0;
 	}
 
-	if (DoNullMove && !incheck && board->historyply && depth >= 4 ){
+	/*if (DoNullMove && !incheck && board->historyply && depth >= 4 ){
 		MakeNullMove(board);
-		score = -AlphaBeta(board, -beta, -beta + 1, depth - 4, &line, info, false);
+		score = -AlphaBeta(board, -beta, -beta + 1, depth - 3, &line, info, false);
 		UnMakeNullMove(board);
 		if (score >= beta && abs(score) < MATE)
 			return beta;
-
-		if (info->stopped == TRUE) {
-			return 0;
-		}
-	}
-	info->lastmoveforced = false;
+	}*/
+	//info->lastmoveforced = false;
 
 	GenerateMoves(board, &list);
 	info->pv = OrderPV(&list, &line, depth);
 
+	if (info->seldepth < board->ply + 1)
+		info->seldepth ++;
 
 	while (MovesStillLeft(list))	{
 		ASSERT(list.index != -1);
 		move = RemoveMoveFromList(&list);
 		ASSERT(move);
-		
-		MakeMove(board, move);
+		if (info->stopped == TRUE) {
+			return alpha;
+		}
+		MakeMove(board, move, true);
 		if (isValid())	{
-
-			score = -AlphaBeta(board, -beta, -alpha, depth - 1, &line, info);
-			info->pv = false;
-			legalmoves++;
-			info->nodes++;
-			if (info->stopped == TRUE) {
-				UnMakeMove(board, move);
-				return 0;
-			}
 			
+			score = -AlphaBeta(board, -beta, -alpha, depth - 1, &line, info);
+			
+			//info->pv = false;
+			legalmoves++;
+			info->nodes++;			
+		
 			if (score >= beta)				{
 				//RecordHash(board->positionkey, depth, beta, hashfBETA);
-				UnMakeMove(board, move);
+				UnMakeMove(board, move, false);
 				return beta;
 			}
 			if (score > alpha)		
@@ -233,10 +247,9 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 				pline->cmove = line.cmove + 1;
 			}
 		}
-		UnMakeMove(board, move);
+		UnMakeMove(board, move, false);
 	}
-	if (legalmoves < 3)
-		info->lastmoveforced = true;
+
 	if (!legalmoves)
 	{
 		if (IsInCheck())
@@ -244,16 +257,18 @@ int AlphaBeta(ChessPosition * board, int alpha, int beta, int depth, LINE * plin
 		else
 			return 0;
 	}
+	if ( legalmoves == 1)
+		info->onlymoveplyone = TRUE;
 	//RecordHash(board->positionkey,  depth,  alpha, hashf);
 	return alpha;
 }
 
 
-int QuietAlphaBeta(ChessPosition * board, int alpha, int beta, S_SEARCHINFO *info)
+int QuietAlphaBeta(ChessPosition * board, int alpha, int beta, S_SEARCHINFO * info)
 {
 	int score;
 	int hashf = hashfALPHA;
-
+	ASSERT(info != NULL);
 	//if ((score = ProbeHash(board->positionkey, 0, alpha, beta)) != -1)
 	//	return score;
 
@@ -279,20 +294,27 @@ int QuietAlphaBeta(ChessPosition * board, int alpha, int beta, S_SEARCHINFO *inf
 	ChessMove move;
 	MOVELIST list;
 	//SearchResult firstValidMove;
+	//if (IsInCheck())
+	//	GenerateMoves(board, &list, true);
+	//else
+
+	if (info->seldepth < board->ply + 1)
+		info->seldepth++;
+
 	GenerateMoves(board, &list, false);
-		
+
 	while (MovesStillLeft(list))
 	{
 		ASSERT(list.index != -1);
 		move = RemoveMoveFromList(&list);
 		ASSERT(move);
-		MakeMove(board, move);
+		MakeMove(board, move, true);
 		if (isValid()){
 			score = -QuietAlphaBeta(board, -beta, -alpha, info);
 			legalmoves++;
 			info->nodes++;
 			if (score >= beta){
-				UnMakeMove(board, move);
+				UnMakeMove(board, move, false);
 				//RecordHash(board->positionkey, 0, beta, hashfBETA);
 				return score;
 			}
@@ -301,10 +323,10 @@ int QuietAlphaBeta(ChessPosition * board, int alpha, int beta, S_SEARCHINFO *inf
 				alpha = score;
 			}
 		}
-		UnMakeMove(board, move);
+		UnMakeMove(board, move, false);
 	}
-	if (!legalmoves)	
-		alpha = Eval(board);
+	//if (!legalmoves)	
+	//	alpha = Eval(board);
 	//RecordHash(board->positionkey, 0, alpha, hashf);
 	return alpha;
 }
